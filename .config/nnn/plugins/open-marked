@@ -1,0 +1,4 @@
+for file in $(cat ${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection} 2>/dev/null | tr '\0' ' ')
+        do
+            xdg-open $file &disown >/dev/null 2>&1
+        done
