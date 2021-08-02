@@ -1,0 +1,308 @@
+# modifier key
+set $mod Mod4
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:_default_ 8
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# keyboard settings
+exec_always --no-startup-id xset r rate 260 40
+bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
+    exec --no-startup-id setxkbmap -option caps:escape
+
+# start a terminal
+bindsym $mod+BackSpace exec --no-startup-id /home/ele1lud/.local/kitty.app/bin/kitty
+
+# kill focused window
+bindsym $mod+c kill
+bindsym $mod+y kill
+bindsym $mod+Shift+q kill
+
+# start rofi (a program launcher)
+bindsym $mod+d exec --no-startup-id dmenu_run
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# change workspace
+bindsym Control+$mod+h workspace prev
+bindsym Control+$mod+l workspace next
+
+# alternatively, you can use the cursor keys:
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# move focused workspace
+bindsym $mod+Shift+Control+h move workspace to output left
+bindsym $mod+Shift+Control+j move workspace to output down
+bindsym $mod+Shift+Control+k move workspace to output up
+bindsym $mod+Shift+Control+l move workspace to output right
+
+# alternatively, you can use the cursor keys:
+# bindsym $mod+Shift+Left move left
+# bindsym $mod+Shift+Down move down
+# bindsym $mod+Shift+Up move up
+# bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+b split v
+
+# split in vertical orientation
+bindsym $mod+v split h
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+# bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Delete floating toggle; resize set 1050 px 80 ppt; move position center
+
+# toggle floating
+bindsym $mod+t floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+shift+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+# bindsym $mod+c focus child
+
+# toggle bar
+bindsym $mod+g bar mode toggle
+
+# rename workspace
+bindsym $mod+m exec --no-startup-id \
+    ~/.scripts/rename_workspace.sh
+
+# assign workspaces to monitors intel
+workspace 1 output eDP-1
+workspace 2 output eDP-1
+workspace 3 output eDP-1
+workspace 4 output HDMI-2
+workspace 5 output HDMI-2
+workspace 6 output HDMI-2
+workspace 7 output HDMI-2
+workspace 8 output HDMI-2
+workspace 9 output HDMI-2
+
+bindsym $mod+o workspace 4 output DVI-I-1-1 && \
+    workspace 5 output DVI-I-1-1 && workspace 6 output DVI-I-1-1 && \
+    workspace 7 output DVI-I-1-1 && workspace 8 output DVI-I-1-1 && \
+    workspace 9 output DVI-I-1-1
+
+# switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+# new workspace
+bindsym $mod+n exec --no-startup-id ~/.scripts/empty_workspace.sh
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# focus on output
+# bindsym Control+$mod+Left focus output left
+# bindsym Control+$mod+Right focus output right
+bindsym $mod+Mod1+h focus output left
+bindsym $mod+Mod1+l focus output right
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exit
+
+# resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+
+mode "resize" {
+        bindsym h resize shrink width 1 px or 1 ppt
+        bindsym k resize grow height 1 px or 1 ppt
+        bindsym j resize shrink height 1 px or 1 ppt
+        bindsym l resize grow width 1 px or 1 ppt
+
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id \
+    amixer set 'Master' 5%+ #increase sound volume
+bindsym Control+Mod1+Up exec --no-startup-id \
+    amixer set 'Master' 5%+ #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id \
+    amixer set 'Master' 5%- #decrease sound volume
+bindsym Control+Mod1+Down exec --no-startup-id \
+    amixer set 'Master' 5%- #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id \
+    amixer -D pulse set Master toggle # mute sound
+
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec --no-startup-id \
+    echo 1500 > /sys/class/backlight/intel_backlight/brightness
+
+bindsym XF86MonBrightnessDown exec --no-startup-id \
+    echo 1 > /sys/class/backlight/intel_backlight/brightness
+
+bindsym Control+Mod1+B exec --no-startup-id \
+    echo 1500 > /sys/class/backlight/intel_backlight/brightness
+
+bindsym Control+Mod1+V exec --no-startup-id \
+    echo 750 > /sys/class/backlight/intel_backlight/brightness
+
+# Media playback
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause # toggle pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next # next track
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous # previous track
+
+
+# application shortcuts
+bindsym Control+$mod+M exec --no-startup-id \
+    firefox
+bindsym Control+$mod+S exec --no-startup-id spotify
+bindsym Control+$mod+I exec --no-startup-id idea
+bindsym Control+$mod+P exec --no-startup-id gnome-screenshot -i
+bindsym Control+$mod+Shift+P exec --no-startup-id peek
+bindsym Control+$mod+N exec --no-startup-id nautilus
+bindsym Control+$mod+Y exec --no-startup-id charm
+bindsym Control+$mod+G exec --no-startup-id \
+    env XDG_CURRENT_DESKTOP=GNOME gnome-control-center
+bindsym Control+$mod1+a exec --no-startup-id slack
+bindsym $Control+$mod+T exec --no-startup-id teams
+
+# graphics and monitors
+bindsym Control+$mod+X exec --no-startup-id pkill compton
+bindsym Control+$mod+C exec --no-startup-id compton -b
+bindsym Control+$mod+V restart
+
+# connected with monitor to the right: disconnect monitor
+bindsym Control+$mod+2 exec --no-startup-id ~/.scripts/home_2.sh
+
+# connect monitor
+bindsym Control+$mod+3 exec --no-startup-id ~/.scripts/home_3.sh
+
+# don't even know.
+# bindsym Control+$mod+2 exec --no-startup-id ~/.screenlayout/kontor.sh
+
+# power and lock
+bindsym $mod+x exec --no-startup-id \
+    ~/.scripts/pixelate.sh && sleep 0.5 && systemctl suspend
+bindsym $mod+Shift+x exec shutdown -h now
+bindsym $mod+z exec --no-startup-id \
+    ~/.scripts/pixelate.sh && sleep 0.5 && xset dpms force off
+bindsym $mod+Shift+b exec reboot
+
+# scrolling
+exec --no-startup-id synclient NaturalScrolling=-1 VertScrollDelta=113
+
+# wallpaper
+exec_always --no-startup-id \
+    feh --bg-fill ~/Pictures/mountain_lake.jpg ~/Pictures/lake.jpg
+
+# on startup
+exec_always --no-startup-id setxkbmap -option caps:escape
+
+exec --no-startup-id \
+    sudo chmod 777 /sys/class/backlight/intel_backlight/brightness
+
+exec --no-startup-id \
+    echo 1500 > /sys/class/backlight/intel_backlight/brightness
+
+# keyboard settings
+# exec_always --no-startup-id xset r rate 260 40
+# bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
+#     exec --no-startup-id setxkbmap -option caps:escape
+
+# keyboard layout
+bindsym $mod+s exec --no-startup-id setxkbmap se
+bindsym $mod+u exec --no-startup-id setxkbmap us
+
+# compton
+exec --no-startup-id compton -b
+
+# some floating windows
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+# colors
+set $active-text-color   #00ff00
+set $bg-color            #bfbfbf
+set $inactive-border     #000000
+set $inactive-bg-color   #000000
+set $text-color          #000000
+set $inactive-text-color #bfbfbf
+set $urgent-bg-color     #E53935
+set $indicator           #bfbfbf
+set $inactive-indicator  #ff0000
+set $inactive-page       #1d2021
+
+# window colors
+#                       border              background         text                 indicator
+client.focused          $bg-color           $bg-color          $text-color          $indicator
+client.focused_inactive $inactive-border $inactive-border $inactive-text-color  $inactive-bg-color
+client.unfocused        $inactive-border $inactive-border $inactive-text-color  $inactive-bg-color
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $inactive-bg-color
+client.background       #ebdbb2
+# hide_edge_borders smart
+# for_window [class=".*"] border pixel 1
+default_border normal 1
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+  status_command i3blocks -c ~/.config/i3/i3blocks.conf
+  position bottom
+  # modifier Control+Mod1
+  colors {
+  background $inactive-bg-color
+  separator #757575
+  #                  border             background         text
+  focused_workspace  $bg-color          $bg-color          $text-color
+  inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+  urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+  }
+}
