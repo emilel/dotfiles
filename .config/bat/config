@@ -1,0 +1,4 @@
+--paging=always
+--pager="less -RSi"
+--style=changes
+--theme=gruvbox-dark
