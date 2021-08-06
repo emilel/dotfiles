@@ -26,7 +26,7 @@ source ~/.zsh_aliases
 export NNN_FIFO=/tmp/nnn.fifo
 source ~/.scripts/nnn_quitcd.sh
 export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;j:fzopen;j:fzcd;l:open-marked'
+export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;d:open-marked'
 
 # plugins
 source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
@@ -56,6 +56,12 @@ source /usr/share/doc/fzf/examples/completion.zsh
 setopt hist_ignore_dups
 bindkey '^A' fzf-file-widget
 bindkey '^S' fzf-cd-widget
+
+# dont buffer python stdout/stderr
+export PYTHONUNBUFFERED=true
+
+# bosch stuff
+source ~/.boschrc
 
 # theme
 source ~/powerlevel10k/powerlevel10k.zsh-theme

@@ -25,14 +25,14 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id dmenu_run
 
 # change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym Control+$mod+h focus left
+bindsym Control+$mod+j focus down
+bindsym Control+$mod+k focus up
+bindsym Control+$mod+l focus right
 
 # change workspace
-bindsym Control+$mod+h workspace prev
-bindsym Control+$mod+l workspace next
+bindsym $mod+h workspace prev
+bindsym $mod+l workspace next
 
 # alternatively, you can use the cursor keys:
 # bindsym $mod+Left focus left
