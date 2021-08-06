@@ -8,7 +8,6 @@ alias areload='source ~/.zsh_aliases'
 # view
 alias splitv='export SPLIT=v'
 alias splitb='export SPLIT=h'
-alias clear="printf '\033[2J\033[3J\033[1;1H'"
 
 # shortcuts
 alias t='tmux a'
@@ -17,7 +16,7 @@ alias up='..'
 alias upp='../..'
 alias uppp='../../..'
 alias bt='bluetoothctl'
-alias ba='bat --paging never'
+alias dog='bat --paging never'
 alias py='python3'
 alias lower="rename -v 'y/A-Z/a-z/'"
 alias rmspace="rename -v 's/ /_/g'"
@@ -46,6 +45,7 @@ alias i3conf='nvim ~/.config/i3/config'
 alias i3bconf='nvim ~/.config/i3/i3blocks.conf'
 alias zconf='nvim ~/.zshrc'
 alias aconf='nvim ~/.zsh_aliases'
+alias boconf='nvim ~/.boschrc'
 
 # backup dot files
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -54,6 +54,17 @@ open() {
     for word in $@
     do
         xdg-open $word 2>/dev/null &disown
+    done
+}
+
+
+rep() {
+    action="$1"
+    shift
+    for file in $@
+    do
+        $action $file
+        echo
     done
 }
 
@@ -77,7 +88,7 @@ cd() {
     echo $(pwd) > ~/.last_dir
 }
 
-l() {
+cdlast() {
     cd ~/.last_dir
 }
 
