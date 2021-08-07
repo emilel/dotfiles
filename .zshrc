@@ -5,13 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# zsh
-ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="true"
-KEYTIMEOUT=1
-unsetopt correct_all
-setopt globdots
-
 # general
 export EDITOR='nvim'
 export PAGER='bat'
@@ -19,8 +12,9 @@ export SPLIT=h
 export MANPAGER='nvim +Man!'
 
 # path
-export PATH=~/.cargo/bin:$PATH
-export PATH=~/.npm-global/bin:$PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH"
 
 # nnn
 export NNN_FIFO=/tmp/nnn.fifo
@@ -56,9 +50,14 @@ source ~/.boschrc
 # läs in skit
 source ~/.zsh_aliases
 
+# zsh
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+KEYTIMEOUT=1
+unsetopt correct_all
+setopt globdots
+
 # theme
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-export PATH="$HOME/.poetry/bin:$PATH"

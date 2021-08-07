@@ -24,6 +24,7 @@ alias lower="rename -v 'y/A-Z/a-z/'"
 alias rmspace="rename -v 's/ /_/g'"
 alias rmsym="rename -v 's/\(|\[|\]|\)//g'"
 alias path="readlink -f"
+alias xargs='tr \\n \\0 | xargs -0 '
 
 
 # custom program settings
@@ -54,6 +55,7 @@ alias boconf='nvim ~/.boschrc'
 
 # backup dot files
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfilesls='dotfiles ls-tree -r --name-only HEAD'
 
 
 # key shortcuts

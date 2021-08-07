@@ -168,10 +168,10 @@ nmap <silent> <leader>/ :if (hlstate%2 == 0) \| nohlsearch \| else \| set hlsear
 vnoremap / y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " substitute visually selected word
-vnoremap s "hy:s/<C-r>h//gc<left><left><left>
+vnoremap su "hy:s/<C-r>h//gc<left><left><left>
 
 " substitute visually selected word
-vnoremap S "hy:%s/<C-r>h//gc<left><left><left>
+vnoremap Su "hy:%s/<C-r>h//gc<left><left><left>
 
 " toggle fold
 nnoremap <silent> <CR> za
@@ -510,8 +510,8 @@ nnoremap <silent> <leader>s :Rg!<CR>
 let g:fzf_preview_window = 'down:50%'
 
 " -- LSP ---
-nnoremap <silent> vd :lua vim.lsp.buf.definition()<cr>
-nnoremap <silent> vD :lua vim.lsp.buf.declaration()<cr>
+nnoremap <silent> <leader>vd :lua vim.lsp.buf.definition()<cr>
+nnoremap <silent> <leader>vD :lua vim.lsp.buf.declaration()<cr>
 nnoremap <silent> <leader>vh :lua vim.lsp.buf.hover()<cr>
 nnoremap <silent> <leader>rn :lua vim.lsp.buf.rename()<cr>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
@@ -519,9 +519,9 @@ nnoremap <silent> [d :lua vim.lsp.diagnostic.goto_prev()<cr>
 nnoremap <silent> ]d :lua vim.lsp.diagnostic.goto_next()<cr>
 nnoremap <silent> <leader>vq :lua vim.lsp.diagnostic.set_loclist()<cr>
 nnoremap <silent> <leader>q :Black<cr>
-nnoremap <silent> K :lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
-nnoremap <silent> vsh :lua vim.lsp.buf.signature_help()<cr>
-nnoremap <silent> vca :lua vim.lsp.buf.code_action()<cr>
+nnoremap <silent> <leader>K :lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+nnoremap <silent> <leader>vsh :lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> <leader>vca :lua vim.lsp.buf.code_action()<cr>
 nnoremap <leader>vi :lua vim.lsp.buf.implementation()<cr>
 
 " perhaps this is worthless
