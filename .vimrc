@@ -1,4 +1,5 @@
 call plug#begin()
+Plug 'hoob3rt/lualine.nvim'
 Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'Yggdroot/indentLine'
@@ -30,8 +31,11 @@ call plug#end()
 
 " --- MISC ---
 
+" never conceal
+set conceallevel=1
+
 " map leader to Space
-let mapleader = " "
+let mapleader=" "
 
 " update time
 set updatetime=100
@@ -59,6 +63,12 @@ set hidden
 
 " python files are wide
 autocmd FileType python set textwidth=97
+
+" dont conceal dockerfiles
+autocmd FileType dockerfile set conceallevel=0
+
+" dont conceal makefiles
+autocmd FileType makefile set conceallevel=0
 
 " relative number
 set relativenumber
@@ -113,7 +123,7 @@ set wildmode=longest,list,full
 noremap x "_x
 
 " line at text width
-" set colorcolumn=80
+set colorcolumn=80
 
 " one space after periods
 set nojoinspaces
@@ -187,6 +197,7 @@ autocmd FileType zsh nmap <CR><CR> :wq<CR>
 " autocmd FileType gitcommit nmap <CR><CR> :wq<CR>
 autocmd FileType zsh set wrap
 autocmd FileType zsh set textwidth=0
+autocmd FileType python set colorcolumn=98
 
 " reload .vimrc
 noremap <F1> :source ~/.vimrc<CR>
@@ -215,6 +226,8 @@ vnoremap <leader>p "_dP
 
 " paste without newlines
 vnoremap P "_c<cr><esc>PkgJgJi
+
+nnoremap P hpkgJgJi
 
 " scroll down
 map ö <C-e>
@@ -254,7 +267,7 @@ map <silent> <F3> :set laststatus=1<CR>
 
 " save file
 nmap <C-space> :w<CR>
-vmap <C-space> <esc>:w<CR>gv
+vmap <C-space> <esc>:w<CR>
 
 " new tab
 nmap <leader>T :tabnew<CR>
@@ -295,8 +308,16 @@ endfun
 
 " --- REMAPPINGS ---
 
-" make y behave like it should
+" make y   it should
 nnoremap Y y$
+
+" include current character backwards
+nnoremap dF dvF
+nnoremap dT dvT
+nnoremap d0 dv0
+nnoremap d^ dv^
+nnoremap db dvb
+nnoremap dB dvB
 
 " dont jump wildly
 " nnoremap n nzzzv
@@ -330,7 +351,9 @@ vnoremap > >gv
 set background=dark
 
 " always show gutter
-set signcolumn=yes:1
+if has ('nvim')
+    set signcolumn=yes:1
+end
 
 " color thingies
 set termguicolors
@@ -361,22 +384,6 @@ set statusline+=\ %{ObsessionStatus()}
 
 " switch to right side
 set statusline+=%=
-
-" function! StatusDiagnostic() abort
-"   let info = get(b:, 'coc_diagnostic_info', {})
-"   if empty(info) | return '' | endif
-"   let msgs = []
-"   if get(info, 'error', 0)
-"     call add(msgs, 'E' . info['error'])
-"   endif
-"   if get(info, 'warning', 0)
-"     call add(msgs, 'W' . info['warning'])
-"   endif
-"   return join(msgs, ' '). ' ' . get(g:, 'coc_status', '')
-" endfunction
-
-" coc status
-" set statusline+=\ %{StatusDiagnostic()}
 
 " current line number/total lines:column
 set statusline+=\ %l/%L:%v
@@ -443,6 +450,9 @@ autocmd FileType text set formatoptions=tcrq2j
 
 " --- PLUGINS ---
 
+" --- VIM-COMMENTARY ---
+autocmd FileType markdown set commentstring='<!---\ %s\ --->'
+
 " --- OBSESSION ---
 " nmap <leader>o :Obsession<CR>
 
@@ -453,11 +463,20 @@ autocmd FileType text set formatoptions=tcrq2j
 " 
 " " open current directory
 " nmap <silent> <leader>j :Dirvish<CR>
+"
+
+" --- INDENTLINE ---
+
+"  keep conceallevel
+let g:indentLine_setConceal = 0
+
+" indent character
+let g:indentLine_char = '▏'
 
 " --- NNN ---
 
 " open file explorer
-" nmap <silent> <leader>l :NnnPicker<CR>
+nmap <silent> <leader>u :NnnPicker<CR>
 
 " open file directory in file explorer
 nmap <silent> - :NnnPicker %:p:h<CR>
@@ -466,7 +485,7 @@ nmap <silent> - :NnnPicker %:p:h<CR>
 let g:nnn#set_default_mappings = 0
 
 " open the picker in a floating window
-let g:nnn#layout = { 'window': { 'width': 0.95, 'height': 0.8, 'highlight': 'Debug' } }
+let g:nnn#layout = { 'window': { 'width': 0.95, 'height': 0.95, 'highlight': 'Debug' } }
 
 let g:nnn#command = 'nnn -R'
 
@@ -492,21 +511,28 @@ let g:fzf_preview_window = 'down:50%'
 
 " -- LSP ---
 nnoremap <silent> vd :lua vim.lsp.buf.definition()<cr>
-nnoremap <silent> <leader>K :lua vim.lsp.buf.hover()<cr>
+nnoremap <silent> vD :lua vim.lsp.buf.declaration()<cr>
+nnoremap <silent> <leader>vh :lua vim.lsp.buf.hover()<cr>
 nnoremap <silent> <leader>rn :lua vim.lsp.buf.rename()<cr>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
 nnoremap <silent> [d :lua vim.lsp.diagnostic.goto_prev()<cr>
 nnoremap <silent> ]d :lua vim.lsp.diagnostic.goto_next()<cr>
 nnoremap <silent> <leader>vq :lua vim.lsp.diagnostic.set_loclist()<cr>
 nnoremap <silent> <leader>q :Black<cr>
-"
+nnoremap <silent> K :lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+nnoremap <silent> vsh :lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> vca :lua vim.lsp.buf.code_action()<cr>
+nnoremap <leader>vi :lua vim.lsp.buf.implementation()<cr>
+
 " perhaps this is worthless
 autocmd QuickFixCmdPre * let g:mybufname=bufname('%')
 autocmd QuickFixCmdPost * botright copen 8 | exec bufwinnr(g:mybufname) . 'wincmd w'
 
 " completion
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
@@ -543,138 +569,6 @@ colorscheme gruvbox
 " nmap <leader>q :SignifyToggle<CR>
 
 
-" --- COC ---
-
-" " Give more space for displaying messages.
-" set cmdheight=2
-
-" " Don't pass messages to |ins-completion-menu|.
-" set shortmess+=c
-
-" " go to next problem
-" nmap <leader>n <Plug>(coc-diagnostic-next)
-" " nmap <leader>p <Plug>(coc-diagnostic-prev)
-
-" " Use tab for trigger completion with characters ahead and navigate.
-" " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" " other plugin before putting this into your config.
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
-" "inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" function! s:check_back_space() abort
-"   let col = col('.') - 1
-"   return !col || getline('.')[col - 1]  =~# '\s'
-" endfunction
-
-" " Use `[g` and `]g` to navigate diagnostics
-" " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-" nmap <silent> [g <Plug>(coc-diagnostic-prev)
-" nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" " GoTo code navigation.
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
-
-" nmap <silent> <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
-
-" " Use K to show documentation in preview window.
-" " nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-" function! s:show_documentation()
-"   if (index(['vim','help'], &filetype) >= 0)
-"     execute 'h '.expand('<cword>')
-"   elseif (coc#rpc#ready())
-"     call CocActionAsync('doHover')
-"   else
-"     execute '!' . &keywordprg . " " . expand('<cword>')
-"   endif
-" endfunction
-
-" " Highlight the symbol and its references when holding the cursor.
-" autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" " Symbol renaming.
-" nmap <leader>rn <Plug>(coc-rename)
-
-" " Formatting selected code.
-" nmap <silent> <leader>z :call CocAction('format')<CR>:CocCommand python.sortImports<CR>
-
-" augroup mygroup
-"   autocmd!
-"   " Setup formatexpr specified filetype(s).
-"   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-"   " Update signature help on jump placeholder.
-"   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-" augroup end
-
-" " Applying codeAction to the selected region.
-" " Example: `<leader>aap` for current paragraph
-" " xmap <leader>ac  <Plug>(coc-codeaction-selected)
-" " nmap <leader>ac  <Plug>(coc-codeaction-selected)
-
-" " Remap keys for applying codeAction to the current buffer.
-" " nmap <leader>ca  <Plug>(coc-codeaction)
-" " Apply AutoFix to problem on the current line.
-" " nmap <leader>qf  <Plug>(coc-fix-current)
-
-" " Map function and class text objects
-" " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-" xmap if <Plug>(coc-funcobj-i)
-" omap if <Plug>(coc-funcobj-i)
-" xmap af <Plug>(coc-funcobj-a)
-" omap af <Plug>(coc-funcobj-a)
-" xmap ic <Plug>(coc-classobj-i)
-" omap ic <Plug>(coc-classobj-i)
-" xmap ac <Plug>(coc-classobj-a)
-" omap ac <Plug>(coc-classobj-a)
-
-" " Use CTRL-S for selections ranges.
-" " Requires 'textDocument/selectionRange' support of language server.
-" nmap <silent> <C-s> <Plug>(coc-range-select)
-" xmap <silent> <C-s> <Plug>(coc-range-select)
-
-" " Add `:Format` command to format current buffer.
-" command! -nargs=0 Format :call CocAction('format')
-
-" " Add `:Fold` command to fold current buffer.
-" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" " Add `:OR` command for organize imports of the current buffer.
-" command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" " Add (Neo)Vim's native statusline support.
-" " NOTE: Please see `:h coc-status` for integrations with external plugins that
-" " provide custom statusline: lightline.vim, vim-airline.
-" set statusline^=%{StatusDiagnostic()}
-
-" " Mappings for CoCList
-" " Show all diagnostics.
-" " nnoremap <silent><nowait> <leader>d  :<C-u>CocList diagnostics<cr>
-" " Manage extensions.
-" " nnoremap <silent><nowait> <leader>e  :<C-u>CocList extensions<cr>
-" " Show commands.
-" " nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
-" " Find symbol of current document.
-" " nnoremap <silent><nowait> <leader>o  :<C-u>CocList outline<cr>
-" " Search workspace symbols.
-" " nnoremap <silent><nowait> <leader>s  :<C-u>CocList -I symbols<cr>
-" " Do default action for next item.
-" " nnoremap <silent><nowait> <leader>j  :<C-u>CocNext<CR>
-" " Do default action for previous item.
-" " nnoremap <silent><nowait> <leader>k  :<C-u>CocPrev<CR>
-" " Resume latest coc list.
-" " nnoremap <silent><nowait> <leader>p  :<C-u>CocListResume<CR>
-
-" " folded
-" if has ('nvim')
-"     hi Folded ctermfg=223 guifg=fg2
-" end
-
 " --- FUGITIVE ---
 
 " status for adding and committing
@@ -686,7 +580,7 @@ nmap <leader>gp :diffput<CR>
 " checkout
 nmap <leader>gc :Git checkout 
 
-nmap <leader>gd :Git 
+nmap <leader>ga :Git 
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
@@ -769,9 +663,22 @@ nmap <leader>dbc <Plug>VimspectorToggleConditionalBreakpoint
 " <Plug>VimspectorPause
 " <Plug>VimspectorAddFunctionBreakpoint
 
+fun! GotoWindow()
+    call win_gotoid(a:id)
+    MaximizerToggle
+endfun
+
+if has ('nvim')
 lua << EOF
 require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover, { focusable = false }
 )
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = true
+    }
+)
+require('lualine').setup{options = {theme = 'gruvbox'}}
 EOF
+endif
