@@ -15,47 +15,37 @@ setopt globdots
 # general
 export EDITOR='nvim'
 export PAGER='bat'
-export PATH=~/.npm-global/bin:$PATH
 export SPLIT=h
 export MANPAGER='nvim +Man!'
 
-# läs in skit
-source ~/.zsh_aliases
+# path
+export PATH=~/.cargo/bin:$PATH
+export PATH=~/.npm-global/bin:$PATH
 
 # nnn
 export NNN_FIFO=/tmp/nnn.fifo
-source ~/.scripts/nnn_quitcd.sh
-export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;d:open-marked'
+export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;d:open-marked;v:open-editor'
 
 # plugins
 source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
-bindkey -M vicmd 'V' edit-command-line
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 plugins=(git vi-mode zsh-autosuggestions zsh-syntax-highlighting)
 
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
-# vim keys to browse tab suggestions
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
-
 # fzf
 export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
 export FZF_DEFAULT_OPTS='--preview-window=down'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'
+export FZF_ALT_C_COMMAND="fd --type d ---color=never --hidden"
 export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
 export FZF_CTRL_R_OPTS='--preview-window=down'
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 setopt hist_ignore_dups
-bindkey '^A' fzf-file-widget
-bindkey '^S' fzf-cd-widget
 
 # dont buffer python stdout/stderr
 export PYTHONUNBUFFERED=true
@@ -63,7 +53,12 @@ export PYTHONUNBUFFERED=true
 # bosch stuff
 source ~/.boschrc
 
+# läs in skit
+source ~/.zsh_aliases
+
 # theme
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export PATH="$HOME/.poetry/bin:$PATH"

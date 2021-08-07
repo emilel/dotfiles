@@ -5,9 +5,11 @@ alias k='echo "hoppsan..."'
 alias dkill='docker container kill $(docker ps -q); docker container rm $(docker ps -a -q)'
 alias areload='source ~/.zsh_aliases'
 
+
 # view
 alias splitv='export SPLIT=v'
 alias splitb='export SPLIT=h'
+
 
 # shortcuts
 alias t='tmux a'
@@ -21,6 +23,7 @@ alias py='python3'
 alias lower="rename -v 'y/A-Z/a-z/'"
 alias rmspace="rename -v 's/ /_/g'"
 alias rmsym="rename -v 's/\(|\[|\]|\)//g'"
+alias path="readlink -f"
 
 
 # custom program settings
@@ -31,6 +34,7 @@ alias cp='cp -v'
 alias rm='rm -v'
 alias la='ls -A'
 alias lll='ls -CF'
+
 
 # conf
 alias bconf='nvim ~/.config/bat/config'
@@ -47,9 +51,34 @@ alias zconf='nvim ~/.zshrc'
 alias aconf='nvim ~/.zsh_aliases'
 alias boconf='nvim ~/.boschrc'
 
+
 # backup dot files
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
+
+# key shortcuts
+
+# vim keys for tab suggestions
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+
+
+# edit command in editor
+bindkey -M vicmd 'V' edit-command-line
+
+# fzf
+bindkey '^A' fzf-file-widget
+bindkey '^S' fzf-cd-widget
+
+
+# open fzf
+zle -N n
+bindkey '^U' n
+
+
+# functions
 open() {
     for word in $@
     do
@@ -94,4 +123,32 @@ cdlast() {
 
 copy() {
     $@ | tr -d '\n' | xclip -selection clipboard
+}
+
+n ()
+{
+    # Block nesting of nnn in subshells
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, remove the "export" as in:
+    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    # NOTE: NNN_TMPFILE is fixed, should not be modified
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
+    # stty start undef
+    # stty stop undef
+    # stty lwrap undef
+    # stty lnext undef
+
+    nnn -R "$@"
+
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
 }
