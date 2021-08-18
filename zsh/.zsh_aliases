@@ -47,12 +47,6 @@ alias fd='fd --hidden'
 alias conf='cd ~/Dotfiles && nvim -c "Telescope frecency"'
 
 
-# backup dot files
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles_ORIG/ --work-tree=$HOME'
-alias dotfilesls='dotfiles ls-tree -r HEAD'
-alias dotfilesdiff='dotfiles diff-tree -r HEAD'
-
-
 # key shortcuts
 
 # vim keys for tab suggestions
