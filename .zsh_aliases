@@ -18,6 +18,8 @@ alias up='..'
 alias upp='../..'
 alias uppp='../../..'
 alias bt='bluetoothctl'
+alias cbt='echo "connect 94:DB:56:52:B5:87" | bluetoothctl'
+alias dcbt='echo "disconnect 94:DB:56:52:B5:87" | bluetoothctl'
 alias dog='bat --paging never'
 alias py='python3'
 alias lower="rename -v 'y/A-Z/a-z/'"
@@ -25,10 +27,13 @@ alias rmspace="rename -v 's/ /_/g'"
 alias rmsym="rename -v 's/\(|\[|\]|\)//g'"
 alias path="readlink -f"
 alias xargs='tr \\n \\0 | xargs -0 '
+alias _='cd ~'
+alias view="nvim -R -c 'set nolist' -c 'IndentLinesDisable' -c 'set colorcolumn=0'"
+alias bell="echo -e '\a'"
 
 
 # custom program settings
-alias ll='ls -ahlF'
+alias ll='ls -hlF'
 alias ls='ls -v --group-directories-first --color=auto'
 alias mv='mv -nv'
 alias cp='cp -v'
@@ -55,7 +60,8 @@ alias boconf='nvim ~/.boschrc'
 
 # backup dot files
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dotfilesls='dotfiles ls-tree -r --name-only HEAD'
+alias dotfilesls='dotfiles ls-tree -r HEAD'
+alias dotfilesdiff='dotfiles diff-tree -r HEAD'
 
 
 # key shortcuts
