@@ -1,0 +1,142 @@
+set runtimepath+=~/.vim/plugged/targets.vim
+set runtimepath+=~/.vim/plugged/gruvbox
+set runtimepath+=~/.vim/plugged/startuptime.vim
+set runtimepath+=~/.vim/plugged/vim-plugin-AnsiEsc
+
+" --- MISC ---
+
+" never conceal
+set conceallevel=1
+
+" map leader to Space
+let mapleader=" "
+
+" update time
+set updatetime=100
+
+" dont search in closed folds
+set foldopen-=search
+
+" fold according indentation level
+set foldmethod=indent
+
+" default to no folding
+set foldlevel=99
+
+" allow folding for markdown
+let g:markdown_folding = 1
+
+" no escape delay
+set timeoutlen=1000 ttimeoutlen=0
+
+" relative number
+set relativenumber
+
+" cursor line
+set cursorline
+
+" show extra rows below when scrolling
+set scrolloff=8
+
+" horizontal scroll instead of word wrap
+set nowrap
+
+" scroll horizontally one character at a time
+set sidescroll=5
+
+" case insensitive search
+set ic
+
+" no caps - ignore case. one+ cap - case sensitive search
+set smartcase
+
+" search immediately searches
+set incsearch
+
+" dont highlight all search pattern matches
+set nohlsearch
+
+" allow mouse usage
+set mouse=a
+
+" use global clipboard
+set clipboard=unnamedplus
+
+" show row number
+set number
+
+" --- MAPPINGS ---
+
+" escape from visual leads to end
+vnoremap <esc> <esc>`>
+
+" y from visual leads to end
+vnoremap y y`>
+
+" search for visually selected word in file
+vnoremap / "hy/\V<C-R>=escape(@h,'/\')<CR><CR>
+
+" go to end of line
+vnoremap L $h
+
+" toggle fold
+nnoremap <silent> <CR> za
+
+" toggle fold all
+nnoremap <expr> <Backspace> &foldlevel ? 'zM' :'zR'
+
+" close window
+nnoremap <silent> <leader>c :q<CR>
+
+" close
+nnoremap <leader>x :qa<cr>
+
+
+" --- REMAPPINGS ---
+
+" make y behave like it should
+nnoremap Y y$
+
+
+" --- VISUAL ---
+
+" use dark theme
+set background=dark
+
+" always show gutter
+if has ('nvim')
+    set signcolumn=yes:1
+end
+
+" color thingies
+set termguicolors
+
+
+" --- STATUSLINE ---
+
+" show statusline by default
+set laststatus=0
+
+
+" --- TABS, WHITE SPACE AND INDENTATION ---
+
+" detect filetype, indentation
+filetype plugin indent on
+
+" width of existing hard tabs
+set tabstop=4
+
+
+" --- GRUVBOX ---
+
+" contrast when dark
+let g:gruvbox_contrast_dark = 'medium'
+
+" contrast when light
+let g:gruvbox_contrast_light = 'hard'
+
+" number column
+let g:gruvbox_sign_column = 'bg0'
+
+" apply theme
+colorscheme gruvbox

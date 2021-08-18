@@ -1,4 +1,5 @@
 call plug#begin()
+Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'tami5/sql.nvim'
 Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -478,8 +479,8 @@ augroup width
     autocmd FileType python setl textwidth=97
     autocmd FileType gitcommit setl colorcolumn=73
     autocmd FileType gitcommit setl textwidth=72
-    autocmd FileType vim,qf,conf,zsh setl textwidth=0
-    autocmd FileType vim,qf,conf,zsh setl colorcolumn=0
+    autocmd FileType vim,qf,conf,zsh,tmux setl textwidth=0
+    autocmd FileType vim,qf,conf,zsh,tmux setl colorcolumn=0
 augroup END
 
 augroup conceal
