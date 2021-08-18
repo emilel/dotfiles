@@ -1,6 +1,6 @@
 [user]
 	name = Emil Eliasson
-	email = ele1lud@bosch.com
+	email = limeliasson@gmail.com
 [core]
 	editor = nvim
 	pager = nvim -u -R ~/.vimrc.view
