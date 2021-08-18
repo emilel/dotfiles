@@ -9,7 +9,7 @@ fi
 export EDITOR='nvim'
 export PAGER='bat'
 export SPLIT=h
-export MANPAGER='nvim +Man!'
+export MANPAGER='nvim +Man! -c IndentLinesDisable'
 
 # path
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -18,7 +18,7 @@ export PATH="$HOME/.poetry/bin:$PATH"
 
 # nnn
 export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;d:open-marked;v:open-editor'
+export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;d:open-marked;v:open-nvim'
 
 # plugins
 source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"

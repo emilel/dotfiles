@@ -25,14 +25,14 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id dmenu_run
 
 # change focus
-bindsym Control+$mod+h focus left
-bindsym Control+$mod+j focus down
-bindsym Control+$mod+k focus up
-bindsym Control+$mod+l focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # change workspace
-bindsym $mod+h workspace prev
-bindsym $mod+l workspace next
+bindsym Control+$mod+h workspace prev
+bindsym Control+$mod+l workspace next
 
 # alternatively, you can use the cursor keys:
 # bindsym $mod+Left focus left
@@ -73,7 +73,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Delete floating toggle; resize set 1050 px 80 ppt; move position center
+bindsym $mod+Delete floating toggle; resize set 1050 px 86 ppt; move position center
 
 # toggle floating
 bindsym $mod+t floating toggle

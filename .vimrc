@@ -1,10 +1,13 @@
 call plug#begin()
+Plug 'tami5/sql.nvim'
+Plug 'ThePrimeagen/refactoring.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'mbbill/undotree'
 Plug 'hoob3rt/lualine.nvim'
 Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'Yggdroot/indentLine'
 Plug 'psf/black'
-Plug 'tpope/vim-obsession'
 Plug 'szw/vim-maximizer'
 Plug 'puremourning/vimspector'
 Plug 'tpope/vim-repeat'
@@ -20,11 +23,12 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'kalekundert/vim-coiled-snake'
-Plug 'kana/vim-textobj-user'
-Plug 'kana/vim-textobj-line'
 Plug 'tweekmonster/startuptime.vim'
 if has('nvim')
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-telescope/telescope-frecency.nvim'
     Plug 'neovim/nvim-lspconfig'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 end
 call plug#end()
 
@@ -43,8 +47,13 @@ set updatetime=100
 " dont search in closed folds
 set foldopen-=search
 
-" fold on indent level
-set foldmethod=indent
+" fold according to treesitter
+if has ('nvim')
+    set foldmethod=expr
+    set foldexpr=nvim_treesitter#foldexpr()
+else
+    set foldmethod=indent
+endif
 
 " default to no folding
 set foldlevel=99
@@ -61,15 +70,6 @@ set textwidth=79
 " switch buffer without saving
 set hidden
 
-" python files are wide
-autocmd FileType python set textwidth=97
-
-" dont conceal dockerfiles
-autocmd FileType dockerfile set conceallevel=0
-
-" dont conceal makefiles
-autocmd FileType makefile set conceallevel=0
-
 " relative number
 set relativenumber
 
@@ -83,7 +83,7 @@ set scrolloff=8
 set nowrap
 
 " scroll horizontally one character at a time
-set sidescroll=1
+set sidescroll=5
 
 " no swap files
 set noswapfile
@@ -120,7 +120,10 @@ set wildmenu
 set wildmode=longest,list,full
 
 " x does not copy letter
-noremap x "_x
+nnoremap x "_x
+
+" but do copy on X
+nnoremap X x
 
 " line at text width
 set colorcolumn=80
@@ -128,11 +131,19 @@ set colorcolumn=80
 " one space after periods
 set nojoinspaces
 
-" netrw
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
+" persistent undo
+if has("persistent_undo")
+   let target_path = expand('~/.vim/undo')
 
+    if !isdirectory(target_path)
+        call mkdir(target_path, "p", 0700)
+    endif
+
+    let &undodir=target_path
+    set undofile
+endif
+
+" split directions
 set splitright
 set splitbelow
 
@@ -149,39 +160,72 @@ set wildignore+=**/ios/*
 set wildignore+=**/.git/*
 
 " dont screw things up
-nmap <PageUp> :echo 'Hoppsan...'<CR>
-nmap <PageDown> :echo 'Hoppsan...'<CR>
-imap <PageUp> <Esc>:echo 'Hoppsan...'<CR>a
-imap <PageDown> <Esc>:echo 'Hoppsan...'<CR>a
+nnoremap <PageUp> :echo 'hoppsan...'<CR>
+nnoremap <PageDown> :echo 'hoppsan...'<CR>
+inoremap <PageUp> <Esc>:echo 'hoppsan...'<CR>a
+inoremap <PageDown> <Esc>:echo 'hoppsan...'<CR>a
 
 
 " --- MAPPINGS ---
 
-" command window by default
-" nnoremap : :<C-F>i
+" clear quickfix list
+command! ClearQuickfixList cexpr []
+nnoremap <leader>Q <cmd>ClearQuickfixList<cr>
 
-" toggle hlsearch
-let hlstate=0
-nmap <silent> <leader>/ :if (hlstate%2 == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=hlstate+1<cr>
+" copy path
+command! Path let @+ = expand("%")
 
-" search for visually selected word
-vnoremap / y/\V<C-R>=escape(@",'/\')<CR><CR>
+" inline paste normal
+nnoremap <leader>p a<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>kgJgJ
 
-" substitute visually selected word
-vnoremap su "hy:s/<C-r>h//gc<left><left><left>
+" inline paste visual
+vnoremap <leader>p p`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>kgJgJ
 
-" substitute visually selected word
-vnoremap Su "hy:%s/<C-r>h//gc<left><left><left>
+" inline paste without copying
+vnoremap <leader>P "_di<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>kgJgJ
+
+" escape from visual leads to end
+vnoremap <esc> <esc>`>
+
+" y from visual leads to end
+vnoremap y y`>
+
+" select pasted text
+nnoremap gp `[v`]
+
+" find word in dictionary
+imap <c-n> <plug>(fzf-complete-word)
+
+" complete file
+imap <c-x><c-f> <plug>(fzf-complete-file)
+
+" complete line
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" " toggle hlsearch
+" let hlstate=0
+" nnoremap <silent> <leader>/ :if (hlstate%2 == 0) \| nohlsearch \| else \| set hlsearch \| endif \| let hlstate=hlstate+1<cr>
+
+" search for visually selected word in file
+vnoremap / "hy/\V<C-R>=escape(@h,'/\')<CR><CR>
+
+" show normal mode mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+
+" substitute visually selected word globally
+vnoremap <leader>s "hy:g~<C-r>h~s///gc<left><left><left>
+
+" substitute visually selected word on one line
+vnoremap s "hy:.,.g~<C-r>h~s///g<left><left>
+
+" go to last change
+nnoremap g. `.
+
+" go to end of line
+vnoremap L $h
 
 " toggle fold
 nnoremap <silent> <CR> za
-
-" print current statement
-vnoremap <silent> <leader>wp yoprint("<esc>pa:"<esc>A, <esc>pa)<esc>V
-
-" print current statement type
-vnoremap <silent> <leader>wt yoprint("type(pa):", type(pa))V
-
 
 " record macro in visual
 vnoremap <silent> q <esc>qqgv
@@ -190,44 +234,32 @@ vnoremap <silent> q <esc>qqgv
 nnoremap <expr> <Backspace> &foldlevel ? 'zM' :'zR'
 
 " switch file
-" nmap <C-G> :ls<CR>:b<Space>
-
-" close and save
-autocmd FileType zsh nmap <CR><CR> :wq<CR>
-" autocmd FileType gitcommit nmap <CR><CR> :wq<CR>
-autocmd FileType zsh set wrap
-autocmd FileType zsh set textwidth=0
-autocmd FileType python set colorcolumn=98
+" nnoremap <C-G> :ls<CR>:b<Space>
 
 " reload .vimrc
 noremap <F1> :source ~/.vimrc<CR>
 
 " window movement
-nmap <silent> <leader>h :wincmd h<CR>
-nmap <silent> <leader>j :wincmd j<CR>
-nmap <silent> <leader>k :wincmd k<CR>
-nmap <silent> <leader>l :wincmd l<CR>
+nnoremap <silent> <leader>h :wincmd h<CR>
+nnoremap <silent> <leader>j :wincmd j<CR>
+nnoremap <silent> <leader>k :wincmd k<CR>
+nnoremap <silent> <leader>l :wincmd l<CR>
 
 " close window
-nmap <silent> <leader>c :q<CR>
+nnoremap <silent> <leader>c :q<CR>
 
 " find placeholder
 nnoremap <leader><leader> /(__)<cr>ca)
 
 " close
-nnoremap <leader>x :q<ESC>
+nnoremap <leader>x :qa<cr>
 
 " tab movement
-nmap <silent> <leader>o :tabprevious<CR>
-nmap <silent> <leader>i :tabnext<CR>
+nnoremap <silent> <leader>o :tabprevious<CR>
+nnoremap <silent> <leader>i :tabnext<CR>
 
 " paste without copying
-vnoremap <leader>p "_dP
-
-" paste without newlines
-vnoremap P "_c<cr><esc>PkgJgJi
-
-nnoremap P hpkgJgJi
+vnoremap P "_dP
 
 " scroll down
 map ö <C-e>
@@ -242,7 +274,7 @@ map Ö zl
 map Ä zh
 
 " delete line without coyping
-" nmap dD "_dd
+" nnoremap dD "_dd
 
 " start error
 
@@ -251,32 +283,26 @@ nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 
 " å is colon
-nmap å :
-
-" " show statusline
-map <silent> <F2> :set laststatus=2<CR>
-
-" hide statusline
-map <silent> <F3> :set laststatus=1<CR>
+nnoremap å :
 
 " dont yank while pasting to replace
 " xnoremap <expr> P '"_d"'.v:register.'P'
 
 " insert latex template
-" nmap ,latex :read ~/.latex_template.tex<CR>k"_dd17gg
+" nnoremap ,latex :read ~/.latex_template.tex<CR>k"_dd17gg
 
 " save file
-nmap <C-space> :w<CR>
-vmap <C-space> <esc>:w<CR>
+nnoremap <C-space> :w<CR>
+vnoremap <C-space> <esc>:w<CR>
 
 " new tab
-nmap <leader>T :tabnew<CR>
+nnoremap <leader>T :tabnew<CR>
 
 " navigate quickfix list
 nnoremap <silent> <C-j> :cnext<CR>zz
 nnoremap <silent> <C-k> :cprev<CR>zz
 nnoremap <silent> <leader><C-j> :lnext<CR>zz
-nnoremap <silent> <leader><C-k> :lnext<CR>zz
+nnoremap <silent> <leader><C-k> :lprev<CR>zz
 
 " toggle quickfix list
 nnoremap <silent> <C-q> :call ToggleQFList(1)<CR>
@@ -308,33 +334,30 @@ endfun
 
 " --- REMAPPINGS ---
 
-" make y   it should
+" make y behave like it should
 nnoremap Y y$
 
 " include current character backwards
-nnoremap dF dvF
-nnoremap dT dvT
-nnoremap d0 dv0
-nnoremap d^ dv^
-nnoremap db dvb
-nnoremap dB dvB
+" nnoremap dF dvF
+" nnoremap dT dvT
+" nnoremap d0 dv0
+" nnoremap d^ dv^
+" nnoremap db dvb
+" nnoremap dB dvB
 
 " dont jump wildly
 " nnoremap n nzzzv
 " nnoremap N Nzzzv
-nnoremap J mzJ'z
+" nnoremap J mzJ'z
 
 " undo not everything
 inoremap <cr> <c-g>u<cr>
-inoremap . .<c-g>u
-inoremap ! !<c-g>u
-inoremap ? ?<c-g>u
 inoremap ) )<c-g>u
 inoremap ] ]<c-g>u
 inoremap } }<c-g>u
 
-vnoremap J :m '>+1<CR>gv
-vnoremap K :m '<-2<CR>gv
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 inoremap <c-j> <esc>:m +1<cr>==i
 inoremap <c-k> <esc>:m -2<cr>==i
 " nnoremap <leader>j :m .+1<cr>==
@@ -379,9 +402,6 @@ set statusline+=%m
 " git branch
 set statusline+=\ [%{fugitive#head()}]
 
-" obsession status
-set statusline+=\ %{ObsessionStatus()}
-
 " switch to right side
 set statusline+=%=
 
@@ -415,21 +435,11 @@ set autoindent
 " show whitespace
 set list
 
-" dont show whitespace in insert mode
-autocmd InsertLeave * set list
-autocmd InsertEnter * set nolist
-
 " show hard tabs and trailing spaces
 set listchars=tab:>-,trail:-
 
 " insert hard tab
-inoremap <S-Tab> <C-V><Tab>
-
-
-" --- LANGUAGE SPECIFIC ---
-
-" tabs are two wide in javascript
-autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 tabstop=2
+" inoremap <S-Tab> <C-V><Tab>
 
 
 " --- FORMATTING OPTIONS (help fo-table) ---
@@ -448,22 +458,71 @@ autocmd vimenter * if index(blacklist, &ft) < 0 | set formatoptions=tcrq2j
 autocmd FileType text set formatoptions=tcrq2j
 
 
+" --- FILETYPES
+
+augroup zsh_edit_command
+    autocmd!
+    autocmd FileType zsh set wrap
+    autocmd FileType zsh set textwidth=0
+    autocmd FileType zsh,gitcommit nnoremap <buffer> <CR><CR> :wq<CR>
+augroup END
+
+augroup makefiles
+    autocmd!
+    autocmd FileType makefile setl noexpandtab
+augroup END
+
+augroup width
+    autocmd!
+    autocmd FileType python setl colorcolumn=98
+    autocmd FileType python setl textwidth=97
+    autocmd FileType gitcommit setl colorcolumn=73
+    autocmd FileType gitcommit setl textwidth=72
+    autocmd FileType vim,qf,conf,zsh setl textwidth=0
+    autocmd FileType vim,qf,conf,zsh setl colorcolumn=0
+augroup END
+
+augroup conceal
+    autocmd!
+    autocmd FileType dockerfile,makefile setl conceallevel=0
+augroup END
+
+augroup commentstrings
+    autocmd!
+    autocmd FileType markdown setl commentstring='<!---\ %s\ --->'
+augroup END
+
+augroup whitespace
+    autocmd!
+    autocmd InsertLeave * set list
+    autocmd InsertEnter * set nolist
+augroup END
+
+augroup break_undo
+    autocmd!
+    autocmd FileType text,markdown inoremap . .<c-g>u
+    autocmd FileType text,markdown inoremap , ,<c-g>u
+    autocmd FileType text,markdown inoremap ! !<c-g>u
+    autocmd FileType text,markdown inoremap ? ?<c-g>u
+augroup END
+
+augroup pythonstuff
+    autocmd!
+    " print current expression
+    autocmd FileType python vnoremap <silent> <buffer> <leader>wp yoprint("<esc>pa: "<esc>A, <esc>pa)<esc>V=V
+    " print current expression type
+    autocmd FileType python vnoremap <silent> <buffer> <leader>wt yoprint("type(<esc>pa): "<esc>A, type(<esc>pa))<esc>V=V
+    " format python file
+    autocmd FileType python nnoremap <silent> <buffer> <leader>z :Black<cr>
+augroup end
+
+
 " --- PLUGINS ---
 
-" --- VIM-COMMENTARY ---
-autocmd FileType markdown set commentstring='<!---\ %s\ --->'
+" --- UNDOTREE ---
 
-" --- OBSESSION ---
-" nmap <leader>o :Obsession<CR>
+nnoremap <leader>u :UndotreeToggle<cr>
 
-" --- DIRVISH ---
-
-"folders first
-" let dirvish_mode = ':sort ,^.*/,'
-" 
-" " open current directory
-" nmap <silent> <leader>j :Dirvish<CR>
-"
 
 " --- INDENTLINE ---
 
@@ -476,10 +535,10 @@ let g:indentLine_char = '▏'
 " --- NNN ---
 
 " open file explorer
-nmap <silent> <leader>u :NnnPicker<CR>
+nnoremap <silent> _ :NnnPicker<CR>
 
 " open file directory in file explorer
-nmap <silent> - :NnnPicker %:p:h<CR>
+nnoremap <silent> - :NnnPicker %:p:h<CR>
 
 " dont use <leader>n as shortcut
 let g:nnn#set_default_mappings = 0
@@ -487,57 +546,43 @@ let g:nnn#set_default_mappings = 0
 " open the picker in a floating window
 let g:nnn#layout = { 'window': { 'width': 0.95, 'height': 0.95, 'highlight': 'Debug' } }
 
+" no rollover
 let g:nnn#command = 'nnn -R'
 
 
-" " --- FZF ---
-"
-" " search for files
-nnoremap <silent> <leader>a :Files<CR>
+" --- FZF ---
+
+" search for files
+nnoremap <silent> <leader>a <cmd>Telescope frecency<cr>
 
 " search for open buffers
-nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>b <cmd>Telescope buffers<cr>
 
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview({'options': ['--layout=reverse-list']}), <bang>0)
+" open diagnostics for project
+nnoremap <silent> <leader>dq <cmd>Telescope lsp_workspace_diagnostics<cr>
 
 " search for file contents
-nnoremap <silent> <leader>s :Rg!<CR>
+nnoremap <silent> <leader>/ <cmd>Rg!<CR>
+
+" search for visually selected word in project
+vnoremap <leader>/ "hy:Rg! <C-r>h<cr>
+
+" don't search for file names when searching for content (duh)
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep('rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+    \ fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 
 " show preview window
 let g:fzf_preview_window = 'down:50%'
 
-" -- LSP ---
-nnoremap <silent> <leader>vd :lua vim.lsp.buf.definition()<cr>
-nnoremap <silent> <leader>vD :lua vim.lsp.buf.declaration()<cr>
-nnoremap <silent> <leader>vh :lua vim.lsp.buf.hover()<cr>
-nnoremap <silent> <leader>rn :lua vim.lsp.buf.rename()<cr>
-nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
-nnoremap <silent> [d :lua vim.lsp.diagnostic.goto_prev()<cr>
-nnoremap <silent> ]d :lua vim.lsp.diagnostic.goto_next()<cr>
-nnoremap <silent> <leader>vq :lua vim.lsp.diagnostic.set_loclist()<cr>
-nnoremap <silent> <leader>q :Black<cr>
-nnoremap <silent> <leader>K :lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
-nnoremap <silent> <leader>vsh :lua vim.lsp.buf.signature_help()<cr>
-nnoremap <silent> <leader>vca :lua vim.lsp.buf.code_action()<cr>
-nnoremap <leader>vi :lua vim.lsp.buf.implementation()<cr>
-
-" perhaps this is worthless
-autocmd QuickFixCmdPre * let g:mybufname=bufname('%')
-autocmd QuickFixCmdPost * botright copen 8 | exec bufwinnr(g:mybufname) . 'wincmd w'
-
 " completion
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
+imap <silent> <tab> <Plug>(completion_smart_tab)
+imap <silent> <s-tab> <Plug>(completion_smart_s_tab)
 
-" Set completeopt to have a better completion experience
+" 'Set completeopt to have a better completion experience'
 set completeopt=menuone,noinsert,noselect
 
-" Avoid showing message extra message when using completion
+" 'Avoid showing message extra message when using completion'
 set shortmess+=c
 
 
@@ -566,21 +611,21 @@ colorscheme gruvbox
 " let g:signify_disable_by_default = 1
 " hi SignifySignDelete guifg=orange
 
-" nmap <leader>q :SignifyToggle<CR>
+" nnoremap <leader>q :SignifyToggle<CR>
 
 
 " --- FUGITIVE ---
 
 " status for adding and committing
-nmap <leader>gs :Ge :<CR>
+nnoremap <leader>gs :Ge :<CR>
 
-" take diff currently marked
-nmap <leader>gp :diffput<CR>
+" push
+nnoremap <leader>gp :Git push<CR>
 
 " checkout
-nmap <leader>gc :Git checkout 
+nnoremap <leader>gc :Git checkout<space>
 
-nmap <leader>ga :Git 
+nnoremap <leader>ga :Git<space>
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
@@ -621,16 +666,46 @@ endfunction
 function! s:add_mappings() abort
   nnoremap <buffer>]q :cnext <BAR> :call <sid>diff_current_quickfix_entry()<CR>
   nnoremap <buffer>[q :cprevious <BAR> :call <sid>diff_current_quickfix_entry()<CR>
-  " Reset quickfix height. Sometimes it messes up after selecting another item
+
   11copen
   wincmd p
 endfunction
 
 
 " --- GOYO
-nmap <leader>yo :Goyo<CR>
+nnoremap <leader>yo :Goyo<CR>
+
+" --- TREESITTER
+if has ('nvim')
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<leader>v",
+      node_incremental = ".",
+      scope_incremental = ",",
+      node_decremental = "-",
+    },
+  },
+  indent = {
+      enable = true
+  },
+  highlight = {
+      enable = true,
+              -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+endif
+
 
 " --- VIMSPECTOR ---
+
 fun! GotoWindow(id)
     call win_gotoid(a:id)
     MaximizerToggle
@@ -649,15 +724,15 @@ nnoremap <leader>de :call vimspector#Reset()<CR>
 
 nnoremap <leader>dtcb :call vimspector#CleanLineBreakpoint()<CR>
 
-nmap <leader>dl <Plug>VimspectorStepInto
-nmap <leader>dj <Plug>VimspectorStepOver
-nmap <leader>dk <Plug>VimspectorStepOut
-nmap <leader>d_ <Plug>VimspectorRestart
+nnoremap <leader>dl <Plug>VimspectorStepInto
+nnoremap <leader>dj <Plug>VimspectorStepOver
+nnoremap <leader>dk <Plug>VimspectorStepOut
+nnoremap <leader>d_ <Plug>VimspectorRestart
 nnoremap <leader>d<space> :call vimspector#Continue()<CR>
 
-nmap <leader>drc <Plug>VimspectorRunToCursor
-nmap <leader>dbp <Plug>VimspectorToggleBreakpoint
-nmap <leader>dbc <Plug>VimspectorToggleConditionalBreakpoint
+nnoremap <leader>drc <Plug>VimspectorRunToCursor
+nnoremap <leader>dbp <Plug>VimspectorToggleBreakpoint
+nnoremap <leader>dbc <Plug>VimspectorToggleConditionalBreakpoint
 
 " <Plug>VimspectorStop
 " <Plug>VimspectorPause
@@ -667,6 +742,24 @@ fun! GotoWindow()
     call win_gotoid(a:id)
     MaximizerToggle
 endfun
+
+
+" --- LSP ---
+
+nnoremap <silent> gd :lua vim.lsp.buf.definition()<cr>
+nnoremap <silent> gD :lua vim.lsp.buf.declaration()<cr>
+nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
+nnoremap <silent> <leader>eh :lua vim.lsp.buf.hover()<cr>
+nnoremap <silent> <leader>rn :lua vim.lsp.buf.rename()<cr>
+nnoremap <silent> <leader>N :lua vim.lsp.diagnostic.goto_prev()<cr>
+nnoremap <silent> <leader>n :lua vim.lsp.diagnostic.goto_next()<cr>
+nnoremap <silent> <leader>el :lua vim.lsp.diagnostic.set_loclist()<cr>
+nnoremap <silent> <leader>K :lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+nnoremap <silent> <leader>esh :lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> <leader>eca :lua vim.lsp.buf.code_action()<cr>
+nnoremap <silent> <leader>ei :lua vim.lsp.buf.implementation()<cr>
+vnoremap <leader>ef :lua require('refactoring').refactor('Extract Function')<cr>
+vnoremap <leader>eF :lua require('refactoring').refactor('Extract Function To File')<cr>
 
 if has ('nvim')
 lua << EOF
@@ -680,5 +773,39 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 require('lualine').setup{options = {theme = 'gruvbox'}}
+lualine_c = { require('lsp-status').status }
+
+-- not working. hmm
+local refactor = require("refactoring")
+refactor.setup()
+-- end not working. hmm
+-- telescope
+local actions = require("telescope.actions")
+require("telescope").setup({
+    defaults = {
+        file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+        grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+        qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+        layout_strategy = "vertical",
+        layout_config = {
+          vertical = { width = 0.95 }
+        },
+        mappings = {
+            i = {
+                ["<C-x>"] = false,
+                ["<C-q>"] = actions.send_to_qflist,
+            },
+        },
+    },
+    extensions = {
+        frecency = {
+            show_scores = false,
+            show_unindexed = true,
+            ignore_patterns = {"*.git/*", "*/tmp/*"},
+            disable_devicons = true,
+        }
+    },
+})
+require("telescope").load_extension("frecency")
 EOF
 endif
