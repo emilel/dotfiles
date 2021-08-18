@@ -1,0 +1,8 @@
+[user]
+	name = Emil Eliasson
+	email = limeliasson@gmail.com
+[core]
+	editor = nvim
+	pager = nvim -u -R ~/.vimrc.view
+[color]
+	ui = true

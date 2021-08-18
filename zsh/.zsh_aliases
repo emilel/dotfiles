@@ -28,8 +28,8 @@ alias rmsym="rename -v 's/\(|\[|\]|\)//g'"
 alias path="readlink -f"
 alias xargs='tr \\n \\0 | xargs -0 '
 alias _='cd ~'
-alias view="nvim -R -c 'set nolist' -c 'IndentLinesDisable' -c 'set colorcolumn=0'"
 alias bell="echo -e '\a'"
+alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
 
 
 # custom program settings
@@ -40,26 +40,15 @@ alias cp='cp -v'
 alias rm='rm -v'
 alias la='ls -A'
 alias lll='ls -CF'
+alias fd='fd --hidden'
 
 
 # conf
-alias bconf='nvim ~/.config/bat/config'
-alias bashconf='nvim ~/.bashrc'
-alias kconf='nvim ~/.config/kitty/kitty.conf'
-alias fconf='nvim ~/.fdignore'
-alias tconf='nvim ~/.tmux.conf'
-alias zaconf='nvim ~/.config/zathura/zathurarc'
-alias vimconf='nvim ~/.vimrc'
-alias comconf='nvim ~/.config/compton.conf'
-alias i3conf='nvim ~/.config/i3/config'
-alias i3bconf='nvim ~/.config/i3/i3blocks.conf'
-alias zconf='nvim ~/.zshrc'
-alias aconf='nvim ~/.zsh_aliases'
-alias boconf='nvim ~/.boschrc'
+alias conf='cd ~/Dotfiles && nvim -c "Telescope frecency"'
 
 
 # backup dot files
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles_ORIG/ --work-tree=$HOME'
 alias dotfilesls='dotfiles ls-tree -r HEAD'
 alias dotfilesdiff='dotfiles diff-tree -r HEAD'
 
@@ -92,6 +81,10 @@ open() {
     do
         xdg-open $word 2>/dev/null &disown
     done
+}
+
+touch-p() {
+    mkdir -p $1 && touch $1
 }
 
 

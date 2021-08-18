@@ -7,9 +7,9 @@ fi
 
 # general
 export EDITOR='nvim'
-export PAGER='bat'
+export PAGER='nvim -R -u ~/.vimrc.view +AnsiEsc'
 export SPLIT=h
-export MANPAGER='nvim +Man! -c IndentLinesDisable'
+export MANPAGER='nvim +Man! -R -u ~/.vimrc.view +AnsiEsc'
 
 # path
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -44,8 +44,11 @@ setopt hist_ignore_dups
 # dont buffer python stdout/stderr
 export PYTHONUNBUFFERED=true
 
-# bosch stuff
-source ~/.boschrc
+# ripgrep
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
+
+# computer specific stuff
+. $HOME/.scripts/.read_computer_specific.sh
 
 # läs in skit
 source ~/.zsh_aliases
