@@ -9,7 +9,7 @@ fi
 export EDITOR='nvim'
 export PAGER='nvim -R -u ~/.vimrc.view +AnsiEsc'
 export SPLIT=h
-export MANPAGER='nvim +Man! -R -u ~/.vimrc.view +AnsiEsc'
+export MANPAGER='nvim +Man! -R -u ~/.vimrc.view'
 
 # path
 export PATH="$HOME/.cargo/bin:$PATH"
