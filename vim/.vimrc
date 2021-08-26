@@ -1,4 +1,5 @@
 call plug#begin()
+Plug 'dahu/vim-fanfingtastic'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'tami5/sql.nvim'
 Plug 'ThePrimeagen/refactoring.nvim'
@@ -357,8 +358,8 @@ inoremap ) )<c-g>u
 inoremap ] ]<c-g>u
 inoremap } }<c-g>u
 
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
+vnoremap <c-j> :m '>+1<CR>gv=gv
+vnoremap <c-k> :m '<-2<CR>gv=gv
 inoremap <c-j> <esc>:m +1<cr>==i
 inoremap <c-k> <esc>:m -2<cr>==i
 " nnoremap <leader>j :m .+1<cr>==
@@ -445,26 +446,15 @@ set listchars=tab:>-,trail:-
 
 " --- FORMATTING OPTIONS (help fo-table) ---
 
-" t - auto wrap using textwidth.
-" c - auto wrap comments using textwidth, inserting comment leader
-" r - insert comment leader when pressing enter in insert mode
-" q - allow formatting of comments with 'gq'
-" 2 - when formatting text, follow the second line of a paragraph
-" j - remove comment leader when joining lines
-" o - dont insert leader when pressing o
-let blacklist = ['text']
-autocmd vimenter * if index(blacklist, &ft) < 0 | set formatoptions=tcrq2j
-
-" auto format text when typing
-autocmd FileType text set formatoptions=tcrq2j
+set formatoptions=tcrq2jl
 
 
 " --- FILETYPES
 
 augroup zsh_edit_command
     autocmd!
-    autocmd FileType zsh set wrap
-    autocmd FileType zsh set textwidth=0
+    autocmd FileType zsh setl wrap
+    autocmd FileType zsh setl textwidth=0
     autocmd FileType zsh,gitcommit nnoremap <buffer> <CR><CR> :wq<CR>
 augroup END
 
@@ -495,16 +485,16 @@ augroup END
 
 augroup whitespace
     autocmd!
-    autocmd InsertLeave * set list
-    autocmd InsertEnter * set nolist
+    autocmd InsertLeave * setl list
+    autocmd InsertEnter * setl nolist
 augroup END
 
 augroup break_undo
     autocmd!
-    autocmd FileType text,markdown inoremap . .<c-g>u
-    autocmd FileType text,markdown inoremap , ,<c-g>u
-    autocmd FileType text,markdown inoremap ! !<c-g>u
-    autocmd FileType text,markdown inoremap ? ?<c-g>u
+    autocmd FileType text,markdown inoremap <buffer> . .<c-g>u
+    autocmd FileType text,markdown inoremap <buffer> , ,<c-g>u
+    autocmd FileType text,markdown inoremap <buffer> ! !<c-g>u
+    autocmd FileType text,markdown inoremap <buffer> ? ?<c-g>u
 augroup END
 
 augroup pythonstuff
@@ -515,6 +505,11 @@ augroup pythonstuff
     autocmd FileType python vnoremap <silent> <buffer> <leader>wt yoprint("type(<esc>pa): "<esc>A, type(<esc>pa))<esc>V=V
     " format python file
     autocmd FileType python nnoremap <silent> <buffer> <leader>z :Black<cr>
+augroup end
+
+augroup textstuff
+    autocmd!
+    autocmd FileType text setl formatoptions+=a
 augroup end
 
 
@@ -563,15 +558,10 @@ nnoremap <silent> <leader>b <cmd>Telescope buffers<cr>
 nnoremap <silent> <leader>dq <cmd>Telescope lsp_workspace_diagnostics<cr>
 
 " search for file contents
-nnoremap <silent> <leader>/ <cmd>Rg!<CR>
+nnoremap <silent> <leader>/ <cmd>Telescope grep_string<cr>
 
 " search for visually selected word in project
-vnoremap <leader>/ "hy:Rg! <C-r>h<cr>
-
-" don't search for file names when searching for content (duh)
-command! -bang -nargs=* Rg
-    \ call fzf#vim#grep('rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-    \ fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+vnoremap <leader>/ "hy:lua require('telescope.builtin').grep_string({ search = <C-r>h })<cr><esc>
 
 " show preview window
 let g:fzf_preview_window = 'down:50%'

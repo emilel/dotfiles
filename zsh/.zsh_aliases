@@ -20,7 +20,7 @@ alias uppp='../../..'
 alias bt='bluetoothctl'
 alias cbt='echo "connect 94:DB:56:52:B5:87" | bluetoothctl'
 alias dcbt='echo "disconnect 94:DB:56:52:B5:87" | bluetoothctl'
-alias dog='bat --paging never'
+alias dog='bat --paging never --number'
 alias py='python3'
 alias lower="rename -v 'y/A-Z/a-z/'"
 alias rmspace="rename -v 's/ /_/g'"
@@ -30,6 +30,9 @@ alias xargs='tr \\n \\0 | xargs -0 '
 alias _='cd ~'
 alias bell="echo -e '\a'"
 alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
+alias copy='xclip -selection clipboard'
+alias sssdconf='sudo sed -i.bak "s/default_shell = \/bin\/bash/default_shell = \/bin\/zsh\\noverride_shell = \/bin\/zsh/g" /etc/sssd/sssd.conf; sudo systemctl restart sssd'
+
 
 
 # custom program settings
@@ -77,11 +80,6 @@ open() {
     done
 }
 
-touch-p() {
-    mkdir -p $1 && touch $1
-}
-
-
 rep() {
     action="$1"
     shift
@@ -116,9 +114,14 @@ cdlast() {
     cd ~/.last_dir
 }
 
-copy() {
-    $@ | tr -d '\n' | xclip -selection clipboard
-}
+# copy() {
+#     source ~/.zsh_aliases
+#     echo $(alias path)
+#     COMMAND=$1
+#     shift
+#     ARGS=$@
+#     $COMMAND $ARGS | tr -d '\n' | xclip -selection clipboard
+# }
 
 n ()
 {
