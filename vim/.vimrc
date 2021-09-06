@@ -1,7 +1,8 @@
 call plug#begin()
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'dahu/vim-fanfingtastic'
 Plug 'powerman/vim-plugin-AnsiEsc'
-Plug 'tami5/sql.nvim'
 Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'mbbill/undotree'
@@ -28,7 +29,6 @@ Plug 'kalekundert/vim-coiled-snake'
 Plug 'tweekmonster/startuptime.vim'
 if has('nvim')
     Plug 'nvim-telescope/telescope.nvim'
-    Plug 'nvim-telescope/telescope-frecency.nvim'
     Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 end
@@ -167,12 +167,22 @@ nnoremap <PageDown> :echo 'hoppsan...'<CR>
 inoremap <PageUp> <Esc>:echo 'hoppsan...'<CR>a
 inoremap <PageDown> <Esc>:echo 'hoppsan...'<CR>a
 
+" exit insert mode in terminal
+tnoremap <esc> <c-\><c-n>
+
 
 " --- MAPPINGS ---
 
 " clear quickfix list
 command! ClearQuickfixList cexpr []
 nnoremap <leader>Q <cmd>ClearQuickfixList<cr>
+
+" custom go-to-insert mappings
+nnoremap gig `]
+nnoremap gii `]i
+nnoremap gia `]a
+nnoremap giv `[v`]
+nnoremap giu `[v`]~
 
 " copy path
 command! Path let @+ = expand("%")
@@ -354,9 +364,9 @@ nnoremap Y y$
 
 " undo not everything
 inoremap <cr> <c-g>u<cr>
-inoremap ) )<c-g>u
-inoremap ] ]<c-g>u
-inoremap } }<c-g>u
+inoremap ( (<c-g>u
+inoremap [ [<c-g>u
+inoremap { {<c-g>u
 
 vnoremap <c-j> :m '>+1<CR>gv=gv
 vnoremap <c-k> :m '<-2<CR>gv=gv
@@ -549,7 +559,7 @@ let g:nnn#command = 'nnn -R'
 " --- FZF ---
 
 " search for files
-nnoremap <silent> <leader>a <cmd>Telescope frecency<cr>
+nnoremap <silent> <leader>a <cmd>Tfiles<cr>
 
 " search for open buffers
 nnoremap <silent> <leader>b <cmd>Telescope buffers<cr>
@@ -620,6 +630,7 @@ nnoremap <leader>ga :Git<space>
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
+command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})
 
 " git giff history
 command! DiffHistory call s:view_git_history()
@@ -755,8 +766,9 @@ vnoremap <leader>eF :lua require('refactoring').refactor('Extract Function To Fi
 if has ('nvim')
 lua << EOF
 require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+require'lspconfig'.jdtls.setup{ cmd = { 'jdtls' } }
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover, { focusable = false }
+  vim.lsp.handlers.hover, { focusable = true }
 )
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -774,6 +786,7 @@ refactor.setup()
 local actions = require("telescope.actions")
 require("telescope").setup({
     defaults = {
+        file_sorter = require('telescope.sorters').get_fzy_sorter,
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
         grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
         qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
@@ -789,14 +802,12 @@ require("telescope").setup({
         },
     },
     extensions = {
-        frecency = {
-            show_scores = false,
-            show_unindexed = true,
-            ignore_patterns = {"*.git/*", "*/tmp/*"},
-            disable_devicons = true,
+        fzy_native = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
         }
     },
 })
-require("telescope").load_extension("frecency")
+require("telescope").load_extension("fzy_native")
 EOF
 endif
