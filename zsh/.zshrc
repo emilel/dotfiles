@@ -5,6 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# fucking java
+# export JDTLS_HOME='/home/emil/install/jdt'
+
 # general
 export EDITOR='nvim'
 export PAGER='nvim -R -u ~/.vimrc.view +AnsiEsc'
@@ -15,6 +18,8 @@ export MANPAGER='nvim +Man! -R -u ~/.vimrc.view'
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/install/spotify-tui-linux:$PATH"
+export PATH="$HOME/install/spotifyd/target/release:$PATH"
 
 # nnn
 export NNN_FIFO=/tmp/nnn.fifo
@@ -37,8 +42,8 @@ export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color
 export FZF_ALT_C_COMMAND="fd --type d ---color=never --hidden"
 export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
 export FZF_CTRL_R_OPTS='--preview-window=down'
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
+source $HOME/.fzf/shell/key-bindings.zsh
+source $HOME/.fzf/shell/completion.zsh
 setopt hist_ignore_dups
 
 # dont buffer python stdout/stderr
@@ -48,7 +53,7 @@ export PYTHONUNBUFFERED=true
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 
 # computer specific stuff
-. $HOME/.scripts/.read_computer_specific.sh
+# . $HOME/.scripts/.read_computer_specific.sh
 
 # läs in skit
 source ~/.zsh_aliases
@@ -64,3 +69,5 @@ setopt globdots
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

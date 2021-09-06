@@ -6,10 +6,9 @@ alias dkill='docker container kill $(docker ps -q); docker container rm $(docker
 alias areload='source ~/.zsh_aliases'
 
 
-# view
-alias splitv='export SPLIT=v'
-alias splitb='export SPLIT=h'
-
+# why tho
+# alias splitv='export SPLIT=v'
+# alias splitb='export SPLIT=h'
 
 # shortcuts
 alias t='tmux a'
@@ -25,29 +24,36 @@ alias py='python3'
 alias lower="rename -v 'y/A-Z/a-z/'"
 alias rmspace="rename -v 's/ /_/g'"
 alias rmsym="rename -v 's/\(|\[|\]|\)//g'"
-alias path="readlink -f"
-alias xargs='tr \\n \\0 | xargs -0 '
+alias -g path="readlink -nf"
+# alias xargs='tr \\n \\0 | xargs -0 '
 alias _='cd ~'
 alias bell="echo -e '\a'"
-alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
-alias copy='xclip -selection clipboard'
 alias sssdconf='sudo sed -i.bak "s/default_shell = \/bin\/bash/default_shell = \/bin\/zsh\\noverride_shell = \/bin\/zsh/g" /etc/sssd/sssd.conf; sudo systemctl restart sssd'
 
 
 
 # custom program settings
-alias ll='ls -hlF'
+alias ll='ls -hvl'
+alias lt='ls -t'
+alias la='ls -A'
+alias llt='ls -hlt'
+alias lx='ls -X'
 alias ls='ls -v --group-directories-first --color=auto'
 alias mv='mv -nv'
-alias cp='cp -v'
+alias cp='cp -nv'
 alias rm='rm -v'
-alias la='ls -A'
-alias lll='ls -CF'
-alias fd='fd --hidden'
-
+alias fl='fd -l'
+alias fa='fd -H'
+alias fs='fd --exact-depth 1'
+alias fsa='fd --exact-depth 1 -H'
+alias fsal='fd --exact-depth 1 -H -l'
+alias fdd='fd --exact-depth 1 --type d'
+alias fddl='fd --exact-depth 1 --type d -l'
+alias fdda='fd --exact-depth 1 --type d -H'
+alias fddal='fd --exact-depth 1 --type d -H -l'
 
 # conf
-alias conf='cd ~/Dotfiles && nvim -c "Telescope frecency"'
+alias conf='cd ~/Dotfiles && nvim -c "Tfiles" && cd -'
 
 
 # key shortcuts
@@ -80,6 +86,11 @@ open() {
     done
 }
 
+# mkdir and touch
+touchp() {
+    mkdir -p "$(dirname "$1")" && touch "$1"
+}
+
 rep() {
     action="$1"
     shift
@@ -110,7 +121,7 @@ cd() {
     echo $(pwd) > ~/.last_dir
 }
 
-cdlast() {
+cdl() {
     cd ~/.last_dir
 }
 
@@ -149,4 +160,19 @@ n ()
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
+}
+
+# view as prepend
+view() {
+    if [ -f "$1" ]
+    then
+        nvim -R -u ~/.vimrc.view +AnsiEsc $@
+    else
+        $@ | nvim -R -u ~/.vimrc.view +AnsiEsc
+    fi
+}
+
+# copy as prepend
+copy() {
+    $@ | perl -pe 'chomp if eof' | xclip -selection clipboard
 }
