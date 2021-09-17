@@ -39,7 +39,7 @@ export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
 export FZF_DEFAULT_OPTS='--preview-window=down'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'
-export FZF_ALT_C_COMMAND="fd --type d ---color=never --hidden"
+export FZF_ALT_C_COMMAND="fd --type d --exclude .git --color=never --hidden"
 export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
 export FZF_CTRL_R_OPTS='--preview-window=down'
 source $HOME/.fzf/shell/key-bindings.zsh

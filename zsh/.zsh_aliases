@@ -1,3 +1,5 @@
+# sudo snap install pdftk; pdftk in.pdf output out.pdf uncompress; LESSOPEN="" less out.pdf
+
 # random
 alias nonoti='notify-send DUNST_COMMAND_PAUSE'
 alias noti='notify-send DUNST_COMMAND_RESUME'
@@ -29,28 +31,31 @@ alias -g path="readlink -nf"
 alias _='cd ~'
 alias bell="echo -e '\a'"
 alias sssdconf='sudo sed -i.bak "s/default_shell = \/bin\/bash/default_shell = \/bin\/zsh\\noverride_shell = \/bin\/zsh/g" /etc/sssd/sssd.conf; sudo systemctl restart sssd'
+alias back='cd -'
+alias icat="kitty +kitten icat"
+alias c='clear'
 
 
 
 # custom program settings
-alias ll='ls -hvl'
-alias lt='ls -t'
-alias la='ls -A'
-alias llt='ls -hlt'
-alias lx='ls -X'
+# alias ll='ls -hvl'
+# alias lt='ls -t'
+# alias la='ls -A'
+# alias llt='ls -hlt'
+# alias lx='ls -X'
 alias ls='ls -v --group-directories-first --color=auto'
 alias mv='mv -nv'
 alias cp='cp -nv'
 alias rm='rm -v'
-alias fl='fd -l'
-alias fa='fd -H'
-alias fs='fd --exact-depth 1'
-alias fsa='fd --exact-depth 1 -H'
-alias fsal='fd --exact-depth 1 -H -l'
-alias fdd='fd --exact-depth 1 --type d'
-alias fddl='fd --exact-depth 1 --type d -l'
-alias fdda='fd --exact-depth 1 --type d -H'
-alias fddal='fd --exact-depth 1 --type d -H -l'
+# alias fl='fd -l'
+# alias fa='fd -H'
+# alias fs='fd --exact-depth 1'
+# alias fsa='fd --exact-depth 1 -H'
+# alias fsal='fd --exact-depth 1 -H -l'
+# alias fdd='fd --exact-depth 1 --type d'
+# alias fddl='fd --exact-depth 1 --type d -l'
+# alias fdda='fd --exact-depth 1 --type d -H'
+# alias fddal='fd --exact-depth 1 --type d -H -l'
 
 # conf
 alias conf='cd ~/Dotfiles && nvim -c "Tfiles" && cd -'
@@ -84,6 +89,17 @@ open() {
     do
         xdg-open $word 2>/dev/null &disown
     done
+}
+
+viewpdf() {
+    pdftoppm -jpeg $@ | icat --place 100x100@0x0
+}
+
+
+rmswe() {
+    rename -v 's/å/a/g' $@
+    rename -v 's/ä/a/g' $@
+    rename -v 's/ö/o/g' $@
 }
 
 # mkdir and touch
@@ -122,17 +138,8 @@ cd() {
 }
 
 cdl() {
-    cd ~/.last_dir
+    cd $(cat ~/.last_dir)
 }
-
-# copy() {
-#     source ~/.zsh_aliases
-#     echo $(alias path)
-#     COMMAND=$1
-#     shift
-#     ARGS=$@
-#     $COMMAND $ARGS | tr -d '\n' | xclip -selection clipboard
-# }
 
 n ()
 {
@@ -175,4 +182,9 @@ view() {
 # copy as prepend
 copy() {
     $@ | perl -pe 'chomp if eof' | xclip -selection clipboard
+}
+
+
+pdftext() {
+    view pdftotext $@ -
 }
