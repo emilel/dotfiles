@@ -490,7 +490,7 @@ augroup END
 
 augroup commentstrings
     autocmd!
-    autocmd FileType markdown setl commentstring='<!---\ %s\ --->'
+    autocmd FileType markdown setl commentstring=<!---\ %s\ --->
 augroup END
 
 augroup whitespace
@@ -630,7 +630,7 @@ nnoremap <leader>ga :Git<space>
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})
+command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc', '-g', '!__init__.py' }})
 
 " git giff history
 command! DiffHistory call s:view_git_history()

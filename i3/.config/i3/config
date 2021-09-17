@@ -198,6 +198,7 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous # previous track
 # application shortcuts
 bindsym Control+$mod+M exec --no-startup-id \
     firefox
+bindsym Control+$mod+j exec --no-startup-id ~/install/start_qutebrowser
 bindsym Control+$mod+S exec --no-startup-id spotify
 bindsym Control+$mod+I exec --no-startup-id idea
 bindsym Control+$mod+P exec --no-startup-id gnome-screenshot -i
