@@ -231,6 +231,7 @@ exec --no-startup-id \
     echo 1500 > /sys/class/backlight/intel_backlight/brightness
 
 exec --no-startup-id unclutter
+exec --no-startup-id spotifyd
 
 # keyboard settings
 # exec_always --no-startup-id xset r rate 260 40

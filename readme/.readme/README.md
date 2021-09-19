@@ -34,7 +34,9 @@ Check permissions for `~/.tmux/resurrect`.
 Edit the `workspace n output abc` lines in `~/.config/i3/.config/i3/config`.
 Find the output devices with `xrandr | grep ' connected'`.
 
-# Install Powerlevel10k
+## Zsh
+
+### Install Powerlevel10k
 
 Run:
 
@@ -43,11 +45,20 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
     ~/.zsh/plugins/powerlevel10k
 ```
 
-# Install zsh-system-clipboard
+### Install zsh-system-clipboard
 
 Run:
 
 ```
 git clone https://github.com/kutsan/zsh-system-clipboard \
     ~/.zsh/plugins/zsh-system-clipboard
+```
+
+### Install syntax highlighting
+
+Run:
+
+```
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+    ~/.zsh/plugins/zsh-syntax-highlighting
 ```

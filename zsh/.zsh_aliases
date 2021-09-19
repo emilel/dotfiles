@@ -72,6 +72,7 @@ alias conf='cd ~/dotfiles && nvim -c "Tfiles" && cd -'
 
 
 # edit command in editor
+zle -N edit-command-line
 bindkey -M vicmd 'V' edit-command-line
 
 # fzf
