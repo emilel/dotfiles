@@ -9,19 +9,13 @@ font pango:_default_ 8
 floating_modifier $mod
 
 # keyboard settings
-exec_always --no-startup-id xset r rate 260 40
-bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
-    exec --no-startup-id setxkbmap -model pc80 -option caps:escape
-
-exec --no-startup-id bluealsa -S
-
-exec --no-startup-id spotifyd \
-    --bitrate 320 \
-    --device-name heracles \
-    --device-type computer
+# exec_always --no-startup-id xset r rate 260 40
+# bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
+#     exec --no-startup-id setxkbmap -model pc80 -option caps:escape
 
 # start a terminal
 bindsym $mod+BackSpace exec --no-startup-id kitty
+
 
 # kill focused window
 bindsym $mod+c kill
@@ -93,17 +87,12 @@ bindsym $mod+m exec --no-startup-id \
 workspace 1 output eDP-1
 workspace 2 output eDP-1
 workspace 3 output eDP-1
-workspace 4 output HDMI-2
-workspace 5 output HDMI-2
-workspace 6 output HDMI-2
-workspace 7 output HDMI-2
-workspace 8 output HDMI-2
-workspace 9 output HDMI-2
-
-bindsym $mod+o workspace 4 output DVI-I-1-1 && \
-    workspace 5 output DVI-I-1-1 && workspace 6 output DVI-I-1-1 && \
-    workspace 7 output DVI-I-1-1 && workspace 8 output DVI-I-1-1 && \
-    workspace 9 output DVI-I-1-1
+workspace 4 output DP-1
+workspace 5 output DP-1
+workspace 6 output DP-1
+workspace 7 output DP-1
+workspace 8 output DP-1
+workspace 9 output DP-1
 
 # switch to workspace
 bindsym $mod+1 workspace number 1
@@ -198,7 +187,7 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous # previous track
 # application shortcuts
 bindsym Control+$mod+M exec --no-startup-id \
     firefox
-bindsym Control+$mod+j exec --no-startup-id ~/install/start_qutebrowser
+bindsym Control+$mod+j exec --no-startup-id qutebrowser
 bindsym Control+$mod+S exec --no-startup-id spotify
 bindsym Control+$mod+I exec --no-startup-id idea
 bindsym Control+$mod+P exec --no-startup-id gnome-screenshot -i
@@ -211,8 +200,8 @@ bindsym Control+$mod1+a exec --no-startup-id slack
 bindsym $Control+$mod+T exec --no-startup-id teams
 
 # graphics and monitors
-bindsym Control+$mod+X exec --no-startup-id pkill compton
-bindsym Control+$mod+C exec --no-startup-id compton -b
+bindsym Control+$mod+X exec --no-startup-id pkill picom
+bindsym Control+$mod+C exec --no-startup-id picom -b
 bindsym Control+$mod+V restart
 
 # monitor stuff
@@ -228,9 +217,6 @@ bindsym $mod+z exec --no-startup-id \
     ~/.scripts/pixelate.sh && sleep 0.5 && xset dpms force off
 bindsym $mod+Shift+b exec reboot
 
-# scrolling
-exec --no-startup-id synclient NaturalScrolling=-1 VertScrollDelta=113
-
 # wallpaper
 exec_always --no-startup-id \
     feh --bg-fill ~/Pictures/mountain_lake.jpg ~/Pictures/lake.jpg
@@ -244,6 +230,8 @@ exec --no-startup-id \
 exec --no-startup-id \
     echo 1500 > /sys/class/backlight/intel_backlight/brightness
 
+exec --no-startup-id unclutter
+
 # keyboard settings
 # exec_always --no-startup-id xset r rate 260 40
 # bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
@@ -253,8 +241,8 @@ exec --no-startup-id \
 bindsym $mod+s exec --no-startup-id setxkbmap se
 bindsym $mod+u exec --no-startup-id setxkbmap us
 
-# compton
-exec --no-startup-id compton -b
+# picom
+exec --no-startup-id picom -b
 
 # some floating windows
 for_window [window_role="pop-up"] floating enable

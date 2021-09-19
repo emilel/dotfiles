@@ -20,6 +20,8 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 export PATH="$HOME/.poetry/bin:$PATH"
 export PATH="$HOME/install/spotify-tui-linux:$PATH"
 export PATH="$HOME/install/spotifyd/target/release:$PATH"
+export PATH="$HOME/.installed:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # nnn
 export NNN_FIFO=/tmp/nnn.fifo
@@ -31,8 +33,8 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 plugins=(git vi-mode zsh-autosuggestions zsh-syntax-highlighting)
 
 # oh-my-zsh
-export ZSH=$HOME/.oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+# export ZSH=$HOME/.oh-my-zsh
+# source $ZSH/oh-my-zsh.sh
 
 # fzf
 export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
@@ -42,8 +44,8 @@ export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color
 export FZF_ALT_C_COMMAND="fd --type d --exclude .git --color=never --hidden"
 export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
 export FZF_CTRL_R_OPTS='--preview-window=down'
-source $HOME/.fzf/shell/key-bindings.zsh
-source $HOME/.fzf/shell/completion.zsh
+source $HOME/.vim/plugged/fzf/shell/key-bindings.zsh
+source $HOME/.vim/plugged/fzf/shell/completion.zsh
 setopt hist_ignore_dups
 
 # dont buffer python stdout/stderr
@@ -64,9 +66,13 @@ COMPLETION_WAITING_DOTS="true"
 KEYTIMEOUT=1
 unsetopt correct_all
 setopt globdots
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
 
 # theme
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 

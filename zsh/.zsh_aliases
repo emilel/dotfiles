@@ -13,7 +13,6 @@ alias areload='source ~/.zsh_aliases'
 # alias splitb='export SPLIT=h'
 
 # shortcuts
-alias t='tmux a'
 alias v='nvim'
 alias up='..'
 alias upp='../..'
@@ -30,10 +29,12 @@ alias -g path="readlink -nf"
 # alias xargs='tr \\n \\0 | xargs -0 '
 alias _='cd ~'
 alias bell="echo -e '\a'"
-alias sssdconf='sudo sed -i.bak "s/default_shell = \/bin\/bash/default_shell = \/bin\/zsh\\noverride_shell = \/bin\/zsh/g" /etc/sssd/sssd.conf; sudo systemctl restart sssd'
 alias back='cd -'
 alias icat="kitty +kitten icat"
 alias c='clear'
+alias screenshot= 'scrot -s ~/foo.png && xclip -selection clipboard ~/foo.png && rm ~/foo.png'
+alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
+alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
 
 
 
@@ -58,16 +59,16 @@ alias rm='rm -v'
 # alias fddal='fd --exact-depth 1 --type d -H -l'
 
 # conf
-alias conf='cd ~/Dotfiles && nvim -c "Tfiles" && cd -'
+alias conf='cd ~/dotfiles && nvim -c "Tfiles" && cd -'
 
 
 # key shortcuts
 
 # vim keys for tab suggestions
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
+# bindkey -M menuselect 'h' vi-backward-char
+# bindkey -M menuselect 'k' vi-up-line-or-history
+# bindkey -M menuselect 'l' vi-forward-char
+# bindkey -M menuselect 'j' vi-down-line-or-history
 
 
 # edit command in editor
@@ -87,7 +88,7 @@ bindkey '^U' n
 open() {
     for word in $@
     do
-        xdg-open $word 2>/dev/null &disown
+        mimeo $word 2>/dev/null &disown
     done
 }
 
@@ -170,7 +171,7 @@ n ()
 }
 
 # view as prepend
-view() {
+viewp() {
     if [ -f "$1" ]
     then
         nvim -R -u ~/.vimrc.view +AnsiEsc $@
@@ -180,11 +181,6 @@ view() {
 }
 
 # copy as prepend
-copy() {
+copyp() {
     $@ | perl -pe 'chomp if eof' | xclip -selection clipboard
-}
-
-
-pdftext() {
-    view pdftotext $@ -
 }
