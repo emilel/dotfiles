@@ -1535,7 +1535,7 @@ c.fonts.default_family = []
 ## either a float value with a "pt" suffix, or an integer value with a
 ## "px" suffix.
 ## Type: String
-c.fonts.default_size = '10pt'
+c.fonts.default_size = '14pt'
 
 ## Font used for the downloadbar.
 ## Type: Font
@@ -2346,7 +2346,7 @@ c.window.transparent = False
 
 ## Default zoom level.
 ## Type: Perc
-c.zoom.default = '100%'
+c.zoom.default = '125%'
 
 ## Available zoom levels.
 ## Type: List of Perc

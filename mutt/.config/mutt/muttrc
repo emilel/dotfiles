@@ -1,0 +1,23 @@
+source "gpg -d ~/.mutt/passwords.gpg |"
+set ssl_force_tls = yes
+set mail_check = 60
+set timeout = 10
+set sort = "reverse-date-received"
+set signature = "~/.mutt/signature"
+set copy = no
+
+set from = "limeliasson@gmail.com"
+set realname = "Emil Eliasson"
+
+# Imap settings
+set imap_user = "limeliasson@gmail.com"
+
+# Smtp settings
+set smtp_url = "smtps://limeliasson@smtp.gmail.com"
+
+# Remote gmail folders
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set record = "+[Gmail]/Sent Mail"
+set trash = "+[Gmail]/Trash"
