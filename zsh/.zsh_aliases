@@ -14,9 +14,9 @@ alias areload='source ~/.zsh_aliases'
 
 # shortcuts
 alias v='nvim'
-alias up='..'
-alias upp='../..'
-alias uppp='../../..'
+alias up='cd ..'
+alias upp='.cd ./..'
+alias uppp='.cd ./../..'
 alias bt='bluetoothctl'
 alias cbt='echo "connect 94:DB:56:52:B5:87" | bluetoothctl'
 alias dcbt='echo "disconnect 94:DB:56:52:B5:87" | bluetoothctl'
