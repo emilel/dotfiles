@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import os
+import subprocess
+
+home = os.path.expanduser("~")
+setup_dir = ".setup"
+ifname_name = "ifname"
+ifname_path = os.path.join(home, setup_dir, ifname_name)
+with open(ifname_path, "r") as f:
+    ifname = f.read()
+
+ssid = subprocess.check_output(
+    "iw dev wlan0 link | grep SSID | cut -d ' ' -f 2-", shell=True
+).decode()
+
+print(ssid)

@@ -1,0 +1,23 @@
+#!/usr/bin/python
+
+import json
+import os
+import subprocess
+import sys
+
+if len(sys.argv) == 1:
+    print("oh no you didn't")
+    sys.exit(1)
+
+device_short = sys.argv[1]
+
+home = os.path.expanduser("~")
+setup_dir = '.setup'
+sound_devices_name = 'sound_devices'
+sound_devices_path = os.path.join(home, setup_dir, sound_devices_name)
+with open(sound_devices_path, "r") as f:
+    sound_devices = json.load(f)
+
+device_long = sound_devices[device_short]
+
+subprocess.run(["pactl", "set-default-sink", device_long])

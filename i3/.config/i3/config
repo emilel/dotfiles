@@ -19,7 +19,6 @@ bindsym $mod+BackSpace exec --no-startup-id kitty
 
 # kill focused window
 bindsym $mod+c kill
-bindsym $mod+y kill
 bindsym $mod+Shift+q kill
 
 # start rofi (a program launcher)
@@ -81,9 +80,9 @@ bindsym $mod+g bar mode toggle
 
 # rename workspace
 bindsym $mod+m exec --no-startup-id \
-    ~/.scripts/rename_workspace.sh
+    ~/.scripts/rename_workspace
 
-# assign workspaces to monitors intel
+# setup: assign workspaces to specific monitors
 workspace 1 output eDP-1
 workspace 2 output eDP-1
 workspace 3 output eDP-1
@@ -107,7 +106,7 @@ bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
 # new workspace
-bindsym $mod+n exec --no-startup-id ~/.scripts/empty_workspace.sh
+bindsym $mod+n exec --no-startup-id ~/.scripts/empty_workspace
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number 1
@@ -205,16 +204,16 @@ bindsym Control+$mod+C exec --no-startup-id picom -b
 bindsym Control+$mod+V restart
 
 # monitor stuff
-bindsym Control+$mod+1 exec --no-startup-id ~/.screenlayout/1.sh
-bindsym Control+$mod+2 exec --no-startup-id ~/.screenlayout/2.sh
-bindsym Control+$mod+3 exec --no-startup-id ~/.screenlayout/3.sh
+bindsym Control+$mod+1 exec --no-startup-id ~/.screenlayout/monitors_1
+bindsym Control+$mod+2 exec --no-startup-id ~/.screenlayout/monitors_2
+bindsym Control+$mod+3 exec --no-startup-id ~/.screenlayout/monitors_3
 
 # power and lock
 bindsym $mod+x exec --no-startup-id \
-    ~/.scripts/pixelate.sh && sleep 0.5 && systemctl suspend
+    ~/.scripts/pixelate && sleep 0.5 && systemctl suspend
 bindsym $mod+Shift+x exec shutdown -h now
 bindsym $mod+z exec --no-startup-id \
-    ~/.scripts/pixelate.sh && sleep 0.5 && xset dpms force off
+    ~/.scripts/pixelate && sleep 0.5 && xset dpms force off
 bindsym $mod+Shift+b exec reboot
 
 # wallpaper

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+iwconfig 2>/dev/null | grep "Signal level" | cut -d "=" -f 3 | xargs
