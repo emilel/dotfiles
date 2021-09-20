@@ -62,3 +62,11 @@ Run:
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
     ~/.zsh/plugins/zsh-syntax-highlighting
 ```
+
+## Install various software
+
+Programs which might be nice to have:
+
+`fd bat neovim i3-wm  iw i3blocks i3lock zathura sxiv nnn fzf git pandoc
+texlive-core tmux arandr xrandr dmenu mimeo feh qutebrowser jq man sudo mutt
+playerctl ripgrep spotifyd spotify-tui xclip zathura-pdf-mupdf zsh acpi`
