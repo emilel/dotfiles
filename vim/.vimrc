@@ -494,7 +494,6 @@ augroup END
 augroup commentstrings
     autocmd!
     autocmd FileType markdown setl commentstring=<!---\ %s\ --->
-    autocmd FileType markdown setl formatoptions+=a
 augroup END
 
 augroup whitespace

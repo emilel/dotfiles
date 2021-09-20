@@ -1,3 +1,32 @@
-#!/bin/bash
+#!/usr/bin/python
 
-[[ $(cat /sys/class/net/enx1865717f95a9/carrier) -gt 0 ]] && echo "ETH" || echo ""
+import os
+import subprocess
+import sys
+
+home = os.path.expanduser("~")
+setup_dir = ".setup"
+eth_name = "eth"
+eth_path = os.path.join(home, setup_dir, eth_name)
+if not os.path.exists(eth_path):
+    print("")
+    sys.exit(1)
+with open(eth_path, "r") as f:
+    eth = f.read()
+if not os.path.exists(eth_path):
+    print("")
+    sys.exit(1)
+eth_status_path = f'/sys/class/net/{eth}/carrier'
+if not os.path.exists(eth_status_path):
+    print("")
+    sys.exit(1)
+
+with open(f, 'r') as f:
+    eth_status = f.read()
+
+output = subprocess.check_output(
+    f'[[ $(cat /sys/class/net/{eth}/carrier) -gt 0 ]] && echo "ETH" || echo ""',
+    shell=True,
+).decode()
+
+print(output)

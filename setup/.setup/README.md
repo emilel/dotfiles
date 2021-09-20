@@ -32,9 +32,9 @@ pactl list | grep -A2 -B0 'Sink #'
 Programs which might be nice to have:
 
 `acpi arandr bat dmenu fd feh fzf git i3-wm i3blocks i3lock imagemagick iw jq
-man mimeo mutt neovim nnn pandoc playerctl qutebrowser ripgrep spotify-tui
-spotifyd sudo sxiv texlive-core tmux xclip xrandr zathura zathura-pdf-mupdf zsh
-python`
+man mimeo mutt neovim nnn pandoc playerctl python qutebrowser ripgrep
+spotify-tui spotifyd stow sudo sxiv texlive-core tmux xclip xrandr zathura
+zathura-pdf-mupdf zsh`
 
 Install the ones you want however they are installed in your distro. Below are
 how to setup some of the programs by running commands, but beware: don't
@@ -61,9 +61,6 @@ uses `~/.vimrc.view` instead, which uses only a subset of the plugins and
 settings for read-only files. `view` can therefore be used as a fast pager,
 with the same look and feel like `nvim`.
 
-Check permissions for `~/.vim/undo` to make sure no other users can see your
-edit history.
-
 ### tmux
 
 Install Tmux Plugin Manager by running:
@@ -71,8 +68,6 @@ Install Tmux Plugin Manager by running:
 ```
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
-
-Make sure `~/.tmux/resurrect` is accessible by no one but you.
 
 ### i3
 
