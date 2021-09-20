@@ -1,0 +1,22 @@
+#!/usr/bin/python
+
+import json
+import os
+import sys
+import subprocess
+
+if sys.argv == 1:
+    print('you must specify which device to disconnect!')
+    sys.exit(1)
+
+home = os.path.expanduser("~")
+setup_dir = '.setup'
+bt_devices_name = 'bt_devices'
+bt_devices_path = os.path.join(home, setup_dir, bt_devices_name)
+with open(bt_devices_path, "r") as f:
+    bt_devices = json.load(f)
+
+device_short = sys.argv[1]
+device_mac = bt_devices[device_short]
+
+subprocess.run(['bluetoothctl', 'disconnect', device_mac])

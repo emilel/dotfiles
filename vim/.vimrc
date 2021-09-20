@@ -173,6 +173,9 @@ tnoremap <esc> <c-\><c-n>
 
 " --- MAPPINGS ---
 
+" center while typing
+inoremap <c-x>z <esc>zza
+
 " clear quickfix list
 command! ClearQuickfixList cexpr []
 nnoremap <leader>Q <cmd>ClearQuickfixList<cr>

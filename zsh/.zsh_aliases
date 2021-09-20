@@ -25,7 +25,6 @@ alias py='python3'
 alias lower="rename -v 'y/A-Z/a-z/'"
 alias rmspace="rename -v 's/ /_/g'"
 alias rmsym="rename -v 's/\(|\[|\]|\)//g'"
-alias -g path="readlink -nf"
 # alias xargs='tr \\n \\0 | xargs -0 '
 alias _='cd ~'
 alias bell="echo -e '\a'"
@@ -35,7 +34,8 @@ alias c='clear'
 alias screenshot= 'scrot -s ~/foo.png && xclip -selection clipboard ~/foo.png && rm ~/foo.png'
 alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
 alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
-
+alias btc='btconnect'
+alias btd='btdisconnect'
 
 
 # custom program settings
@@ -72,6 +72,7 @@ alias conf='cd ~/dotfiles && nvim -c "Tfiles" && cd -'
 
 
 # edit command in editor
+autoload edit-command-line;
 zle -N edit-command-line
 bindkey -M vicmd 'V' edit-command-line
 
@@ -184,4 +185,19 @@ viewp() {
 # copy as prepend
 copyp() {
     $@ | perl -pe 'chomp if eof' | xclip -selection clipboard
+}
+
+# get path
+path() {
+    if [ $# -eq 2 ]
+    then
+        realpath --relative-to $2 $1
+    else
+        realpath --relative-to ~ $1
+    fi
+}
+
+
+name() {
+    realpath $@ | awk -F / '{ print $(NF) }'
 }

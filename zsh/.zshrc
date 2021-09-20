@@ -22,10 +22,11 @@ export PATH="$HOME/install/spotify-tui-linux:$PATH"
 export PATH="$HOME/install/spotifyd/target/release:$PATH"
 export PATH="$HOME/.installed:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.scripts:$PATH"
 
 # nnn
 export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;d:open-marked;v:open-nvim'
+export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;m:open-marked;v:open-nvim'
 
 # plugins
 source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"

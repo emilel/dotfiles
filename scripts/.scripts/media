@@ -11,9 +11,9 @@ if [ $? == 1 ]; then
     exit 0
 fi
 
-ICON_PLAY="➤"
-ICON_PAUSE="Ⅱ"
-ICON_STOP="≠"
+ICON_PLAY="1"
+ICON_PAUSE="0"
+ICON_STOP="-1"
 CUR_ICON=""
 
 if [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
@@ -38,6 +38,6 @@ else
 fi
 
 if [[ "${INFO_TITLE}" != "" ]] && [[ "${INFO_ARTIST}" != "" ]]; then
-  echo "${INFO_ARTIST} - ${INFO_TITLE} ${CUR_ICON}"
-  echo "${INFO_ARTIST} - ${INFO_TITLE} ${CUR_ICON}"
+  echo "${CUR_ICON} ${INFO_ARTIST} - ${INFO_TITLE}"
+  echo "${CUR_ICON} ${INFO_ARTIST} - ${INFO_TITLE}"
 fi
