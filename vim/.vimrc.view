@@ -1,7 +1,7 @@
 set runtimepath+=~/.vim/plugged/targets.vim
 set runtimepath+=~/.vim/plugged/gruvbox
-set runtimepath+=~/.vim/plugged/vim-plugin-AnsiEsc
 set runtimepath+=~/.vim/plugged/vim-fanfingtastic
+set runtimepath+=~/.vim/plugged/vim-plugin-AnsiEsc
 
 " --- MISC ---
 

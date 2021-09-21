@@ -82,6 +82,10 @@ bindsym $mod+g bar mode toggle
 bindsym $mod+m exec --no-startup-id \
     ~/.scripts/rename_workspace
 
+# switch graphics card
+bindsym $mod+shift+n exec --no-startup-id optimus-manager --no-confirm --switch nvidia
+bindsym $mod+shift+i exec --no-startup-id optimus-manager --no-confirm --switch intel
+
 # setup: assign workspaces to specific monitors
 workspace 1 output eDP-1
 workspace 2 output eDP-1
@@ -92,6 +96,9 @@ workspace 6 output DP-1
 workspace 7 output DP-1
 workspace 8 output DP-1
 workspace 9 output DP-1
+
+# focus on startup
+exec i3-msg 'workspace number 4'
 
 # switch to workspace
 bindsym $mod+1 workspace number 1

@@ -26,7 +26,7 @@ export PATH="$HOME/.scripts:$PATH"
 
 # nnn
 export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;m:open-marked;v:open-nvim'
+export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:duplicate;c:copy'
 
 # plugins
 source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
@@ -58,12 +58,11 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
 # computer specific stuff
 # . $HOME/.scripts/.read_computer_specific.sh
 
-# läs in skit
-source ~/.zsh_aliases
-
 # zsh
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+CASE_SENSITIVE="false"
 KEYTIMEOUT=1
 unsetopt correct_all
 setopt globdots
@@ -71,6 +70,12 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+autoload -Uz compinit && compinit
+zmodload -i zsh/complist
+
+# läs in skit
+source ~/.zsh_aliases
 
 # theme
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
