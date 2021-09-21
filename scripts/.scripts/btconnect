@@ -11,7 +11,7 @@ if sys.argv == 1:
 
 home = os.path.expanduser("~")
 setup_dir = '.setup'
-bt_devices_name = 'bt_devices'
+bt_devices_name = 'bt_devices.js'
 bt_devices_path = os.path.join(home, setup_dir, bt_devices_name)
 with open(bt_devices_path, "r") as f:
     bt_devices = json.load(f)

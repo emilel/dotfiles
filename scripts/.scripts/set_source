@@ -1,0 +1,23 @@
+#!/usr/bin/python
+
+import json
+import os
+import subprocess
+import sys
+
+if len(sys.argv) == 1:
+    print("oh no you didn't")
+    sys.exit(1)
+
+device_short = sys.argv[1]
+
+home = os.path.expanduser("~")
+setup_dir = '.setup'
+sources_name = 'sources.js'
+sources_path = os.path.join(home, setup_dir, sources_name)
+with open(sources_path, "r") as f:
+    sources = json.load(f)
+
+device_long = sources[device_short]
+
+subprocess.run(["pactl", "set-default-source", device_long])

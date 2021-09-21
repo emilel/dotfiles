@@ -13,11 +13,11 @@ device_short = sys.argv[1]
 
 home = os.path.expanduser("~")
 setup_dir = '.setup'
-sound_devices_name = 'sound_devices'
-sound_devices_path = os.path.join(home, setup_dir, sound_devices_name)
-with open(sound_devices_path, "r") as f:
-    sound_devices = json.load(f)
+sinks_name = 'sinks.js'
+sinks_path = os.path.join(home, setup_dir, sinks_name)
+with open(sinks_path, "r") as f:
+    sinks = json.load(f)
 
-device_long = sound_devices[device_short]
+device_long = sinks[device_short]
 
 subprocess.run(["pactl", "set-default-sink", device_long])

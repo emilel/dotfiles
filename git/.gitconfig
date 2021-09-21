@@ -1,9 +1,9 @@
 [user]
-	name = Emil Eliasson
-	email = emil.eliasson.8711@student.lu.se
+    name = Emil Eliasson
+    email = limeliasson@gmail.com
 [core]
-	editor = nvim
+    editor = nvim
 [color]
-	ui = true
+    ui = true
 [pull]
-	rebase = false
+    rebase = false

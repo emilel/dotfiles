@@ -13,6 +13,9 @@
 ## Remove it to not load settings done via the GUI.
 config.load_autoconfig(True)
 
+# disable dark mode. like a savage
+config.set ("colors.webpage.darkmode.enabled", False)
+
 ## Aliases for commands. The keys of the given dictionary are the
 ## aliases, while the values are the commands they map to.
 ## Type: Dict
@@ -1466,7 +1469,7 @@ c.downloads.remove_finished = -1
 ## `{line0}`: Same as `{line}`, but starting from index 0. * `{column0}`:
 ## Same as `{column}`, but starting from index 0.
 ## Type: ShellCommand
-c.editor.command = ['gvim', '-f', '{file}', '-c', 'normal {line}G{column0}l']
+c.editor.command = ['urxvt', '+sb', '-fn', 'xft:Bitstream Vera Sans Mono:pixelsize=20', '-e', 'nvim', '{file}']
 
 ## Encoding to use for the editor.
 ## Type: Encoding

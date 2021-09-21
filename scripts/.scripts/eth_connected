@@ -12,21 +12,17 @@ if not os.path.exists(eth_path):
     print("")
     sys.exit(1)
 with open(eth_path, "r") as f:
-    eth = f.read()
+    eth = f.read().strip()
 if not os.path.exists(eth_path):
     print("")
     sys.exit(1)
 eth_status_path = f'/sys/class/net/{eth}/carrier'
+
 if not os.path.exists(eth_status_path):
     print("")
     sys.exit(1)
 
-with open(f, 'r') as f:
-    eth_status = f.read()
+with open(eth_status_path, 'r') as f:
+    eth_status = int(f.read())
 
-output = subprocess.check_output(
-    f'[[ $(cat /sys/class/net/{eth}/carrier) -gt 0 ]] && echo "ETH" || echo ""',
-    shell=True,
-).decode()
-
-print(output)
+print(eth_status != 0 and 'ETH' or '')

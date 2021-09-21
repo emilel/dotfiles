@@ -8,10 +8,13 @@ config_version: 2
 settings:
   auto_save.session:
     global: true
+  colors.webpage.darkmode.enabled:
+    global: true
   content.desktop_capture:
     https://discord.com: true
   content.media.audio_capture:
     https://discord.com: true
+    https://online-voice-recorder.com: true
   content.notifications.enabled:
     https://app.slack.com: true
     https://mail.google.com: true

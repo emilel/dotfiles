@@ -1,8 +1,9 @@
 call plug#begin()
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'ixru/nvim-markdown'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'dahu/vim-fanfingtastic'
-Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'mbbill/undotree'
@@ -190,14 +191,17 @@ nnoremap giu `[v`]~
 " copy path
 command! Path let @+ = expand("%")
 
+" copy git branch
+command! Branch let @+ = system("git rev-parse --abbrev-ref HEAD | perl -pe 'chomp if eof'")
+
 " inline paste normal
-nnoremap <leader>p a<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>kgJgJ
+nnoremap <leader>p a<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>
 
 " inline paste visual
-vnoremap <leader>p p`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>kgJgJ
+vnoremap <leader>p p`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>
 
 " inline paste without copying
-vnoremap <leader>P "_di<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>kgJgJ
+vnoremap <leader>P "_di<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>
 
 " escape from visual leads to end
 vnoremap <esc> <esc>`>
@@ -232,6 +236,9 @@ vnoremap <leader>s "hy:g~<C-r>h~s///gc<left><left><left>
 
 " substitute visually selected word on one line
 vnoremap s "hy:.,.g~<C-r>h~s///g<left><left>
+
+" substitute in visual selection
+vnoremap <leader>S :s//g<left><left>
 
 " go to last change
 nnoremap g. `.
@@ -459,10 +466,15 @@ set listchars=tab:>-,trail:-
 
 " --- FORMATTING OPTIONS (help fo-table) ---
 
-set formatoptions=tcrq2jl
+setl formatoptions=tcrq2jl
 
 
 " --- FILETYPES
+
+augroup fucking_everything_god_damn_it
+    autocmd!
+    autocmd FileType * set fo-=o
+augroup END
 
 augroup zsh_edit_command
     autocmd!
@@ -571,7 +583,7 @@ nnoremap <silent> <leader>b <cmd>Telescope buffers<cr>
 nnoremap <silent> <leader>dq <cmd>Telescope lsp_workspace_diagnostics<cr>
 
 " search for file contents
-nnoremap <silent> <leader>/ <cmd>Telescope grep_string<cr>
+nnoremap <silent> <leader>/ <cmd>Telescope live_grep<cr>
 
 " search for visually selected word in project
 vnoremap <leader>/ "hy:lua require('telescope.builtin').grep_string({ search = <C-r>h })<cr><esc>

@@ -8,11 +8,11 @@ device_long = subprocess.check_output(["pactl", "get-default-sink"]).strip().dec
 
 home = os.path.expanduser("~")
 setup_dir = '.setup'
-sound_devices_name = 'sound_devices'
-sound_devices_path = os.path.join(home, setup_dir, sound_devices_name)
-with open(sound_devices_path, "r") as f:
-    sound_devices = json.load(f)
-device_translator = { long: short for short, long in sound_devices.items() }
+sinks_name = 'sinks.js'
+sinks_path = os.path.join(home, setup_dir, sinks_name)
+with open(sinks_path, "r") as f:
+    sinks = json.load(f)
+device_translator = { long: short for short, long in sinks.items() }
 
 device_short = device_translator.get(device_long, "unk")
 
