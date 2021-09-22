@@ -1,96 +1,79 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+### powerlevel10k - should stay below lines that may require input, above everything else.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# shit
-zle -N up-line-or-beginning-line
-zle -N down-line-or-beginning-line
-
-# fucking java
-# export JDTLS_HOME='/home/emil/install/jdt'
-
 # general
+
+## use the best editor of course
 export EDITOR='nvim'
+
+## use the best editor as a pager as well
 export PAGER='nvim -R -u ~/.vimrc.view +AnsiEsc'
-export SPLIT=h
+
+## and use the best editor as a man pager
 export MANPAGER='nvim +Man! -R -u ~/.vimrc.view'
 
 # path
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/.npm-global/bin:$PATH"
+
+## poetry
 export PATH="$HOME/.poetry/bin:$PATH"
-export PATH="$HOME/install/spotify-tui-linux:$PATH"
-export PATH="$HOME/install/spotifyd/target/release:$PATH"
+
+## programs from aur
 export PATH="$HOME/.installed:$PATH"
+
+## where some programs like to hang out
 export PATH="$HOME/.local/bin:$PATH"
+
+## personal scripts
 export PATH="$HOME/.scripts:$PATH"
 
-# nnn
-export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:duplicate;c:copy'
-
 # plugins
+
+## use system clipboard when editing commands
+source ~/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh
+
+## vi style key bindings when editing commands
+source ~/.zsh/plugins/vi-mode/vi-mode.plugin.zsh
+
+## syntax highlighting when executing commands, how cool is that
+source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+## auto suggest previous commands, and even complete commands
+source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
-# oh-my-zsh
-# export ZSH=$HOME/.oh-my-zsh
-# source $ZSH/oh-my-zsh.sh
-
-# fzf
-export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
-export FZF_DEFAULT_OPTS='--preview-window=down'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'
-export FZF_ALT_C_COMMAND="fd --type d --exclude .git --color=never --hidden"
-export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
-export FZF_CTRL_R_OPTS='--preview-window=down'
-setopt hist_ignore_dups
-
-# dont buffer python stdout/stderr
-export PYTHONUNBUFFERED=true
-
-# ripgrep
-export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
-
-# computer specific stuff
-# . $HOME/.scripts/.read_computer_specific.sh
+## aww yiss, fzf
+zle -N fzf-file-widget
+zle -N fzf-cd-widget
+source ~/.vim/plugged/fzf/shell/key-bindings.zsh
+source ~/.vim/plugged/fzf/shell/completion.zsh
 
 # zsh
-ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="true"
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-CASE_SENSITIVE="false"
+
+## escape to normal mode immediately
 KEYTIMEOUT=1
-unsetopt correct_all
-setopt globdots
+
+## command history
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
+setopt hist_ignore_dups
+
+## ignore case when autocompleting
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+
+# for some reason, this prevents zsh from going haywire
 autoload -Uz compinit && compinit
 zmodload -i zsh/complist
 
-source $HOME/.vim/plugged/fzf/shell/key-bindings.zsh
-source $HOME/.vim/plugged/fzf/shell/completion.zsh
+# aliases
+source ~/.zsh/zsh_aliases
 
-# läs in skit
-source ~/.zsh_aliases
-source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
-source ~/.zsh/plugins/vi-mode/vi-mode.plugin.zsh
-source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-zle -N fzf-file-widget
-zle -N fzf-cd-widget
+# functions
+source ~/.zsh/zsh_functions
 
-# theme
+# apply theme
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ ! -f ~/.zsh/p10k.zsh ]] || source ~/.zsh/p10k.zsh
