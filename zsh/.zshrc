@@ -33,7 +33,6 @@ export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:duplicate;c:copy'
 
 # plugins
-source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # oh-my-zsh
@@ -48,8 +47,6 @@ export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color
 export FZF_ALT_C_COMMAND="fd --type d --exclude .git --color=never --hidden"
 export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
 export FZF_CTRL_R_OPTS='--preview-window=down'
-source $HOME/.vim/plugged/fzf/shell/key-bindings.zsh
-source $HOME/.vim/plugged/fzf/shell/completion.zsh
 setopt hist_ignore_dups
 
 # dont buffer python stdout/stderr
@@ -77,11 +74,17 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=
 autoload -Uz compinit && compinit
 zmodload -i zsh/complist
 
+source $HOME/.vim/plugged/fzf/shell/key-bindings.zsh
+source $HOME/.vim/plugged/fzf/shell/completion.zsh
+
 # läs in skit
 source ~/.zsh_aliases
+source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
 source ~/.zsh/plugins/vi-mode/vi-mode.plugin.zsh
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+zle -N fzf-file-widget
+zle -N fzf-cd-widget
 
 # theme
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
