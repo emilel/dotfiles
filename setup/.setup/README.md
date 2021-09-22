@@ -99,3 +99,10 @@ Install syntax highlighting by running:
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
     ~/.zsh/plugins/zsh-syntax-highlighting
 ```
+
+Install vi-mode by running:
+
+```
+mkdir ~/.zsh/plugins/vi-mode
+curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/vi-mode/vi-mode.plugin.zsh > ~/.zsh/plugins/vi-mode/vi-mode.plugin.zsh
+```

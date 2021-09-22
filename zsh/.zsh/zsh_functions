@@ -1,0 +1,97 @@
+# open multiple files
+open() {
+    for word in $@
+    do
+        mimeo $word 2>/dev/null &disown
+    done
+}
+
+# swedish letters suck
+rmswe() {
+    rename -v 's/å/a/g' $@
+    rename -v 's/ä/a/g' $@
+    rename -v 's/ö/o/g' $@
+}
+
+# mkdir and touch
+touchp() {
+    mkdir -p "$(dirname "$1")" && touch "$1"
+}
+
+# cat multiple files
+rep() {
+    action="$1"
+    shift
+    for file in $@
+    do
+        $action $file
+    done
+}
+
+# open multiple files
+fzfopen() {
+    for file in $(fzf -m --preview-window=down --preview "bat --color=always --line-range :50 {}")
+    do
+        mimeo $file
+    done
+}
+
+
+# save location every time you cd into a folder,
+# so you can get back/open a terminal in same directory
+cd() {
+    builtin cd $1
+    echo $(pwd) > ~/.last_dir
+}
+
+# open nnn, cd on quit
+n ()
+{
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    nnn -R "$@"
+
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
+
+# get path
+path() {
+    if [ $# -eq 2 ]
+    then
+        realpath --relative-to $2 $1
+    else
+        realpath --relative-to ~ $1
+    fi
+}
+
+# get the name of a file you just wrote, in case you forgot
+name() {
+    realpath $@ | awk -F / '{ print $(NF) }'
+}
+
+# take screenshot and copy to clipboard. -s for selection, -u for current window after two seconds
+screenshot() {
+    scrot $@ -d2 -e 'xclip -selection clipboard -t image/png -i $f' \
+        ~/screenshots/screenshot_%Y%m%d-%H%M.png
+}
+
+# view images in terminal, at least if you are in tmux
+bati() {
+    viu -w 83 $@ | bat
+}
+
+# when files are named badly
+rmspace() {
+    for file in $@
+    do
+        mv -v $file $(echo $file | tr ' ' _)
+    done
+}
