@@ -1,0 +1,73 @@
+# shame on you if you are too quick when executing the last command
+alias k='echo "hoppsan..."'
+
+# conf
+alias conf='cd ~/dotfiles && nvim -c "Tfiles" && cd -'
+
+# reload aliases
+alias areload='source ~/.zsh_aliases'
+
+# custom settings for a program
+alias dog='bat --paging never --number'
+alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
+
+# programs and scripts, but if you are in a hurry
+alias v='nvim'
+alias bt='bluetoothctl'
+alias py='python'
+alias btc='btconnect'
+alias btd='btdisconnect'
+alias scs='screenshot'
+alias setsi='set_sink'
+alias setso='set_source'
+alias getso='get_source'
+alias getsi='get_sink'
+
+# navigation
+alias _='cd ~'
+alias up='cd ..'
+alias back='cd -'
+alias cdl='cd $(cat ~/.last_dir)'
+
+# if a ssh host is not your friend
+alias ssh='TERM=screen-256color ssh'
+
+# general cozy things to have in terminal
+alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
+alias bell="echo -e '\a'"
+
+# hardware thingies
+alias sources='pactl list | grep -A2 -B0 "Source #" | view'
+alias sinks='pactl list | grep -A2 -B0 "Sink #" | view'
+
+# in case xargs does not play well
+# alias xargs='tr \\n \\0 | xargs -0 '
+
+# nice git stuff
+alias pushnew='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
+alias gitb="git rev-parse --abbrev-ref HEAD | perl -pe 'chomp if eof'"
+
+# give arguments by default
+alias ls='ls -v --group-directories-first --color=auto'
+alias mv='mv -nv'
+alias cp='cp -nv'
+alias rm='rm -v'
+
+# vim keys for tab suggestions
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+
+# edit command in editor
+autoload edit-command-line;
+zle -N edit-command-line
+bindkey -M vicmd 'V' edit-command-line
+
+# fzf yeeeeehaw
+bindkey '^A' fzf-file-widget
+bindkey '^S' fzf-cd-widget
+
+# open nnn
+zle -N n
+bindkey '^U' n
