@@ -23,7 +23,6 @@ alias dcbt='echo "disconnect 94:DB:56:52:B5:87" | bluetoothctl'
 alias dog='bat --paging never --number'
 alias py='python3'
 alias lower="rename -v 'y/A-Z/a-z/'"
-alias rmspace="rename -v 's/ /_/g'"
 alias rmsym="rename -v 's/\(|\[|\]|\)//g'"
 # alias xargs='tr \\n \\0 | xargs -0 '
 alias _='cd ~'
@@ -42,6 +41,8 @@ alias getso='get_source'
 alias getsi='get_sink'
 alias gitb="git rev-parse --abbrev-ref HEAD | perl -pe 'chomp if eof'"
 alias ssh='TERM=screen-256color ssh'
+alias sources='pactl list | grep -A2 -B0 "Source #" | view'
+alias sinks='pactl list | grep -A2 -B0 "Sink #" | view'
 
 
 # custom program settings
@@ -200,4 +201,11 @@ screenshot() {
 
 bati() {
     viu -w 83 $@ | bat
+}
+
+rmspace() {
+    for file in $@
+    do
+        mv -v $file $(echo $file | tr ' ' _)
+    done
 }

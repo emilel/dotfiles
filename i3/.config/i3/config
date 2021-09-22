@@ -9,9 +9,9 @@ font pango:_default_ 10
 floating_modifier $mod
 
 # keyboard settings
-# exec_always --no-startup-id xset r rate 260 40
-# bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
-#     exec --no-startup-id setxkbmap -model pc80 -option caps:escape
+exec_always --no-startup-id xset r rate 260 40
+bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
+    exec --no-startup-id setxkbmap -model pc80 -option caps:escape
 
 # start a terminal
 bindsym $mod+BackSpace exec --no-startup-id kitty
@@ -98,7 +98,7 @@ workspace 8 output DP-1
 workspace 9 output DP-1
 
 # focus on startup
-exec i3-msg 'workspace number 4'
+exec --no-startup-id sleep 0.5; i3-msg 'workspace number 4'
 
 # switch to workspace
 bindsym $mod+1 workspace number 1
