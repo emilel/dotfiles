@@ -5,6 +5,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# shit
+zle -N up-line-or-beginning-line
+zle -N down-line-or-beginning-line
+
 # fucking java
 # export JDTLS_HOME='/home/emil/install/jdt'
 
@@ -31,7 +35,6 @@ export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:d
 # plugins
 source "$HOME/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-plugins=(git vi-mode zsh-autosuggestions zsh-syntax-highlighting)
 
 # oh-my-zsh
 # export ZSH=$HOME/.oh-my-zsh
@@ -76,6 +79,9 @@ zmodload -i zsh/complist
 
 # läs in skit
 source ~/.zsh_aliases
+source ~/.zsh/plugins/vi-mode/vi-mode.plugin.zsh
+source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # theme
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
