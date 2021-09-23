@@ -49,6 +49,33 @@ zle -N fzf-cd-widget
 source ~/.vim/plugged/fzf/shell/key-bindings.zsh
 source ~/.vim/plugged/fzf/shell/completion.zsh
 
+# program settings
+
+# nnn
+export SPLIT=h
+export NNN_FIFO=/tmp/nnn.fifo
+export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:duplicate;c:copy'
+
+## fzf
+export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
+export FZF_DEFAULT_OPTS='--preview-window=down'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'
+export FZF_ALT_C_COMMAND="fd --type d --exclude .git --color=never --hidden"
+export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
+export FZF_CTRL_R_OPTS='--preview-window=down'
+setopt hist_ignore_dups
+
+# fzf
+export FZF_DEFAULT_COMMAND="fd --type f --color=never --hidden"
+export FZF_DEFAULT_OPTS='--preview-window=down'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'
+export FZF_ALT_C_COMMAND="fd --type d --exclude .git --color=never --hidden"
+export FZF_ALT_C_OPTS='--preview-window=down --no-height --preview "tree -L 1 -C {} | head -50"'
+export FZF_CTRL_R_OPTS='--preview-window=down'
+setopt hist_ignore_dups
+
 # zsh
 
 ## escape to normal mode immediately
@@ -64,15 +91,23 @@ setopt hist_ignore_dups
 ## ignore case when autocompleting
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 
-# for some reason, this prevents zsh from going haywire
+## for some reason, this prevents zsh from going haywire
 autoload -Uz compinit && compinit
 zmodload -i zsh/complist
 
-# aliases
+## aliases
 source ~/.zsh/zsh_aliases
 
-# functions
+## auto complete arguments
+zmodload zsh/complist
+zstyle ':completion:*' menu yes select
+bindkey -M menuselect '/' history-incremental-search-forward
+
+## functions
 source ~/.zsh/zsh_functions
+
+# ssh key
+eval $(keychain --eval --quiet id_ed25519)
 
 # apply theme
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme

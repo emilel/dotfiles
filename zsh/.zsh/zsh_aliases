@@ -30,7 +30,7 @@ alias back='cd -'
 alias cdl='cd $(cat ~/.last_dir)'
 
 # if a ssh host is not your friend
-alias ssh='TERM=screen-256color ssh'
+# alias ssh='TERM=screen-256color ssh'
 
 # general cozy things to have in terminal
 alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
@@ -66,7 +66,7 @@ bindkey -M vicmd 'V' edit-command-line
 
 # fzf yeeeeehaw
 bindkey '^A' fzf-file-widget
-bindkey '^S' fzf-cd-widget
+bindkey '^F' fzf-cd-widget
 
 # open nnn
 zle -N n
