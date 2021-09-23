@@ -10,6 +10,7 @@ alias areload='source ~/.zsh_aliases'
 # custom settings for a program
 alias dog='bat --paging never --number'
 alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
+alias web='lynx -accept_all_cookies -editor=nvim -vikeys -book'
 
 # programs and scripts, but if you are in a hurry
 alias v='nvim'
@@ -71,3 +72,6 @@ bindkey '^F' fzf-cd-widget
 # open nnn
 zle -N n
 bindkey '^U' n
+
+# connect to athena
+alias athena='TERM=screen-256color ssh athena'
