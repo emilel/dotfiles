@@ -106,3 +106,9 @@ Install vi-mode by running:
 mkdir ~/.zsh/plugins/vi-mode
 curl https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/vi-mode/vi-mode.plugin.zsh > ~/.zsh/plugins/vi-mode/vi-mode.plugin.zsh
 ```
+
+Install auto suggestions by running:
+```
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+    ~/.zsh/plugins/zsh-autosuggestions
+```
