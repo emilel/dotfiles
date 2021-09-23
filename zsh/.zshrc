@@ -1,3 +1,6 @@
+# ssh key
+eval $(keychain --eval --quiet id_ed25519)
+
 ### powerlevel10k - should stay below lines that may require input, above everything else.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -52,7 +55,7 @@ source ~/.vim/plugged/fzf/shell/completion.zsh
 # program settings
 
 # nnn
-export SPLIT=h
+export SPLIT=v
 export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:duplicate;c:copy'
 
@@ -105,9 +108,6 @@ bindkey -M menuselect '/' history-incremental-search-forward
 
 ## functions
 source ~/.zsh/zsh_functions
-
-# ssh key
-eval $(keychain --eval --quiet id_ed25519)
 
 # apply theme
 source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
