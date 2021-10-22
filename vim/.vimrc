@@ -1,6 +1,9 @@
 call plug#begin()
-Plug 'powerman/vim-plugin-AnsiEsc'
-Plug 'ixru/nvim-markdown'
+" Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp'
+" Plug 'ixru/nvim-markdown'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'dahu/vim-fanfingtastic'
@@ -8,7 +11,6 @@ Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'mbbill/undotree'
 Plug 'hoob3rt/lualine.nvim'
-Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'Yggdroot/indentLine'
 Plug 'psf/black'
@@ -26,8 +28,8 @@ Plug 'wellle/targets.vim'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-fugitive'
-Plug 'kalekundert/vim-coiled-snake'
 Plug 'tweekmonster/startuptime.vim'
+Plug 'tmhedberg/SimpylFold'
 if has('nvim')
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'neovim/nvim-lspconfig'
@@ -51,12 +53,12 @@ set updatetime=100
 set foldopen-=search
 
 " fold according to treesitter
-if has ('nvim')
-    set foldmethod=expr
-    set foldexpr=nvim_treesitter#foldexpr()
-else
-    set foldmethod=indent
-endif
+" if has ('nvim')
+"     set foldmethod=expr
+"     set foldexpr=nvim_treesitter#foldexpr()
+" else
+"     set foldmethod=indent
+" endif
 
 " default to no folding
 set foldlevel=99
@@ -174,6 +176,28 @@ tnoremap <esc> <c-\><c-n>
 
 " --- MAPPINGS ---
 
+" disable arrow keys
+nnoremap <Left> :echo "no left for you!"<CR>
+vnoremap <Left> :<C-u>echo "no left for you!"<CR>
+inoremap <Left> <C-o>:echo "no left for you!"<CR>
+nnoremap <Right> :echo "no right for you!"<CR>
+nnoremap <Right> :echo "no right for you!"<CR>
+vnoremap <Right> :<C-u>echo "no right for you!"<CR>
+inoremap <Up> <C-o>:echo "no up for you!"<CR>
+vnoremap <Up> :<C-u>echo "no up for you!"<CR>
+inoremap <Up> <C-o>:echo "no up for you!"<CR>
+nnoremap <Down> :echo "no down for you!"<CR>
+vnoremap <Down> :<C-u>echo "no down for you!"<CR>
+inoremap <Down> <C-o>:echo "no down for you!"<CR>
+nnoremap <PageUp> :echo "no pageup for you!"<CR>
+vnoremap <PageUp> :<C-u>echo "no pageup for you!"<CR>
+inoremap <PageUp> <C-o>:echo "no pageup for you!"<CR>
+nnoremap <PageDown> :echo "no pagedown for you!"<CR>
+vnoremap <PageDown> :<C-u>echo "no pagedown for you!"<CR>
+inoremap <PageDown> <C-o>:echo "no pagedown for you!"<CR>
+
+vnoremap <c-f> "hy:e <C-R>h
+
 " center while typing
 inoremap <c-x>z <esc>zza
 
@@ -216,10 +240,10 @@ nnoremap gp `[v`]
 imap <c-n> <plug>(fzf-complete-word)
 
 " complete file
-imap <c-x><c-f> <plug>(fzf-complete-file)
+imap <c-a> <plug>(fzf-complete-file)
 
 " complete line
-imap <c-x><c-l> <plug>(fzf-complete-line)
+imap <c-l> <plug>(fzf-complete-line)
 
 " " toggle hlsearch
 " let hlstate=0
@@ -490,8 +514,8 @@ augroup END
 
 augroup width
     autocmd!
-    autocmd FileType python setl colorcolumn=98
-    autocmd FileType python setl textwidth=97
+    autocmd FileType python setl colorcolumn=80
+    autocmd FileType python setl textwidth=79
     autocmd FileType gitcommit setl colorcolumn=73
     autocmd FileType gitcommit setl textwidth=72
     autocmd FileType vim,qf,conf,zsh,tmux setl textwidth=0
@@ -500,7 +524,7 @@ augroup END
 
 augroup conceal
     autocmd!
-    autocmd FileType dockerfile,makefile setl conceallevel=0
+    autocmd FileType dockerfile,makefile,markdown,rmd setl conceallevel=0
 augroup END
 
 augroup commentstrings
@@ -530,11 +554,26 @@ augroup pythonstuff
     autocmd FileType python vnoremap <silent> <buffer> <leader>wt yoprint("type(<esc>pa): "<esc>A, type(<esc>pa))<esc>V=V
     " format python file
     autocmd FileType python nnoremap <silent> <buffer> <leader>z :Black<cr>
+    " god damn it let it be r
+    autocmd FileType python setl formatoptions+=r
 augroup end
 
 augroup textstuff
     autocmd!
     autocmd FileType text setl formatoptions+=a
+augroup end
+
+augroup make_pdf
+    autocmd!
+
+    " markdown to pandoc
+    autocmd FileType markdown nnoremap <buffer> <leader>b :exec "!pandoc -o $(printf % \| sed 's/.md/.pdf/g') -t pdf %"<cr>
+
+    " commonmark to html
+    autocmd FileType markdown nnoremap <buffer> <leader>; :exec "!cat % \| cmark \> $(printf % \| sed 's/.md/.html/g')"<cr>
+
+    " commonmark to pdf
+    autocmd FileType markdown nnoremap <buffer> <leader>. :exec "!cat % \| cmark \| pandoc -f html -o $(printf % \| sed 's/.md/.pdf/g')"<cr>
 augroup end
 
 
@@ -577,7 +616,7 @@ let g:nnn#command = 'nnn -R'
 nnoremap <silent> <leader>a <cmd>Tfiles<cr>
 
 " search for open buffers
-nnoremap <silent> <leader>b <cmd>Telescope buffers<cr>
+nnoremap <silent> <leader>s <cmd>Telescope buffers<cr>
 
 " open diagnostics for project
 nnoremap <silent> <leader>dq <cmd>Telescope lsp_workspace_diagnostics<cr>
@@ -592,11 +631,12 @@ vnoremap <leader>/ "hy:lua require('telescope.builtin').grep_string({ search = <
 let g:fzf_preview_window = 'down:50%'
 
 " completion
-imap <silent> <tab> <Plug>(completion_smart_tab)
-imap <silent> <s-tab> <Plug>(completion_smart_s_tab)
+" imap <silent> <tab> <Plug>(completion_smart_tab)
+" imap <silent> <s-tab> <Plug>(completion_smart_s_tab)
 
 " 'Set completeopt to have a better completion experience'
-set completeopt=menuone,noinsert,noselect
+set completeopt=menu,menuone,noselect
+" set completeopt=menuone,noinsert,noselect
 
 " 'Avoid showing message extra message when using completion'
 set shortmess+=c
@@ -706,7 +746,7 @@ require'nvim-treesitter.configs'.setup {
     },
   },
   indent = {
-      enable = true
+      enable = false
   },
   highlight = {
       enable = true,
@@ -780,7 +820,7 @@ vnoremap <leader>eF :lua require('refactoring').refactor('Extract Function To Fi
 
 if has ('nvim')
 lua << EOF
-require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+-- require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
 require'lspconfig'.jdtls.setup{ cmd = { 'jdtls' } }
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover, { focusable = true }
@@ -824,5 +864,27 @@ require("telescope").setup({
     },
 })
 require("telescope").load_extension("fzy_native")
+  -- Setup nvim-cmp.
+  local cmp = require'cmp'
+
+  cmp.setup({
+    mapping = {
+      ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+      ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+      ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-d>'] = cmp.mapping.scroll_docs(4),
+      -- ['<Esc>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = {
+      { name = 'nvim_lsp' },
+      --{ name = 'buffer' },
+    }
+  })
+
+  -- Setup lspconfig.
+  require('lspconfig')['pyright'].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
 EOF
 endif

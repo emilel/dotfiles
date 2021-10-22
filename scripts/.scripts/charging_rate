@@ -1,0 +1,1 @@
+upower -i `upower -e | grep 'BAT'` | grep energy-rate | cut -d ":" -f 2 | tr -d ' ' | tr ',' '.'

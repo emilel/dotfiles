@@ -61,6 +61,12 @@ uses `~/.vimrc.view` instead, which uses only a subset of the plugins and
 settings for read-only files. `view` can therefore be used as a fast pager,
 with the same look and feel like `nvim`.
 
+Install a parser for your weapon of choice by opening `nvim` and executing:
+`:TSInstall <language>`.
+
+Install debugger for your language by executing in `nvim`: `:Vimspector Install
+<debugger>`.
+
 ### tmux
 
 Install Tmux Plugin Manager by running:
