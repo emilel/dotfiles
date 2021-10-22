@@ -77,12 +77,6 @@ name() {
     realpath $@ | awk -F / '{ print $(NF) }'
 }
 
-# take screenshot and copy to clipboard. -s for selection, -u for current window after two seconds
-screenshot() {
-    scrot $@ -d2 -e 'xclip -selection clipboard -t image/png -i $f' \
-        ~/screenshots/screenshot_%Y%m%d-%H%M.png
-}
-
 # view images in terminal, at least if you are in tmux
 bati() {
     viu -w 83 $@ | bat

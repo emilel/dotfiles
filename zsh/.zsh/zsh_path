@@ -1,0 +1,11 @@
+## poetry
+export PATH="$HOME/.poetry/bin:$PATH"
+
+## programs from aur
+export PATH="$HOME/.installed:$PATH"
+
+## where some programs like to hang out
+export PATH="$HOME/.local/bin:$PATH"
+
+## personal scripts
+export PATH="$HOME/.scripts:$PATH"

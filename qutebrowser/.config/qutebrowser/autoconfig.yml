@@ -12,15 +12,20 @@ settings:
     global: true
   content.desktop_capture:
     https://discord.com: true
+  content.geolocation:
+    https://www.yr.no: true
   content.media.audio_capture:
     https://discord.com: true
     https://online-voice-recorder.com: true
   content.notifications.enabled:
     https://app.slack.com: true
+    https://calendar.google.com: true
     https://mail.google.com: true
+    https://www.facebook.com: true
     https://www.reddit.com: false
     https://www.youtube.com: true
   content.register_protocol_handler:
+    https://calendar.google.com?cid=%25s: true
     https://mail.google.com?extsrc=mailto&url=%25s: true
   fonts.default_family:
     global: '13'
