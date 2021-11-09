@@ -62,6 +62,9 @@ set mouse=a
 " use global clipboard
 set clipboard=unnamedplus
 
+" don't clear clipboard when quitting
+autocmd VimLeave * call system("xsel -ib", getreg('+'))
+
 " show row number
 set number
 
@@ -90,6 +93,9 @@ nnoremap <silent> <leader>c :q<CR>
 
 " close
 nnoremap <leader>x :qa<cr>
+
+" close
+nnoremap <CR><CR> :q<CR>
 
 
 " --- REMAPPINGS ---

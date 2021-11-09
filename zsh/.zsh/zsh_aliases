@@ -9,7 +9,9 @@ alias areload='source ~/.zsh/zsh_aliases'
 
 # custom settings for a program
 alias dog='bat --paging never --number'
-alias view='nvim -R -u ~/.vimrc.view +AnsiEsc'
+alias vieww='nvim -R -u ~/.vimrc.view +AnsiEsc'
+alias view='nvim -R -u ~/.vimrc.view'
+alias viewjs='nvim -R -u ~/.vimrc.view -c "set filetype=javascript"'
 alias web='lynx -accept_all_cookies -editor=nvim -vikeys -book'
 alias silenus='sshfs athena:/home/pi/silenus ~/silenus'
 alias treepb='tree -I __pycache__ . | bat'
@@ -37,7 +39,7 @@ alias cdl='cd $(cat ~/.last_dir)'
 # general cozy things to have in terminal
 alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
 alias bell="echo -e '\a'"
-alias countpy="cat $(fd '.*\.py') | sed '/^\s*#/d;/^\s*$/d' | wc -l"
+alias countpy="fd '.*\.py' | xargs cat | sed '/^\s*#/d;/^\s*$/d' | wc -l"
 
 # hardware thingies
 alias sources='pactl list | grep -A2 -B0 "Source #" | view'

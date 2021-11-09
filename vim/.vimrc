@@ -117,6 +117,9 @@ set mouse=a
 " use global clipboard
 set clipboard=unnamedplus
 
+" don't clear clipboard when quitting
+autocmd VimLeave * call system("xsel -ib", getreg('+'))
+
 " show row number
 set number
 
@@ -560,7 +563,7 @@ augroup end
 
 augroup textstuff
     autocmd!
-    autocmd FileType text setl formatoptions+=a
+    " autocmd FileType text setl formatoptions+=a
 augroup end
 
 augroup make_pdf
