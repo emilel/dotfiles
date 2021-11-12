@@ -298,7 +298,7 @@ nnoremap <silent> <leader>l :wincmd l<CR>
 nnoremap <silent> <leader>c :q<CR>
 
 " find placeholder
-nnoremap <leader><leader> /(__)<cr>ca)
+nnoremap <leader><leader> /(--)<cr>va)
 
 " close
 nnoremap <leader>x :qa<cr>
