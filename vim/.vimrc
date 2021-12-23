@@ -231,10 +231,10 @@ vnoremap <leader>p p`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>
 vnoremap <leader>P "_di<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>
 
 " escape from visual leads to end
-vnoremap <esc> <esc>`>
+" vnoremap <esc> <esc>`>
 
 " y from visual leads to end
-vnoremap y y`>
+" vnoremap y y`>
 
 " select pasted text
 nnoremap gp `[v`]
@@ -563,20 +563,23 @@ augroup end
 
 augroup textstuff
     autocmd!
-    " autocmd FileType text setl formatoptions+=a
+    autocmd FileType text setl formatoptions+=a
 augroup end
 
 augroup make_pdf
     autocmd!
-
     " markdown to pandoc
     autocmd FileType markdown nnoremap <buffer> <leader>b :exec "!pandoc -o $(printf % \| sed 's/.md/.pdf/g') -t pdf %"<cr>
-
     " commonmark to html
     autocmd FileType markdown nnoremap <buffer> <leader>; :exec "!cat % \| cmark \> $(printf % \| sed 's/.md/.html/g')"<cr>
-
     " commonmark to pdf
     autocmd FileType markdown nnoremap <buffer> <leader>. :exec "!cat % \| cmark \| pandoc -f html -o $(printf % \| sed 's/.md/.pdf/g')"<cr>
+augroup end
+
+augroup make_pdf_damnit
+    autocmd!
+    autocmd FileType tex nnoremap <buffer> <leader>. :silent exec "!pdflatex %"<cr>
+    autocmd FileType tex nnoremap <buffer> <leader>, :exec "!pdflatex %"<cr>
 augroup end
 
 
@@ -688,7 +691,7 @@ nnoremap <leader>ga :Git<space>
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc', '-g', '!__init__.py' }})
+command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc'}})
 
 " git giff history
 command! DiffHistory call s:view_git_history()
