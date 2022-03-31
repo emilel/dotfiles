@@ -31,10 +31,10 @@ pactl list | grep -A2 -B0 'Sink #'
 
 Programs which might be nice to have:
 
-`acpi arandr bat dmenu fd feh fzf git i3-wm i3blocks i3lock imagemagick iw jq
-man mimeo mutt neovim nnn pandoc playerctl python qutebrowser ripgrep
-spotify-tui spotifyd stow sudo sxiv texlive-core tmux xclip xrandr zathura
-zathura-pdf-mupdf zsh`
+`acpi arandr bat dmenu fd feh flameshot fzf git i3-wm i3blocks i3lock
+imagemagick iw jq man mimeo mutt neovim nnn pandoc playerctl python qutebrowser
+ripgrep spotify-tui spotifyd stow sudo sxiv texlive-most tmux xclip xrandr
+zathura zathura-pdf-mupdf zsh`
 
 Install the ones you want however they are installed in your distro. Below are
 how to setup some of the programs by running commands, but beware: don't
@@ -118,3 +118,13 @@ Install auto suggestions by running:
 git clone https://github.com/zsh-users/zsh-autosuggestions \
     ~/.zsh/plugins/zsh-autosuggestions
 ```
+
+### nnn
+
+Install plugins by running:
+
+```
+curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+```
+
+Set PAGER in ~/.config/nnn/plugins.

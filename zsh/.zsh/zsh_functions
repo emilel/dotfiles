@@ -68,7 +68,7 @@ path() {
     then
         realpath --relative-to $2 $1
     else
-        realpath --relative-to ~ $1
+        realpath --relative-to . $1
     fi
 }
 
@@ -87,5 +87,17 @@ rmspace() {
     for file in $@
     do
         mv -v $file $(echo $file | tr ' ' _)
+    done
+}
+
+lower() {
+    for file in $@
+        mv -v $file $(echo $file | tr 'A-Z' 'a-z')
+}
+
+o() {
+    for word in $@
+    do
+        mimeo *$word* 2>/dev/null &disown
     done
 }

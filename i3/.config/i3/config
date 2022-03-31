@@ -103,6 +103,9 @@ workspace 9 output DP-1
 # focus on startup
 exec --no-startup-id sleep 0.5; i3-msg 'workspace number 4'
 
+# auto connect to mouse
+exec --no-startup-id bluetoothctl power on; bluetoothctl connect EA:19:20:8E:6A:6C
+
 # switch to workspace
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
@@ -201,7 +204,7 @@ bindsym Control+$mod+S exec --no-startup-id spotify
 bindsym Control+$mod+I exec --no-startup-id idea
 bindsym Control+$mod+P exec --no-startup-id ~/.scripts/screenshot
 bindsym Control+$mod+Shift+P exec --no-startup-id screenshot -s
-bindsym Control+$mod+N exec --no-startup-id nautilus
+bindsym Control+$mod+N exec --no-startup-id pcmanfm
 bindsym Control+$mod+Y exec --no-startup-id charm
 bindsym Control+$mod+G exec --no-startup-id \
     env XDG_CURRENT_DESKTOP=GNOME gnome-control-center
@@ -217,13 +220,16 @@ bindsym Control+$mod+V restart
 bindsym Control+$mod+1 exec --no-startup-id ~/.screenlayout/monitors_1
 bindsym Control+$mod+2 exec --no-startup-id ~/.screenlayout/monitors_2
 bindsym Control+$mod+3 exec --no-startup-id ~/.screenlayout/monitors_3
+bindsym Control+$mod+o exec --no-startup-id ~/.screenlayout/combain.sh
 
 # power and lock
 bindsym $mod+x exec --no-startup-id \
     ~/.scripts/pixelate && sleep 0.5 && systemctl suspend
 bindsym $mod+Shift+x exec shutdown -h now
-bindsym $mod+z exec --no-startup-id \
+bindsym $mod+Shift+z exec --no-startup-id \
     ~/.scripts/pixelate && sleep 0.5 && xset dpms force off
+bindsym $mod+z exec --no-startup-id \
+    sleep 0.5 && xset dpms force off
 bindsym $mod+Shift+b exec reboot
 
 # wallpaper
