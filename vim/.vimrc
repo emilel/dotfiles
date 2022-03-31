@@ -1,5 +1,8 @@
 call plug#begin()
+Plug 'kdheepak/JuliaFormatter.vim'
+Plug 'williamboman/nvim-lsp-installer'
 " Plug 'powerman/vim-plugin-AnsiEsc'
+" Plug 'justinmk/vim-dirvish'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -15,7 +18,6 @@ Plug 'nvim-lua/lsp-status.nvim'
 Plug 'Yggdroot/indentLine'
 Plug 'psf/black'
 Plug 'szw/vim-maximizer'
-Plug 'puremourning/vimspector'
 Plug 'tpope/vim-repeat'
 Plug 'junegunn/goyo.vim'
 Plug 'mcchrish/nnn.vim'
@@ -199,7 +201,15 @@ nnoremap <PageDown> :echo "no pagedown for you!"<CR>
 vnoremap <PageDown> :<C-u>echo "no pagedown for you!"<CR>
 inoremap <PageDown> <C-o>:echo "no pagedown for you!"<CR>
 
+" paste line above or below as comment
+nnoremap gcP muPI# <esc>`u
+nnoremap gcp mupI# <esc>`u
+
 vnoremap <c-f> "hy:e <C-R>h
+
+" camel snake to case
+command! Camel :1,$s/_\([a-z]\)/\u\1/gc
+
 
 " center while typing
 inoremap <c-x>z <esc>zza
@@ -216,7 +226,7 @@ nnoremap giv `[v`]
 nnoremap giu `[v`]~
 
 " copy path
-command! Path let @+ = expand("%")
+command! Path let @+ = fnamemodify(expand("%"), ":~:.")
 
 " copy git branch
 command! Branch let @+ = system("git rev-parse --abbrev-ref HEAD | perl -pe 'chomp if eof'")
@@ -234,7 +244,7 @@ vnoremap <leader>P "_di<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>
 " vnoremap <esc> <esc>`>
 
 " y from visual leads to end
-" vnoremap y y`>
+vmap y ygv<Esc>
 
 " select pasted text
 nnoremap gp `[v`]
@@ -272,6 +282,9 @@ nnoremap g. `.
 
 " go to end of line
 vnoremap L $h
+
+" go to beginning of line
+vnoremap H 0
 
 " toggle fold
 nnoremap <silent> <CR> za
@@ -401,16 +414,25 @@ nnoremap Y y$
 
 " undo not everything
 inoremap <cr> <c-g>u<cr>
-inoremap ( (<c-g>u
-inoremap [ [<c-g>u
-inoremap { {<c-g>u
+" inoremap ( (<c-g>u
+" inoremap [ [<c-g>u
+" inoremap { {<c-g>u
 
-vnoremap <c-j> :m '>+1<CR>gv=gv
-vnoremap <c-k> :m '<-2<CR>gv=gv
+" move lines
+vnoremap <c-j> :m '>+1<CR>gv
+vnoremap <c-k> :m '<-2<CR>gv
 inoremap <c-j> <esc>:m +1<cr>==i
 inoremap <c-k> <esc>:m -2<cr>==i
 " nnoremap <leader>j :m .+1<cr>==
 " nnoremap <leader>k :m .-2<cr>==
+
+" make line above or below
+vnoremap <leader>o <esc>o<esc>gv
+vnoremap <leader>O <esc>O<esc>gv
+
+" undo in visual
+vnoremap u <esc>ugv
+vnoremap <c-r> <esc><c-r>gv
 
 " keep visual selection when indenting
 vnoremap < <gv
@@ -495,6 +517,9 @@ set listchars=tab:>-,trail:-
 
 setl formatoptions=tcrq2jl
 
+" format
+nnoremap <leader>, gwap
+
 
 " --- FILETYPES
 
@@ -518,6 +543,8 @@ augroup END
 augroup width
     autocmd!
     autocmd FileType python setl colorcolumn=80
+    autocmd FileType julia setl colorcolumn=93
+    autocmd FileType julia setl textwidth=92
     autocmd FileType python setl textwidth=79
     autocmd FileType gitcommit setl colorcolumn=73
     autocmd FileType gitcommit setl textwidth=72
@@ -561,9 +588,15 @@ augroup pythonstuff
     autocmd FileType python setl formatoptions+=r
 augroup end
 
+augroup julia
+    autocmd!
+    autocmd FileType julia nnoremap <silent> <buffer> <leader>z :JuliaFormatterFormat<cr>
+    autocmd FileType julia setl foldmethod=indent
+augroup end
+
 augroup textstuff
     autocmd!
-    autocmd FileType text setl formatoptions+=a
+    " autocmd FileType text setl formatoptions+=a
 augroup end
 
 augroup make_pdf
@@ -578,8 +611,8 @@ augroup end
 
 augroup make_pdf_damnit
     autocmd!
-    autocmd FileType tex nnoremap <buffer> <leader>. :silent exec "!pdflatex %"<cr>
-    autocmd FileType tex nnoremap <buffer> <leader>, :exec "!pdflatex %"<cr>
+    autocmd FileType tex nnoremap <buffer> <leader>. :exec "!pdflatex %"<cr>:exec "!bibtex " . expand('%:t:r')<cr>:exec "!pdflatex %"<cr>:exec "!pdflatex %"<cr>
+    autocmd FileType tex set conceallevel=0
 augroup end
 
 
@@ -625,13 +658,13 @@ nnoremap <silent> <leader>a <cmd>Tfiles<cr>
 nnoremap <silent> <leader>s <cmd>Telescope buffers<cr>
 
 " open diagnostics for project
-nnoremap <silent> <leader>dq <cmd>Telescope lsp_workspace_diagnostics<cr>
+nnoremap <silent> <leader>dq <cmd>lua vim.diagnostic.setloclist()<cr>
 
 " search for file contents
 nnoremap <silent> <leader>/ <cmd>Telescope live_grep<cr>
 
 " search for visually selected word in project
-vnoremap <leader>/ "hy:lua require('telescope.builtin').grep_string({ search = <C-r>h })<cr><esc>
+vnoremap <leader>/ "hy:lua require('telescope.builtin').grep_string({ search = <C-r>h })<cr>
 
 " show preview window
 let g:fzf_preview_window = 'down:50%'
@@ -691,7 +724,7 @@ nnoremap <leader>ga :Git<space>
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc'}})
+command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc', '-g', '!*.aux', '-g', '!*.log', '-g', '!*.out', '-g', '!*.pdf'}})
 
 " git giff history
 command! DiffHistory call s:view_git_history()
@@ -817,7 +850,7 @@ nnoremap <silent> <leader>rn :lua vim.lsp.buf.rename()<cr>
 nnoremap <silent> <leader>N :lua vim.lsp.diagnostic.goto_prev()<cr>
 nnoremap <silent> <leader>n :lua vim.lsp.diagnostic.goto_next()<cr>
 nnoremap <silent> <leader>el :lua vim.lsp.diagnostic.set_loclist()<cr>
-nnoremap <silent> <leader>K :lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+nnoremap <silent> <leader>K :lua vim.diagnostic.open_float()<cr>
 nnoremap <silent> <leader>esh :lua vim.lsp.buf.signature_help()<cr>
 nnoremap <silent> <leader>eca :lua vim.lsp.buf.code_action()<cr>
 nnoremap <silent> <leader>ei :lua vim.lsp.buf.implementation()<cr>
@@ -836,7 +869,10 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         virtual_text = true
     }
 )
-require('lualine').setup{options = {theme = 'gruvbox'}}
+require('lualine').setup{
+    options = {theme = 'gruvbox'},
+    icons_enabled = true
+}
 lualine_c = { require('lsp-status').status }
 
 -- not working. hmm
@@ -892,5 +928,6 @@ require("telescope").load_extension("fzy_native")
   require('lspconfig')['pyright'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+  require'lspconfig'.julials.setup{}
 EOF
 endif

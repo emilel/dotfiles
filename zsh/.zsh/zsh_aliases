@@ -15,6 +15,8 @@ alias viewjs='nvim -R -u ~/.vimrc.view -c "set filetype=javascript"'
 alias web='lynx -accept_all_cookies -editor=nvim -vikeys -book'
 alias silenus='sshfs athena:/home/pi/silenus ~/silenus'
 alias treepb='tree -I __pycache__ . | bat'
+alias first='head -1'
+alias tmaa='tmux new-session -t $(tmux list-session -F "#S" | fzf)'
 
 # programs and scripts, but if you are in a hurry
 alias bt='bluetoothctl'
@@ -82,3 +84,5 @@ alias splitv='export SPLIT=v'
 
 # connect to athena
 alias athena='TERM=screen-256color ssh athena'
+
+alias sp='picom &disown'
