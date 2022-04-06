@@ -12,7 +12,8 @@ fi
 export EDITOR='nvim'
 
 ## use the best editor as a pager as well
-export PAGER='nvim -R -u ~/.vimrc.view +AnsiEsc'
+# export PAGER='nvim -R -u ~/.vimrc.view +AnsiEsc'
+export PAGER='bat'
 
 ## and use the best editor as a man pager
 export MANPAGER='nvim +Man! -u ~/.vimrc.view'

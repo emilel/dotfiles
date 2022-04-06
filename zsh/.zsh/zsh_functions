@@ -66,9 +66,9 @@ n ()
 path() {
     if [ $# -eq 2 ]
     then
-        realpath --relative-to $2 $1
+        realpath --relative-to $2 $1 | copy
     else
-        realpath --relative-to . $1
+        realpath --relative-to . $1 | copy
     fi
 }
 
