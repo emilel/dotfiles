@@ -28,6 +28,7 @@ alias setsi='set_sink'
 alias setso='set_source'
 alias getso='get_source'
 alias getsi='get_sink'
+alias fpath='realpath'
 
 # navigation
 alias _='cd ~'

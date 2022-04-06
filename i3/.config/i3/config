@@ -33,6 +33,7 @@ bindsym $mod+l focus right
 # change workspace
 bindsym Control+$mod+h workspace prev
 bindsym Control+$mod+l workspace next
+bindsym $mod+Control+6 workspace back_and_forth
 
 # move focused window
 bindsym $mod+Shift+h move left

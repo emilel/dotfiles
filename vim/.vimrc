@@ -1,4 +1,5 @@
 call plug#begin()
+Plug 'jeetsukumaran/vim-indentwise'
 Plug 'kdheepak/JuliaFormatter.vim'
 Plug 'williamboman/nvim-lsp-installer'
 " Plug 'powerman/vim-plugin-AnsiEsc'
@@ -202,12 +203,16 @@ vnoremap <PageDown> :<C-u>echo "no pagedown for you!"<CR>
 inoremap <PageDown> <C-o>:echo "no pagedown for you!"<CR>
 
 " paste line above or below as comment
-nnoremap gcP muPI# <esc>`u
-nnoremap gcp mupI# <esc>`u
+nmap gcP muPgpgc`u
+nmap gcp mupgpgc`u
+
+" remove line below or above
+vnoremap <leader>j <esc>j"_ddgv
+vnoremap <leader>k <esc>k"_ddgv
 
 vnoremap <c-f> "hy:e <C-R>h
 
-" camel snake to case
+" camel snake to camel
 command! Camel :1,$s/_\([a-z]\)/\u\1/gc
 
 
@@ -253,7 +258,7 @@ nnoremap gp `[v`]
 imap <c-n> <plug>(fzf-complete-word)
 
 " complete file
-imap <c-a> <plug>(fzf-complete-file)
+inoremap <expr> <c-a> fzf#vim#complete("fd <Bar> xargs realpath --relative-to " . expand("%:h"))
 
 " complete line
 imap <c-l> <plug>(fzf-complete-line)
@@ -316,9 +321,9 @@ nnoremap <leader><leader> /(--)<cr>va)
 " close
 nnoremap <leader>x :qa<cr>
 
-" tab movement
-nnoremap <silent> <leader>o :tabprevious<CR>
-nnoremap <silent> <leader>i :tabnext<CR>
+" new line above or below
+nnoremap <silent> <leader>O muO<esc>`u
+nnoremap <silent> <leader>o muo<esc>`u
 
 " paste without copying
 vnoremap P "_dP
@@ -343,6 +348,7 @@ map Ä zh
 " delete without copying
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
+nnoremap <leader>D "_D
 
 " å is colon
 nnoremap å :
@@ -724,7 +730,7 @@ nnoremap <leader>ga :Git<space>
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc', '-g', '!*.aux', '-g', '!*.log', '-g', '!*.out', '-g', '!*.pdf'}})
+command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '-S', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc', '-g', '!*.aux', '-g', '!*.log', '-g', '!*.out', '-g', '!*.pdf'}})
 
 " git giff history
 command! DiffHistory call s:view_git_history()
@@ -904,6 +910,13 @@ require("telescope").setup({
             override_file_sorter = true,
         }
     },
+    pickers = {
+            live_grep = {
+                additional_args = function(opts)
+                    return {"--hidden"}
+                end
+            },
+        },
 })
 require("telescope").load_extension("fzy_native")
   -- Setup nvim-cmp.
