@@ -182,6 +182,12 @@ tnoremap <esc> <c-\><c-n>
 
 " --- MAPPINGS ---
 
+" add to jumplist
+nnoremap ' m'
+
+" perl regex damn it
+nnoremap / /\v
+
 " disable arrow keys
 nnoremap <Left> :echo "no left for you!"<CR>
 vnoremap <Left> :<C-u>echo "no left for you!"<CR>
@@ -232,9 +238,15 @@ nnoremap giu `[v`]~
 
 " copy path
 command! Path let @+ = fnamemodify(expand("%"), ":~:.")
+command! FPath let @+ = expand('%:p')
+nmap <silent> <leader>yy :Path<cr>
+nmap <silent> <leader>YY :FPath<cr>
 
 " copy git branch
 command! Branch let @+ = system("git rev-parse --abbrev-ref HEAD | perl -pe 'chomp if eof'")
+
+" run julia stuff
+nmap <silent> <leader>rj :let @+ = 'include("' . expand('%:p') . '")'<cr>
 
 " inline paste normal
 nnoremap <leader>p a<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>
@@ -443,6 +455,8 @@ vnoremap <c-r> <esc><c-r>gv
 " keep visual selection when indenting
 vnoremap < <gv
 vnoremap > >gv
+
+vmap <leader>> <esc>i<space><esc>gvlol
 
 
 " --- VISUAL ---
@@ -730,7 +744,7 @@ nnoremap <leader>ga :Git<space>
 
 " push new branches
 command Pushnew !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '-S', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc', '-g', '!*.aux', '-g', '!*.log', '-g', '!*.out', '-g', '!*.pdf'}})
+command Tfiles lua require'telescope.builtin'.find_files({ find_command = {'rg', '-S', '--files', '--hidden', '-g', '!.git', '-g', '!__pycache__', '-g', '!*.pyc', '-g', '!*.aux', '-g', '!*.log', '-g', '!*.out', '-g', '!*.pdf', '-g', '!.png'}})
 
 " git giff history
 command! DiffHistory call s:view_git_history()
@@ -853,8 +867,8 @@ nnoremap <silent> gD :lua vim.lsp.buf.declaration()<cr>
 nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
 nnoremap <silent> <leader>eh :lua vim.lsp.buf.hover()<cr>
 nnoremap <silent> <leader>rn :lua vim.lsp.buf.rename()<cr>
-nnoremap <silent> <leader>N :lua vim.lsp.diagnostic.goto_prev()<cr>
-nnoremap <silent> <leader>n :lua vim.lsp.diagnostic.goto_next()<cr>
+nnoremap <silent> <leader>N :lua vim.diagnostic.goto_prev()<cr>
+nnoremap <silent> <leader>n :lua vim.diagnostic.goto_next()<cr>
 nnoremap <silent> <leader>el :lua vim.lsp.diagnostic.set_loclist()<cr>
 nnoremap <silent> <leader>K :lua vim.diagnostic.open_float()<cr>
 nnoremap <silent> <leader>esh :lua vim.lsp.buf.signature_help()<cr>

@@ -13,6 +13,7 @@ settings:
   content.desktop_capture:
     https://discord.com: true
   content.geolocation:
+    https://www-oxfordreference-com.ludwig.lub.lu.se: false
     https://www.google.com: true
     https://www.yr.no: true
   content.media.audio_capture:
