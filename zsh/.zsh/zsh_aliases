@@ -2,7 +2,7 @@
 alias k='echo "hoppsan..."'
 
 # conf
-alias conf='cd ~/dotfiles && nvim -c "Tfiles" && cd -'
+alias conf='cd ~/dotfiles && nvim && cd -'
 
 # reload aliases
 alias areload='source ~/.zsh/zsh_aliases'
