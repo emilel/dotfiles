@@ -7,3 +7,5 @@ require('languages')
 require('plugins_setup')
 require('remappings')
 require('use_cases')
+
+vim.opt.smartindent = true

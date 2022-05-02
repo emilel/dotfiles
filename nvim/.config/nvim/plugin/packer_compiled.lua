@@ -119,6 +119,11 @@ _G.packer_plugins = {
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
+  ["nvim-treesitter-textobjects"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/packer.nvim",
@@ -128,6 +133,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
+  },
+  ["targets.vim"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/targets.vim",
+    url = "https://github.com/wellle/targets.vim"
   },
   ["telescope.nvim"] = {
     loaded = true,
@@ -148,6 +158,21 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-eunuch",
     url = "https://github.com/tpope/vim-eunuch"
+  },
+  ["vim-fanfingtastic"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-fanfingtastic",
+    url = "https://github.com/dahu/vim-fanfingtastic"
+  },
+  ["vim-peekaboo"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-peekaboo",
+    url = "https://github.com/junegunn/vim-peekaboo"
+  },
+  ["vim-repeat"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-repeat",
+    url = "https://github.com/tpope/vim-repeat"
   },
   ["vim-surround"] = {
     loaded = true,

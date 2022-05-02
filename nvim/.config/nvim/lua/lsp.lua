@@ -1,22 +1,26 @@
-require'lspconfig'.julials.setup{}
 local nmap = require('helpers').nmap
 local imap = require('helpers').imap
 local vmap = require('helpers').vmap
 
--- format julia
-nmap('<space>z', '<cmd>JuliaFormatterFormat<cr>')
+-- julia
+require'lspconfig'.julials.setup{}
+
+-- python
+require('lspconfig')['pyright'].setup {
+capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+}
 
 -- go to definition
-nmap(',d', '<cmd>lua vim.lsp.buf.definition()<cr>')
+nmap(',gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
 
 -- go to declaration
-nmap(',D', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+nmap(',gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
 
 -- go to implementation
-nmap(',i', '<cmd>vim.lsp.buf.implementation()<cr>')
+nmap(',gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
 
 -- go to references
-nmap(',r', '<cmd>lua vim.lsp.buf.references()<cr>')
+nmap(',gr', '<cmd>lua vim.lsp.buf.references()<cr>')
 
 -- go to previous
 nmap(',N', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
@@ -29,3 +33,12 @@ nmap(',f', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
 -- signature help
 nmap(',s', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
+
+-- rename thing
+nmap(',rn', '<cmd>lua vim.lsp.buf.rename()<cr>')
+
+-- hover
+nmap(',h', '<cmd>lua vim.lsp.buf.hover()<cr>')
+
+-- code action
+nmap(',a', '<cmd>lua vim.lsp.buf.code_action()<cr>')

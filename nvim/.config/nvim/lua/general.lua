@@ -18,16 +18,21 @@ vim.opt.clipboard = 'unnamedplus'
 -- persistent undo
 vim.opt.undofile = true
 
+-- don't stand on first or last row
+vim.opt.scrolloff = 8
+
 -- SEARCH
 
 -- only highlight the current match
 vim.opt.hlsearch = false
 
 -- don't care about case until capital letter
+vim.opt.ic = true
 vim.opt.smartcase = true
 
 -- search immediately
 vim.opt.incsearch = true
+
 
 -- INDENTATION
 
@@ -42,6 +47,9 @@ vim.opt.shiftwidth = 4
 
 -- spaces per tab
 vim.opt.softtabstop = 4
+
+-- smart indent
+vim.opt.smartindent = true
 
 -- show whitespace in normal but not insert mode
 vim.opt.list = true

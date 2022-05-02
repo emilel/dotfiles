@@ -13,3 +13,9 @@ nmap('X', 'x')
 
 -- don't copy when pasting
 vmap('<space>p', '"_dP')
+
+-- search with perl
+nmap('\\', '/\\v', { noremap = false, silent = false })
+
+-- space does nothing
+nmap('<space>', 'hl')

@@ -72,6 +72,14 @@ path() {
     fi
 }
 
+fpath() {
+    realpath $1 | copy
+}
+
+mark() {
+    mv $1 $1-
+}
+
 # get the name of a file you just wrote, in case you forgot
 name() {
     realpath $@ | awk -F / '{ print $(NF) }'
@@ -100,4 +108,8 @@ o() {
     do
         mimeo *$word* 2>/dev/null &disown
     done
+}
+
+c() {
+    cd *$1*
 }

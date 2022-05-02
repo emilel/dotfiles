@@ -47,7 +47,7 @@ export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:duplicate;c:copy'
 
 # fzf
-export FZF_DEFAULT_COMMAND="fd --color=never --hidden"
+export FZF_DEFAULT_COMMAND="fd --color=never --hidden --no-ignore-vcs"
 export FZF_DEFAULT_OPTS='--preview-window=down'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'
