@@ -6,7 +6,7 @@ local vmap = require('helpers').vmap
 -- MISC
 
 -- reload vimrc
-nmap('<f1>', 'source $MYVIMRC')
+nmap('<space>R', '<cmd>source $MYVIMRC<cr>', { noremap = true, silent = false })
 
 -- save file
 nmap('<c-space>', '<cmd>w<cr>', { noremap = true, silent = false })
@@ -37,11 +37,27 @@ nmap('<space>YY', '<cmd>let @+ = expand("%:p")<cr>')
 
 -- EDITOR COMMANDS
 
+
+-- replace assignment
+nmap('cC', '0f=wC')
+
+-- y in visual leads to where you want to be
+vmap('y', '<esc>mugvy`u')
+
+-- visually select content on line
+vmap('<space>V', '^v$h')
+
 -- fold
 nmap('<cr>', 'za')
 
+-- go to end of line
+vmap('L', '$h')
+
+-- go to beginning of line
+vmap('H', '^')
+
 -- toggle fold all
-nmap('<backspace>', '&foldlevel ? "zM" :"zR"')
+vim.cmd([[nnoremap <expr> <Backspace> &foldlevel ? 'zM' :'zR']])
 
 -- prev/next in quickfix
 nmap('<c-j>', '<cmd>cnext<cr>')
@@ -52,9 +68,6 @@ nmap('<space>,', 'gwap')
 
 -- add to jump list
 nmap('\'', 'm\'')
-
--- search with perl
-nmap('/', '/\\v')
 
 -- select pasted text
 nmap('gp', '`[v`]')
@@ -91,10 +104,16 @@ vmap('>', '>gv')
 -- don't copy when prepending space
 vmap('<space>d', '"_d')
 vmap('<space>d', '"_d')
-vmap('<leader>D', '"_D')
+
+nmap('<space>d', '"_d')
+nmap('<space>d', '"_d')
+nmap('<space>D', '"_D')
 
 -- copy to end of line
 nmap('Y', 'y$')
+
+-- delete to end of line and delete line
+nmap('<space>D', 'D"_dd')
 
 -- SEARCH
 
@@ -102,10 +121,16 @@ nmap('Y', 'y$')
 vmap('/', '"hy/\\V<C-R>=escape(@h,\'/\\\')<CR><CR>')
 
 -- replace globally
-vmap('<space>s', '"hy:g~<C-r>h~s///gc<left><left><left>', { noremap = false, silent = false })
+vmap('<space>s', '"hy:g~<C-r>h~s///gc<left><left><left>', { noremap = true, silent = false })
 
 -- replace on one line
-vmap('s', '"hy:.,.g~<C-r>h~s///g<left><left>', { noremap = false, silent = false })
+vmap('s', '"hy:.,.g~<C-r>h~s///g<left><left>', { noremap = true, silent = false })
+
+-- replace in visual selection
+vim.cmd([[vnoremap <space>S :s//g<left><left>]])
+
+-- mark inserted text
+nmap('giv', '`[v`]')
 
 -- INSERT
 

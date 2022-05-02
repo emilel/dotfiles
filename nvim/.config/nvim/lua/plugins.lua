@@ -13,6 +13,9 @@ return require('packer').startup(function()
     -- syntax highlight and stuff
     use 'nvim-treesitter/nvim-treesitter'
 
+    -- text objects
+    use 'nvim-treesitter/nvim-treesitter-textobjects'
+
     -- gruvbox of course
     use 'ellisonleao/gruvbox.nvim'
 
@@ -48,4 +51,16 @@ return require('packer').startup(function()
 
     -- nice unix tools
     use 'tpope/vim-eunuch'
+
+    -- f across lines
+    use 'dahu/vim-fanfingtastic'
+
+    -- repeat the above
+    use 'tpope/vim-repeat'
+
+    -- peekabo
+    use 'junegunn/vim-peekaboo'
+
+    -- text objects
+    use 'wellle/targets.vim'
 end)

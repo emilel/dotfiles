@@ -9,11 +9,20 @@ require('telescope').setup {
     pickers = {
         find_files = {
             hidden = true
-        }
+        },
+        live_grep = {
+            additional_args = function(opts)
+                return {"--hidden"}
+            end
+        },
     },
     defaults = {
         file_ignore_patterns = {
-            ".git"
+            ".git",
+            "%.png",
+            "%.pdf",
+            "%.pt",
+            "%.pickle",
         },
         layout_strategy = "vertical",
         mappings = {
@@ -34,7 +43,9 @@ nmap('<space>s', '<cmd>Telescope buffers<cr>')
 nmap('<space>/', '<cmd>Telescope live_grep<cr>')
 
 -- find selected text
-vmap('<space>/', '"hy:lua require("telescope.builtin").grep_string({ search = <C-r>h })<cr>', { noremap = false, silent = false })
+vmap('<space>/', '"hy:lua require("telescope.builtin").grep_string({ additional_args = function(opts) return {"--hidden"} end })<cr><c-r>h')
+vmap('<space>?', '"hy:lua require("telescope.builtin").grep_string({ additional_args = function(opts) return {"--hidden"} end })<cr>function <c-r>h')
+-- vmap('<space>/', '"hy<cmd>Telescope live_grep<cr><c-r>h')
 
 
 -- TREESITTER
@@ -57,11 +68,67 @@ require('nvim-treesitter.configs').setup {
     highlight = {
       enable = true,
     },
-    incremental_selection = {
-      enable = true,
-    },
     indent = {
-      enable = true,
+        -- fuck
+      enable = false,
+    },
+    textobjects = {
+        swap = {
+            enable = true,
+            swap_next = {
+              [",>"] = "@parameter.inner",
+            },
+            swap_previous = {
+              [",<"] = "@parameter.inner",
+            },
+        },
+        move = {
+            enable = true,
+            set_jumps = true, -- whether to set jumps in the jumplist
+            goto_next_start = {
+              [",j"] = "@function.outer",
+              -- [",j"] = "@class.outer",
+            },
+            goto_next_end = {
+              [",J"] = "@function.outer",
+              -- [",J"] = "@class.outer",
+            },
+            goto_previous_start = {
+              [",k"] = "@function.outer",
+              -- [",k"] = "@class.outer",
+            },
+            goto_previous_end = {
+              [",K"] = "@function.outer",
+              -- [",K"] = "@class.outer",
+              },
+        },
+        lsp_interop = {
+            enable = true,
+            border = 'none',
+            peek_definition_code = {
+              [",Df"] = "@function.outer",
+              [",DF"] = "@class.outer",
+            },
+        },
+        select = {
+          enable = true,
+
+          -- Automatically jump forward to textobj, similar to targets.vim
+          lookahead = true,
+
+          keymaps = {
+              -- You can use the capture groups defined in textobjects.scm
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+              ["ac"] = "@call.outer",
+              ["ic"] = "@call.inner",
+              ["ao"] = "@comment.outer",
+              ["io"] = "@comment.inner",
+              ["ad"] = "@statement.outer",
+              ["an"] = "@conditional.outer",
+              ["in"] = "@conditional.inner",
+          },
+        },
     },
 }
 

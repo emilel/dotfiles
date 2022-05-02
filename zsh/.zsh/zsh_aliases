@@ -2,7 +2,8 @@
 alias k='echo "hoppsan..."'
 
 # conf
-alias conf='cd ~/dotfiles && nvim && cd -'
+alias conf='cd ~/dotfiles && nvim -c "Telescope find_files" && cd -'
+alias vimconf='cd ~/dotfiles/nvim/.config/nvim && nvim -c "Telescope find_files" && cd -'
 
 # reload aliases
 alias areload='source ~/.zsh/zsh_aliases'
@@ -28,7 +29,6 @@ alias setsi='set_sink'
 alias setso='set_source'
 alias getso='get_source'
 alias getsi='get_sink'
-alias fpath='realpath'
 
 # navigation
 alias _='cd ~'
