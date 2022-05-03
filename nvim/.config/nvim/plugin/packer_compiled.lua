@@ -94,6 +94,16 @@ _G.packer_plugins = {
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
     url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
+  indentLine = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/indentLine",
+    url = "https://github.com/Yggdroot/indentLine"
+  },
+  ["lightspeed.nvim"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/lightspeed.nvim",
+    url = "https://github.com/ggandor/lightspeed.nvim"
+  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/lualine.nvim",
@@ -159,10 +169,10 @@ _G.packer_plugins = {
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-eunuch",
     url = "https://github.com/tpope/vim-eunuch"
   },
-  ["vim-fanfingtastic"] = {
+  ["vim-indent-object"] = {
     loaded = true,
-    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-fanfingtastic",
-    url = "https://github.com/dahu/vim-fanfingtastic"
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-indent-object",
+    url = "https://github.com/michaeljsmith/vim-indent-object"
   },
   ["vim-peekaboo"] = {
     loaded = true,

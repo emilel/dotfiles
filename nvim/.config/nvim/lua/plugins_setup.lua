@@ -127,6 +127,8 @@ require('nvim-treesitter.configs').setup {
               ["ad"] = "@statement.outer",
               ["an"] = "@conditional.outer",
               ["in"] = "@conditional.inner",
+              ["ao"] = "@block.outer",
+              ["io"] = "@block.inner",
           },
         },
     },
@@ -173,3 +175,10 @@ sources = {
   { name = 'nvim_lsp' },
 }
 })
+
+-- INDENTLINE
+-- -- keep conceallevel
+-- vim.g.indentLine_setConceal = 0
+
+-- indent character
+vim.g.indentLine_char = '▏'

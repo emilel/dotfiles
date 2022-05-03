@@ -98,3 +98,6 @@ source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.zsh/p10k.zsh ]] || source ~/.zsh/p10k.zsh
 
 export GOOGLE_APPLICATION_CREDENTIALS='/home/emil/uni/eitn30/internet-inuti/translator/translator-key.json'
+
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
