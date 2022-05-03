@@ -44,6 +44,15 @@ nmap('cC', '0f=wC')
 -- y in visual leads to where you want to be
 vmap('y', '<esc>mugvy`u')
 
+-- mark visually selected word and copy to e
+vmap('\'', '"ey`<mq`>mw')
+
+-- and replace current with marked word
+vmap('R', '"ey`<mr`>mt`qv`w"ep`rv`tp')
+
+-- go to marked word
+nmap('gm', '`qv`w')
+
 -- visually select content on line
 vmap('<space>V', '^v$h')
 
@@ -115,19 +124,21 @@ nmap('Y', 'y$')
 -- delete to end of line and delete line
 nmap('<space>D', 'D"_dd')
 
--- SEARCH
+-- SEARCH AND REPLACE
 
 -- search for selection in file
-vmap('/', '"hy/\\V<C-R>=escape(@h,\'/\\\')<CR><CR>')
+vmap('/', '"hy/\\V<C-R>=escape(@h,\'/\\\')<CR><CR>', { noremap = true, silent = false })
 
 -- replace globally
-vmap('<space>s', '"hy:g~<C-r>h~s///gc<left><left><left>', { noremap = true, silent = false })
+-- vmap('<space>S', '"hy:g~<C-r>h~s///gc<left><left><left>', { noremap = true, silent = false })
+vmap('<space>S', '"hy:%s/<c-r>h//gc<left><left><left>', { noremap = true, silent = false })
 
 -- replace on one line
-vmap('s', '"hy:.,.g~<C-r>h~s///g<left><left>', { noremap = true, silent = false })
+-- vmap('s', '"hy:.,.g~<C-r>h~s///g<left><left>', { noremap = true, silent = false })
+vmap('s', '"hy:s/<c-r>h//g<left><left>', { noremap = true, silent = false })
 
 -- replace in visual selection
-vim.cmd([[vnoremap <space>S :s//g<left><left>]])
+vmap('<space>s', ':s/<c-r>e//g<left><left>', { noremap = true, silent = false })
 
 -- mark inserted text
 nmap('giv', '`[v`]')

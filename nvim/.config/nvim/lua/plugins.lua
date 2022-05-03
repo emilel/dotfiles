@@ -53,7 +53,7 @@ return require('packer').startup(function()
     use 'tpope/vim-eunuch'
 
     -- f across lines
-    use 'dahu/vim-fanfingtastic'
+    -- use 'dahu/vim-fanfingtastic'
 
     -- repeat the above
     use 'tpope/vim-repeat'
@@ -63,4 +63,13 @@ return require('packer').startup(function()
 
     -- text objects
     use 'wellle/targets.vim'
+
+    -- indentation text objects
+    use 'michaeljsmith/vim-indent-object'
+
+    -- show indentation level
+    use 'Yggdroot/indentLine'
+
+    -- lightspeed
+    use 'ggandor/lightspeed.nvim'
 end)
