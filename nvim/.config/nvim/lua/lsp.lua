@@ -42,3 +42,6 @@ nmap(',h', '<cmd>lua vim.lsp.buf.hover()<cr>')
 
 -- code action
 nmap(',a', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+
+-- set project diagnostics in quick fix list
+nmap(',dq', '<cmd>lua vim.diagnostic.setqflist()<cr>')

@@ -8,6 +8,19 @@ font pango:_default_ 11
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# note taking
+for_window [ title="notetaker" ] floating enable, \
+    resize set 1050px 600px, move position center
+bindsym $mod+o exec --no-startup-id kitty --title notetaker \
+    ~/.scripts/write_note.sh
+bindsym $mod+Shift+o exec --no-startup-id kitty \
+    ~/.scripts/most_recent_note.sh
+
+for_window [ title="diary" ] floating enable, \
+    resize set 1050px 1000px, move position center
+bindsym $mod+i exec --no-startup-id kitty --title diary \
+    ~/.scripts/write_diary.sh
+
 # keyboard settings
 exec_always --no-startup-id xset r rate 260 40
 bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
@@ -202,8 +215,7 @@ bindsym Control+$mod+M exec --no-startup-id \
     firefox
 bindsym Control+$mod+j exec --no-startup-id qutebrowser
 bindsym Control+$mod+S exec --no-startup-id spotify
-bindsym Control+$mod+I exec --no-startup-id idea
-bindsym Control+$mod+P exec --no-startup-id ~/.scripts/screenshot
+bindsym Control+$mod+P exec --no-startup-id flameshot gui
 bindsym Control+$mod+Shift+P exec --no-startup-id screenshot -s
 bindsym Control+$mod+N exec --no-startup-id pcmanfm
 bindsym Control+$mod+Y exec --no-startup-id charm
@@ -221,7 +233,6 @@ bindsym Control+$mod+V restart
 bindsym Control+$mod+1 exec --no-startup-id ~/.screenlayout/monitors_1
 bindsym Control+$mod+2 exec --no-startup-id ~/.screenlayout/monitors_2
 bindsym Control+$mod+3 exec --no-startup-id ~/.screenlayout/monitors_3
-bindsym Control+$mod+o exec --no-startup-id ~/.screenlayout/combain.sh
 
 # power and lock
 bindsym $mod+x exec --no-startup-id \

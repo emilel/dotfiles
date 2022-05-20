@@ -24,7 +24,7 @@ vim.opt.scrolloff = 8
 -- SEARCH
 
 -- only highlight the current match
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 
 -- don't care about case until capital letter
 vim.opt.ic = true

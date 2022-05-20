@@ -94,6 +94,11 @@ _G.packer_plugins = {
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
     url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
+  harpoon = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/harpoon",
+    url = "https://github.com/ThePrimeagen/harpoon"
+  },
   indentLine = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/indentLine",
@@ -134,6 +139,11 @@ _G.packer_plugins = {
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects",
     url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
   },
+  ["nvim-ts-rainbow"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow",
+    url = "https://github.com/p00f/nvim-ts-rainbow"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/packer.nvim",
@@ -143,6 +153,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
+  },
+  ["refactoring.nvim"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/refactoring.nvim",
+    url = "https://github.com/ThePrimeagen/refactoring.nvim"
+  },
+  tabular = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/tabular",
+    url = "https://github.com/godlygeek/tabular"
   },
   ["targets.vim"] = {
     loaded = true,
@@ -169,15 +189,20 @@ _G.packer_plugins = {
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-eunuch",
     url = "https://github.com/tpope/vim-eunuch"
   },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
   ["vim-indent-object"] = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-indent-object",
     url = "https://github.com/michaeljsmith/vim-indent-object"
   },
-  ["vim-peekaboo"] = {
+  ["vim-markdown"] = {
     loaded = true,
-    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-peekaboo",
-    url = "https://github.com/junegunn/vim-peekaboo"
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-markdown",
+    url = "https://github.com/preservim/vim-markdown"
   },
   ["vim-repeat"] = {
     loaded = true,

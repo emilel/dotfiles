@@ -144,3 +144,60 @@ vim.api.nvim_create_autocmd(
         group = python_group
     }
 )
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'nnoremap ,dd opdb.set_trace()<esc>',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'nnoremap ,DD mu?pdb.set.trace()<cr>"_dd`u:noh<cr>',
+        group = python_group
+    }
+)
+-- yoprint(f"^[pa: {^[pa}")^[
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'vnoremap ,p yoprint(f"<esc>pa: {<esc>pa} {(type(<esc>pa))}") # DEBUG STATEMENT<esc>gv',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'nnoremap ,P mu/# DEBUG STATEMENT<cr>"_dd`u:noh<cr>',
+        group = python_group
+    }
+)
+
+-- markdown
+local markdown_group = vim.api.nvim_create_augroup(
+    'markdown',
+    { clear = true }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.md*',
+        command = 'nnoremap <space>z mqgggqG`q',
+        group = markdown_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.md*',
+        command = 'set shiftwidth=2',
+        group = markdown_group
+    }
+)
+vim.g.vim_markdown_new_list_item_indent = 2
+vim.g.vim_markdown_conceal = 0
