@@ -58,9 +58,6 @@ return require('packer').startup(function()
     -- repeat the above
     use 'tpope/vim-repeat'
 
-    -- peekabo
-    use 'junegunn/vim-peekaboo'
-
     -- text objects
     use 'wellle/targets.vim'
 
@@ -72,4 +69,23 @@ return require('packer').startup(function()
 
     -- lightspeed
     use 'ggandor/lightspeed.nvim'
+
+    -- harpoon
+    use 'ThePrimeagen/harpoon'
+
+    -- markdown
+    use 'godlygeek/tabular'
+    use 'preservim/vim-markdown'
+
+    -- git
+    use 'tpope/vim-fugitive'
+
+    -- -- visual star
+    -- use 'bronson/vim-visual-star-search'
+
+    -- rainbow parentheses
+    use 'p00f/nvim-ts-rainbow'
+
+    -- refactor
+    use 'ThePrimeagen/refactoring.nvim'
 end)

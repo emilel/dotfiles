@@ -36,16 +36,17 @@ require('telescope').setup {
 -- find file
 nmap('<space>a', '<cmd>Telescope find_files<cr>')
 
--- find buffer
+-- find marks
 nmap('<space>s', '<cmd>Telescope buffers<cr>')
 
 -- find text
 nmap('<space>/', '<cmd>Telescope live_grep<cr>')
 
 -- find selected text
-vmap('<space>/', '"hy:lua require("telescope.builtin").grep_string({ additional_args = function(opts) return {"--hidden"} end })<cr><c-r>h')
-vmap('<space>?', '"hy:lua require("telescope.builtin").grep_string({ additional_args = function(opts) return {"--hidden"} end })<cr>function <c-r>h')
+-- vmap('<space>/', '"hy:lua require("telescope.builtin").grep_string({ additional_args = function(opts) return {"--hidden"} end })<cr><c-r>h')
+-- vmap('<space>?', '"hy:lua require("telescope.builtin").grep_string({ additional_args = function(opts) return {"--hidden"} end })<cr>function <c-r>h')
 -- vmap('<space>/', '"hy<cmd>Telescope live_grep<cr><c-r>h')
+vmap('<space>/', '"hy:Telescope live_grep<cr><c-r>h')
 
 
 -- TREESITTER
@@ -61,8 +62,8 @@ require('nvim-treesitter.configs').setup {
         keymaps = {
           init_selection = ",v",
           node_incremental = ".",
-          scope_incremental = ",",
-          node_decremental = "-",
+          -- scope_incremental = ",",
+          node_decremental = ",",
         },
     },
     highlight = {
@@ -87,19 +88,19 @@ require('nvim-treesitter.configs').setup {
             set_jumps = true, -- whether to set jumps in the jumplist
             goto_next_start = {
               [",j"] = "@function.outer",
-              -- [",j"] = "@class.outer",
+              [",u"] = "@class.outer",
             },
             goto_next_end = {
               [",J"] = "@function.outer",
-              -- [",J"] = "@class.outer",
+              [",U"] = "@class.outer",
             },
             goto_previous_start = {
               [",k"] = "@function.outer",
-              -- [",k"] = "@class.outer",
+              [",i"] = "@class.outer",
             },
             goto_previous_end = {
               [",K"] = "@function.outer",
-              -- [",K"] = "@class.outer",
+              [",I"] = "@class.outer",
               },
         },
         lsp_interop = {
@@ -127,11 +128,21 @@ require('nvim-treesitter.configs').setup {
               ["ad"] = "@statement.outer",
               ["an"] = "@conditional.outer",
               ["in"] = "@conditional.inner",
-              ["ao"] = "@block.outer",
-              ["io"] = "@block.inner",
+              ["al"] = "@block.outer",
+              ["il"] = "@block.inner",
+              ["a,"] = "@parameter.outer",
+              ["i,"] = "@parameter.inner",
           },
         },
     },
+    rainbow = {
+        enable = true,
+        -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+        extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+        max_file_lines = nil, -- Do not enable for files with more than n lines, int
+        colors = {'#ebdbb2', '#b8bb26', '#83a598', '#fabd2f', '#fe8019'}, -- table of hex strings
+        -- termcolors = {} -- table of colour name strings
+      }
 }
 
 -- VIM-COMMENTARY
@@ -150,7 +161,7 @@ nmap('<space>u', '<cmd>UndotreeToggle<cr>')
 nmap('-', '<cmd>NnnPicker %:p:h<cr>')
 
 -- open home folder
-nmap('_', '<cmd>NnnPicker<cr>')
+-- nmap('_', '<cmd>NnnPicker<cr>')
 
 -- don't use default mappings
 vim.g["nnn#set_default_mappings"] = 0
@@ -167,6 +178,8 @@ cmp.setup({
 mapping = {
   ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
   ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+  ['<down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+  ['<up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
   ['<C-u>'] = cmp.mapping.scroll_docs(-4),
   ['<C-d>'] = cmp.mapping.scroll_docs(4),
   ['<CR>'] = cmp.mapping.confirm({ select = true }),
@@ -182,3 +195,49 @@ sources = {
 
 -- indent character
 vim.g.indentLine_char = '▏'
+
+-- TELESCOPE
+
+-- add mark
+nmap('<space>\'', '<cmd>lua require("harpoon.mark").add_file()<cr>')
+
+-- open marks
+nmap('<space>;', '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>')
+
+-- -- open commands
+-- nmap('<space>l', '<cmd>lua require("harpoon.cmd-ui").toggle_quick_menu()<cr>()')
+
+-- previous or next mark
+nmap('<c-j>', '<cmd>lua require("harpoon.ui").nav_next()<cr>()')
+nmap('<c-k>', '<cmd>lua require("harpoon.ui").nav_prev()<cr>()')
+
+-- go to file
+nmap('<space>1', '<cmd>lua require("harpoon.ui").nav_file(1)')
+nmap('<space>2', '<cmd>lua require("harpoon.ui").nav_file(2)')
+nmap('<space>3', '<cmd>lua require("harpoon.ui").nav_file(3)')
+
+-- SURROUND
+vim.g.surround_no_mappings = 1
+vmap('s', '<Plug>VSurround')
+nmap('ds', '<plug>Dsurround')
+nmap('cs', '<plug>Csurround')
+nmap('cS', '<plug>CSurround')
+nmap('ys', '<plug>Ysurround')
+nmap('yS', '<plug>YSurround')
+nmap('yss', '<plug>Yssurround')
+nmap('ySs', '<plug>YSsurround')
+nmap('ySS', '<plug>YSSurround')
+
+-- VISUAL STAR
+-- vim.cmd([[vnoremap / :<C-u>call VisualStarSearchSet('/')<CR>:execute 'noautocmd vimgrep /' . @/ . '/ **'<CR>]])
+
+-- LIGHTSPEED
+nmap('|', '<Plug>Lightspeed_s')
+nmap('_', '<Plug>Lightspeed_S')
+require'lightspeed'.opts.ignore_case = true
+
+-- REFACTOR
+require("telescope").load_extension("refactoring")
+vmap(',e', '<cmd>lua require("refactoring").refactor("Extract Function")<cr>')
+vmap(',E', '<cmd>lua require("telescope").extensions.refactoring.refactors()<cr>')
+nmap(',E', '<cmd>lua require("telescope").extensions.refactoring.refactors()<cr>')

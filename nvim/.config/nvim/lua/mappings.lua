@@ -17,6 +17,9 @@ vmap('<c-space>', '<esc><cmd>w<cr>gv', { noremap = true, silent = false })
 -- close window
 nmap('<space>c', ':q<cr>')
 
+-- close window!
+nmap('<space>C', ':q!<cr>')
+
 -- close all but currently focused
 nmap('<c-q>', '<cmd>only<cr>')
 
@@ -28,33 +31,47 @@ nmap('<space>l', '<cmd>wincmd l<cr>')
 
 
 -- FILE NAVIGATION
-
+--
 -- copy relative path
 nmap('<space>yy', '<cmd>let @+ = fnamemodify(expand("%"), ":~:.")<cr>')
 
 -- copy full path
 nmap('<space>YY', '<cmd>let @+ = expand("%:p")<cr>')
 
--- EDITOR COMMANDS
+-- go to written path
+vmap('<c-f>', '"qy:edit <c-r>q', { noremap = true, silent = false })
 
+-- open written path
+vmap('<cr>', '"qy:silent !xdg-open <c-r>q &disown<cr>')
 
--- replace assignment
-nmap('cC', '0f=wC')
+-- get path to file
+vim.cmd([[inoremap <expr> <c-a> fzf#vim#complete("fd <Bar> xargs realpath --relative-to " . expand("%:h"))]])
+
+-- MISC COMMANDS
+
+-- can undo line by line
+imap('<cr>', '<c-g>u<cr>')
+
+-- disable search highlight
+nmap('\\', '<cmd>noh<cr>')
+
+-- toggle incsearch
+nmap('<space>|', '<cmd>set is!<cr>')
 
 -- y in visual leads to where you want to be
 vmap('y', '<esc>mugvy`u')
 
--- mark visually selected word and copy to e
-vmap('\'', '"ey`<mq`>mw')
+-- mark inserted text
+nmap('giv', '`[v`]')
 
--- and replace current with marked word
-vmap('R', '"ey`<mr`>mt`qv`w"ep`rv`tp')
+-- go to last inserted text
+nmap('gii', '`]')
+
+-- capitalize inserted text
+nmap('giU', '`[v`]gU')
 
 -- go to marked word
 nmap('gm', '`qv`w')
-
--- visually select content on line
-vmap('<space>V', '^v$h')
 
 -- fold
 nmap('<cr>', 'za')
@@ -69,25 +86,28 @@ vmap('H', '^')
 vim.cmd([[nnoremap <expr> <Backspace> &foldlevel ? 'zM' :'zR']])
 
 -- prev/next in quickfix
-nmap('<c-j>', '<cmd>cnext<cr>')
-nmap('<c-k>', '<cmd>cprev<cr>')
+nmap('<space>J', '<cmd>cnext<cr>')
+nmap('<space>K', '<cmd>cprev<cr>')
 
 -- format paragraph
 nmap('<space>,', 'gwap')
 
--- add to jump list
-nmap('\'', 'm\'')
+-- add to jump list and set mark
+nmap('\'', 'm\'my')
+
+-- go to mark
+nmap('g\'', '`y')
 
 -- select pasted text
 nmap('gp', '`[v`]')
 
 -- delete row above or below
-vmap('<space>J', '<esc>j"_ddgv')
-vmap('<space>K', '<esc>k"_ddgv')
+vmap('<space>J', '<esc>`>j"_ddgv')
+vmap('<space>K', '<esc>`<k"_ddgv')
 
 -- add row above or below
-vmap('<space>j', '<esc>o<esc>gv')
-vmap('<space>k', '<esc>O<esc>gv')
+vmap('<space>j', '<esc>`>o<esc>gv')
+vmap('<space>k', '<esc>`<O<esc>gv')
 
 -- move selection
 vmap('<c-j>', ':m \'>+1<CR>gv')
@@ -107,6 +127,34 @@ vmap('<c-r>', '<esc><c-r>gv')
 vmap('<', '<gv')
 vmap('>', '>gv')
 
+-- ASSIGNMENTS ETC
+
+-- insert in beginning of assignment
+nmap('<space>I', '0f=wi')
+
+-- replace colon thing
+nmap('c:', 'f:wvf,hc')
+
+-- select colon thing
+nmap('v:', 'f:wvf,h')
+
+-- replace variable
+nmap('cv', '^vf=gec')
+
+-- visual select assignment
+nmap('v=', '0f=wv$F,h')
+
+-- copy assignment and delete row
+nmap('d=', '0f=wD"_dd')
+
+-- replace assignment
+nmap('c=', '0f=wv$F,hc')
+
+-- visual select variable
+nmap('vv', '^vf=ge')
+
+-- mark visually selected word and copy to e
+vmap('\'', '"ey`<mq`>mw')
 
 -- COPY
 
@@ -124,26 +172,34 @@ nmap('Y', 'y$')
 -- delete to end of line and delete line
 nmap('<space>D', 'D"_dd')
 
+-- paste inline in normal
+nmap('<space>p', 'a<cr><esc>P`]')
+
+-- paste inline in normal, trim newlines
+vim.cmd([[nnoremap <space>P a<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>`[V`]jokgJdw]])
+
+-- paste inline in visual
+vim.cmd([[vnoremap <space>P "udi<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>`[V`]jokgJdw"up`[v`]d]])
+
 -- SEARCH AND REPLACE
 
 -- search for selection in file
-vmap('/', '"hy/\\V<C-R>=escape(@h,\'/\\\')<CR><CR>', { noremap = true, silent = false })
+vmap('/', '"hymu/\\V<C-R>=escape(@h,\'/\\\')<CR><CR>`u', { noremap = true, silent = false })
+
+-- search for current word but don't jump
+nmap('*', '*``')
+
+-- and replace current with marked word
+vmap('<space>r', '"ey`<mr`>mt`qv`w"ep`rv`tp')
+
+-- visually select content on line
+nmap('<space>V', '^v$h')
 
 -- replace globally
--- vmap('<space>S', '"hy:g~<C-r>h~s///gc<left><left><left>', { noremap = true, silent = false })
 vmap('<space>S', '"hy:%s/<c-r>h//gc<left><left><left>', { noremap = true, silent = false })
 
 -- replace on one line
--- vmap('s', '"hy:.,.g~<C-r>h~s///g<left><left>', { noremap = true, silent = false })
-vmap('s', '"hy:s/<c-r>h//g<left><left>', { noremap = true, silent = false })
+vmap('S', '"hy:s/<c-r>h//g<left><left>', { noremap = true, silent = false })
 
 -- replace in visual selection
-vmap('<space>s', ':s/<c-r>e//g<left><left>', { noremap = true, silent = false })
-
--- mark inserted text
-nmap('giv', '`[v`]')
-
--- INSERT
-
--- can undo line by line
-imap('<cr>', '<c-g>u<cr>')
+vmap('<space>s', ':s/\\V<c-r>e//g<left><left>', { noremap = true, silent = false })

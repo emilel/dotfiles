@@ -5,6 +5,7 @@ vim.opt.background = 'dark'
 
 -- set theme
 vim.cmd([[colorscheme gruvbox]])
+-- vim.opt.termguicolors = true
 
 
 -- MISC
@@ -23,8 +24,6 @@ vim.opt.number = true
 
 -- if there are three numbers in the line number, you're doing it wrong
 vim.opt.numberwidth = 3
-
-vim.cmd([[hi SignColumn guibg=blue]])
 
 
 -- STATUS LINE

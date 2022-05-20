@@ -15,7 +15,9 @@ nmap('X', 'x')
 vmap('<space>p', '"_dP')
 
 -- search with perl
-nmap('\\', '/\\v', { noremap = false, silent = false })
+-- nmap('\\', '/\\v', { noremap = false, silent = false })
 
 -- space does nothing
-nmap('<space>', 'hl')
+nmap('<space>', '<nop>')
+
+nmap('*', '<cmd>keepjumps normal! mi*`i<CR>')
