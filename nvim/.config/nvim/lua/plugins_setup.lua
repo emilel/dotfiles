@@ -62,7 +62,6 @@ require('nvim-treesitter.configs').setup {
         keymaps = {
           init_selection = ",v",
           node_incremental = ".",
-          -- scope_incremental = ",",
           node_decremental = ",",
         },
     },
@@ -191,7 +190,7 @@ sources = {
 
 -- INDENTLINE
 -- -- keep conceallevel
--- vim.g.indentLine_setConceal = 0
+vim.g.indentLine_setConceal = 0
 
 -- indent character
 vim.g.indentLine_char = '▏'

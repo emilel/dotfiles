@@ -149,6 +149,11 @@ _G.packer_plugins = {
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
+  playground = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/playground",
+    url = "https://github.com/nvim-treesitter/playground"
+  },
   ["plenary.nvim"] = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/plenary.nvim",
@@ -173,6 +178,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  toggle = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/toggle",
+    url = "https://github.com/emilel/toggle"
   },
   undotree = {
     loaded = true,

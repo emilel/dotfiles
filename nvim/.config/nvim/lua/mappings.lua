@@ -17,8 +17,14 @@ vmap('<c-space>', '<esc><cmd>w<cr>gv', { noremap = true, silent = false })
 -- close window
 nmap('<space>c', ':q<cr>')
 
+-- close all
+nmap('<space>q', ':qa<cr>')
+
 -- close window!
 nmap('<space>C', ':q!<cr>')
+
+-- close all!
+nmap('<space>Q', ':qa!<cr>')
 
 -- close all but currently focused
 nmap('<c-q>', '<cmd>only<cr>')
@@ -74,7 +80,7 @@ nmap('giU', '`[v`]gU')
 nmap('gm', '`qv`w')
 
 -- fold
-nmap('<cr>', 'za')
+-- nmap('<cr>', 'za')
 
 -- go to end of line
 vmap('L', '$h')
@@ -138,17 +144,20 @@ nmap('c:', 'f:wvf,hc')
 -- select colon thing
 nmap('v:', 'f:wvf,h')
 
--- replace variable
-nmap('cv', '^vf=gec')
-
 -- visual select assignment
 nmap('v=', '0f=wv$F,h')
 
 -- copy assignment and delete row
 nmap('d=', '0f=wD"_dd')
 
+-- copy assignment
+nmap('y=', '0f=wy$')
+
 -- replace assignment
 nmap('c=', '0f=wv$F,hc')
+
+-- replace variable
+nmap('cv', '^vf=gec')
 
 -- visual select variable
 nmap('vv', '^vf=ge')

@@ -21,6 +21,9 @@ vim.opt.undofile = true
 -- don't stand on first or last row
 vim.opt.scrolloff = 8
 
+-- don't conceal
+vim.opt.conceallevel = 0
+
 -- SEARCH
 
 -- only highlight the current match
