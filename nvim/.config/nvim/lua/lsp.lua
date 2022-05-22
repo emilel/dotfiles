@@ -10,6 +10,9 @@ require('lspconfig')['pyright'].setup {
 capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
+-- lua
+require('lspconfig').sumneko_lua.setup{}
+
 -- go to definition
 nmap(',gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
 

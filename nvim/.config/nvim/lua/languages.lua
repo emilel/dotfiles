@@ -68,6 +68,22 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
+        command = 'nnoremap <silent> <cr> <cmd>lua require("toggle").Toggle(false)<cr>',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'nnoremap <silent> <space><cr> <cmd>lua require("toggle").Toggle(true)<cr>',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
         command = 'nnoremap <space>z <cmd>Black<cr>',
         group = python_group
     }
