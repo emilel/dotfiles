@@ -11,6 +11,9 @@ nmap('x', '"_x')
 -- but do copy on capital x
 nmap('X', 'x')
 
+-- and space x
+nmap('<space>x', 'x')
+
 -- don't copy when pasting
 vmap('<space>p', '"_dP')
 
@@ -21,3 +24,7 @@ vmap('<space>p', '"_dP')
 nmap('<space>', '<nop>')
 
 nmap('*', '<cmd>keepjumps normal! mi*`i<CR>')
+
+-- go to previous word
+nmap('z', 'ge')
+nmap('Z', 'gE')

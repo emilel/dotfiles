@@ -79,6 +79,9 @@ nmap('giU', '`[v`]gU')
 -- go to marked word
 nmap('gm', '`qv`w')
 
+-- format leads to where you want to be, except that it doesn't work. sigh
+vmap('gc', '<esc>mugvgc`u', { noremap = false })
+
 -- fold
 -- nmap('<cr>', 'za')
 
@@ -98,6 +101,8 @@ nmap('<space>K', '<cmd>cprev<cr>')
 -- format paragraph
 nmap('<space>,', 'gwap')
 
+nmap('<space>z', '<cmd>%s/\\s\\+$//e<cr>')
+
 -- add to jump list and set mark
 nmap('\'', 'm\'my')
 
@@ -110,6 +115,9 @@ nmap('gp', '`[v`]')
 -- delete row above or below
 vmap('<space>J', '<esc>`>j"_ddgv')
 vmap('<space>K', '<esc>`<k"_ddgv')
+
+-- copy selection and delete line
+vmap('D', 'y"_dd')
 
 -- add row above or below
 vmap('<space>j', '<esc>`>o<esc>gv')
@@ -139,28 +147,43 @@ vmap('>', '>gv')
 nmap('<space>I', '0f=wi')
 
 -- replace colon thing
-nmap('c:', 'f:wvf,hc')
+nmap('c:', '0f:wvf,hc')
 
--- select colon thing
-nmap('v:', 'f:wvf,h')
+-- select colon thing until comma
+nmap('v:', '0f:wvf,h')
 
 -- visual select assignment
-nmap('v=', '0f=wv$F,h')
+nmap('v==', '0f=wv$h')
+
+-- visual select assignment until comma
+nmap('v=,', '0f=wvt,', { noremap = false, silent = true })
 
 -- copy assignment and delete row
 nmap('d=', '0f=wD"_dd')
 
 -- copy assignment
-nmap('y=', '0f=wy$')
+nmap('y==', '0f=wy$')
+
+-- copy assignment until comma
+nmap('y=,', '0f=wy$')
 
 -- replace assignment
-nmap('c=', '0f=wv$F,hc')
+nmap('c==', '0f=wv$F,hc')
+
+-- replace assignment until comma
+nmap('c=,', '0f=wvf,hc')
 
 -- replace variable
 nmap('cv', '^vf=gec')
 
 -- visual select variable
-nmap('vv', '^vf=ge')
+nmap('v=v', '^vf=ge')
+
+-- visual select variable and equals
+nmap('v=a', '^vf=wh')
+
+-- visual assignment right side
+nmap('v=e', '^f=wv$h')
 
 -- mark visually selected word and copy to e
 vmap('\'', '"ey`<mq`>mw')
@@ -202,13 +225,14 @@ nmap('*', '*``')
 vmap('<space>r', '"ey`<mr`>mt`qv`w"ep`rv`tp')
 
 -- visually select content on line
-nmap('<space>V', '^v$h')
+nmap('<space>v', '^v$h')
 
 -- replace globally
-vmap('<space>S', '"hy:%s/<c-r>h//gc<left><left><left>', { noremap = true, silent = false })
+vmap('<space>s', '"hy:%s/<C-R>=escape(@h,\'/\\\')<CR>//gc<left><left><left>', { noremap = true, silent = false })
 
 -- replace on one line
-vmap('S', '"hy:s/<c-r>h//g<left><left>', { noremap = true, silent = false })
+-- vmap('S', '"hy:s/<c-r>h//g<left><left>', { noremap = true, silent = false })
+vmap('S', '"hy:s/<C-R>=escape(@h,\'/\\\')<CR>//g<left><left>', { noremap = true, silent = false })
 
 -- replace in visual selection
-vmap('<space>s', ':s/\\V<c-r>e//g<left><left>', { noremap = true, silent = false })
+vmap('<space>S', ':s/\\%V<c-r>e//g<left><left>', { noremap = true, silent = false })

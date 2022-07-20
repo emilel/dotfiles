@@ -90,8 +90,11 @@ return require('packer').startup(function()
     use 'ThePrimeagen/refactoring.nvim'
 
     -- toggle
-    use 'emilel/toggle'
+    use '~/hobby/toggle'
 
     -- treesitter playground
     use 'nvim-treesitter/playground'
+
+    -- repl
+    use 'jpalardy/vim-slime'
 end)

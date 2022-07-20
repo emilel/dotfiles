@@ -113,3 +113,10 @@ o() {
 c() {
     cd *$1*
 }
+
+compiletex() {
+    lualatex $1
+    biber $1.bcf
+    lualatex $1
+    lualatex $1
+}
