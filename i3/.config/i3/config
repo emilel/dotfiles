@@ -26,6 +26,9 @@ exec_always --no-startup-id xset r rate 260 40
 bindsym $mod+q exec --no-startup-id xset r rate 260 40; \
     exec --no-startup-id setxkbmap -model pc80 -option caps:escape
 
+# start flameshot
+exec --no-startup-id flameshot
+
 # start a terminal
 bindsym $mod+BackSpace exec --no-startup-id kitty
 
@@ -216,12 +219,13 @@ bindsym Control+$mod+M exec --no-startup-id \
 bindsym Control+$mod+j exec --no-startup-id qutebrowser
 bindsym Control+$mod+S exec --no-startup-id spotify
 bindsym Control+$mod+P exec --no-startup-id flameshot gui
-bindsym Control+$mod+Shift+P exec --no-startup-id screenshot -s
+
+bindsym Control+$mod+Shift+P exec --no-startup-id flameshot screen -n 1 -c
 bindsym Control+$mod+N exec --no-startup-id pcmanfm
 bindsym Control+$mod+Y exec --no-startup-id charm
 bindsym Control+$mod+G exec --no-startup-id \
     env XDG_CURRENT_DESKTOP=GNOME gnome-control-center
-bindsym Control+$mod1+a exec --no-startup-id slack
+bindsym Control+$mod+a exec --no-startup-id slack
 bindsym $Control+$mod+T exec --no-startup-id teams
 
 # graphics and monitors

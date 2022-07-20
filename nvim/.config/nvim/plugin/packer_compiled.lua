@@ -182,7 +182,7 @@ _G.packer_plugins = {
   toggle = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/toggle",
-    url = "https://github.com/emilel/toggle"
+    url = "/home/emil/hobby/toggle"
   },
   undotree = {
     loaded = true,
@@ -218,6 +218,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-repeat",
     url = "https://github.com/tpope/vim-repeat"
+  },
+  ["vim-slime"] = {
+    loaded = true,
+    path = "/home/emil/.local/share/nvim/site/pack/packer/start/vim-slime",
+    url = "https://github.com/jpalardy/vim-slime"
   },
   ["vim-surround"] = {
     loaded = true,

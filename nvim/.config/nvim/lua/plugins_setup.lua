@@ -139,7 +139,7 @@ require('nvim-treesitter.configs').setup {
         -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
         extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
         max_file_lines = nil, -- Do not enable for files with more than n lines, int
-        colors = {'#ebdbb2', '#b8bb26', '#83a598', '#fabd2f', '#fe8019'}, -- table of hex strings
+        colors = {'#ebdbb2', '#fe8019', '#83a598', '#fabd2f', '#b8bb26'}, -- table of hex strings
         -- termcolors = {} -- table of colour name strings
       }
 }
@@ -240,3 +240,9 @@ require("telescope").load_extension("refactoring")
 vmap(',e', '<cmd>lua require("refactoring").refactor("Extract Function")<cr>')
 vmap(',E', '<cmd>lua require("telescope").extensions.refactoring.refactors()<cr>')
 nmap(',E', '<cmd>lua require("telescope").extensions.refactoring.refactors()<cr>')
+
+-- SLIME
+vim.g.slime_target = "tmux"
+vim.g.slime_no_mappings = 1
+vim.g.slime_default_config = {socket_name='default', target_pane=":repl"}
+nmap('<space>L', '<Plug>SlimeConfig')

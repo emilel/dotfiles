@@ -54,7 +54,15 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.tex*',
-        command = 'nnoremap <buffer> <space>. :exec "!pdflatex %"<cr>:exec "!bibtex " . expand("%:t:r")<cr>:exec "!pdflatex %"<cr>:exec "!pdflatex %"<cr>',
+        command = 'nnoremap <buffer> <space>> :exec "!pdflatex %"<cr>:exec "!bibtex " . expand("%:t:r")<cr>:exec "!pdflatex %"<cr>:exec "!pdflatex %"<cr>',
+        group = tex_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.tex*',
+        command = 'nnoremap <buffer> <space>. :exec "!pdflatex %"<cr>',
         group = tex_group
     }
 )
@@ -100,7 +108,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'setl colorcolumn=89',
+        command = 'setl colorcolumn=151',
         group = python_group
     }
 )
@@ -108,7 +116,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'setl textwidth=88',
+        command = 'setl textwidth=150',
         group = python_group
     }
 )
@@ -140,22 +148,6 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'nnoremap <silent> <buffer> gb <cmd>:s/True/False<cr>',
-        group = python_group
-    }
-)
-vim.api.nvim_create_autocmd(
-    'BufEnter',
-    {
-        pattern = '*.py*',
-        command = 'nnoremap <silent> <buffer> gB <cmd>:s/False/True<cr>',
-        group = python_group
-    }
-)
-vim.api.nvim_create_autocmd(
-    'BufEnter',
-    {
-        pattern = '*.py*',
         command = 'inoremap <expr> <c-a> fzf#vim#complete("fd <Bar> xargs realpath --relative-to " . getcwd())',
         group = python_group
     }
@@ -176,12 +168,11 @@ vim.api.nvim_create_autocmd(
         group = python_group
     }
 )
--- yoprint(f"^[pa: {^[pa}")^[
 vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'vnoremap ,p yoprint(f"<esc>pa: {<esc>pa} {(type(<esc>pa))}") # DEBUG STATEMENT<esc>gv',
+        command = 'vnoremap ,p y:set textwidth=0<cr>oprint(f"<esc>pa: {<esc>pa} ({type(<esc>pa)})")  # DEBUG STATEMENT<esc>:set textwidth=120<cr>V',
         group = python_group
     }
 )
@@ -190,6 +181,38 @@ vim.api.nvim_create_autocmd(
     {
         pattern = '*.py*',
         command = 'nnoremap ,P mu/# DEBUG STATEMENT<cr>"_dd`u:noh<cr>',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'nnoremap <silent> <space>t muA  # DEBUG: temporary statement<esc>`u',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'nnoremap <silent> <space>T mu/# DEBUG: temporary statement<cr>"_dd`u:noh<cr>',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'set conceallevel=1',
+        group = python_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'xmap <cr> <Plug>SlimeRegionSend',
         group = python_group
     }
 )
@@ -215,5 +238,49 @@ vim.api.nvim_create_autocmd(
         group = markdown_group
     }
 )
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.md*',
+        command = 'set conceallevel=0',
+        group = markdown_group
+    }
+)
 vim.g.vim_markdown_new_list_item_indent = 2
 vim.g.vim_markdown_conceal = 0
+
+-- JSON
+local json_group = vim.api.nvim_create_augroup(
+    'json',
+    { clear = true }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.js*',
+        command = 'set conceallevel=0',
+        group = json_group
+    }
+)
+
+-- bibtex
+local bibtex_group = vim.api.nvim_create_augroup(
+    'bibtex',
+    { clear = true }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.bib*',
+        command = 'set colorcolumn=0',
+        group = json_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.bib*',
+        command = 'set textwidth=0',
+        group = json_group
+    }
+)

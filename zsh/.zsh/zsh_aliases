@@ -11,7 +11,7 @@ alias areload='source ~/.zsh/zsh_aliases'
 # custom settings for a program
 alias dog='bat --paging never --number'
 alias vieww='nvim -R -u ~/.vimrc.view +AnsiEsc'
-alias view='nvim -R -u ~/.vimrc.view'
+alias view='nvim -R'
 alias viewjs='nvim -R -u ~/.vimrc.view -c "set filetype=javascript"'
 alias web='lynx -accept_all_cookies -editor=nvim -vikeys -book'
 alias silenus='sshfs athena:/home/pi/silenus ~/silenus'
@@ -30,6 +30,7 @@ alias setso='set_source'
 alias getso='get_source'
 alias getsi='get_sink'
 alias py='python'
+alias s='poetry shell'
 
 # navigation
 alias _='cd ~'
@@ -44,6 +45,9 @@ alias cdl='cd $(cat ~/.last_dir)'
 alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
 alias bell="echo -e '\a'"
 alias countpy="fd '.*\.py' | xargs cat | sed '/^\s*#/d;/^\s*$/d' | wc -l"
+alias imcopy='xclip -selection clipboard -t image/png'
+alias cr='rm report.aux report.bbl report.bcf report.blg report.log report.run.xml'
+alias rr='compiletex report'
 
 # hardware thingies
 alias sources='pactl list | grep -A2 -B0 "Source #" | view'
