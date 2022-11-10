@@ -198,6 +198,8 @@ nmap('<space>d', '"_d')
 nmap('<space>d', '"_d')
 nmap('<space>D', '"_D')
 
+vmap('<space>c', '"_c')
+
 -- copy to end of line
 nmap('Y', 'y$')
 
@@ -216,23 +218,24 @@ vim.cmd([[vnoremap <space>P "udi<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$
 -- SEARCH AND REPLACE
 
 -- search for selection in file
-vmap('/', '"hymu/\\V<C-R>=escape(@h,\'/\\\')<CR><CR>`u', { noremap = true, silent = false })
+vmap('/', '"hymu:set noincsearch<cr>/\\V<C-R>=escape(@h,\'/\\\')<CR><CR>:set incsearch<cr>`u')
+-- vmap('/', '"hy:set hlsearch<cr>:let @/=\"<C-R>=escape(@h,\'/\\\')<cr>\"<cr>')
 
 -- search for current word but don't jump
 nmap('*', '*``')
 
 -- and replace current with marked word
-vmap('<space>r', '"ey`<mr`>mt`qv`w"ep`rv`tp')
+vmap('m', '"ey`<mr`>mt`qv`w"ep`rv`tp')
 
 -- visually select content on line
 nmap('<space>v', '^v$h')
 
 -- replace globally
-vmap('<space>s', '"hy:%s/<C-R>=escape(@h,\'/\\\')<CR>//gc<left><left><left>', { noremap = true, silent = false })
+vmap('<space>r', '"hy:%s/<C-R>=escape(@h,\'/\\\')<CR>//gc<left><left><left>', { noremap = true, silent = false })
 
 -- replace on one line
 -- vmap('S', '"hy:s/<c-r>h//g<left><left>', { noremap = true, silent = false })
-vmap('S', '"hy:s/<C-R>=escape(@h,\'/\\\')<CR>//g<left><left>', { noremap = true, silent = false })
+vmap('r', '"hy:s/<C-R>=escape(@h,\'/\\\')<CR>//g<left><left>', { noremap = true, silent = false })
 
 -- replace in visual selection
-vmap('<space>S', ':s/\\%V<c-r>e//g<left><left>', { noremap = true, silent = false })
+vmap('<space>R', ':s/\\%V<c-r>e//g<left><left>', { noremap = true, silent = false })

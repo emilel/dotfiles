@@ -62,7 +62,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.tex*',
-        command = 'nnoremap <buffer> <space>. :exec "!pdflatex %"<cr>',
+        command = 'nnoremap <buffer> <space>. :exec "!lualatex %"<cr>',
         group = tex_group
     }
 )
@@ -100,7 +100,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'nmap <silent> <space>r :let @+ = \'python \' . fnamemodify(expand("%"), ":~:.")<cr>',
+        command = 'nmap <silent> <space>r :let @+ = \'py ./\' . fnamemodify(expand("%"), ":~:.")<cr>',
         group = julia_group
     }
 )
@@ -246,6 +246,14 @@ vim.api.nvim_create_autocmd(
         group = markdown_group
     }
 )
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.md*',
+        command = 'nnoremap <silent> <space>. :silent exec "!pandoc % -o " . expand("%:t:r") . ".pdf"<cr>',
+        group = markdown_group
+    }
+)
 vim.g.vim_markdown_new_list_item_indent = 2
 vim.g.vim_markdown_conceal = 0
 
@@ -282,5 +290,19 @@ vim.api.nvim_create_autocmd(
         pattern = '*.bib*',
         command = 'set textwidth=0',
         group = json_group
+    }
+)
+
+-- bibtex
+local text_group = vim.api.nvim_create_augroup(
+    'text',
+    { clear = true }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.txt*',
+        command = 'set nosmartindent',
+        group = text_group
     }
 )

@@ -119,4 +119,5 @@ compiletex() {
     biber $1.bcf
     lualatex $1
     lualatex $1
+    cp $1.pdf "${1}_done.pdf"
 }

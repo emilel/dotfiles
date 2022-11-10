@@ -23,8 +23,14 @@ vmap('<space>p', '"_dP')
 -- space does nothing
 nmap('<space>', '<nop>')
 
-nmap('*', '<cmd>keepjumps normal! mi*`i<CR>')
+-- nmap('*', '<cmd>keepjumps normal! mi*`i<CR>')
+nmap('*', '*``')
 
 -- go to previous word
 nmap('z', 'ge')
 nmap('Z', 'gE')
+vmap('z', 'ge')
+vmap('Z', 'gE')
+
+-- dont jump when starring
+-- vim.cmd([[nmap <silent> * "syiw<Esc>: let @/ = @s<CR>:set hls<cr>]])
