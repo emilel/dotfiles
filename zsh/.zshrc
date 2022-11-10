@@ -101,3 +101,6 @@ export GOOGLE_APPLICATION_CREDENTIALS='/home/emil/uni/eitn30/internet-inuti/tran
 
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
+
+export GO111MODULE=on
+export GOOS=linux

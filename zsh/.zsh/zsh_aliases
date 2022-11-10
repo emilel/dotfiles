@@ -31,6 +31,7 @@ alias getso='get_source'
 alias getsi='get_sink'
 alias py='python'
 alias s='poetry shell'
+alias r='lualatex report.tex'
 
 # navigation
 alias _='cd ~'
@@ -46,7 +47,7 @@ alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
 alias bell="echo -e '\a'"
 alias countpy="fd '.*\.py' | xargs cat | sed '/^\s*#/d;/^\s*$/d' | wc -l"
 alias imcopy='xclip -selection clipboard -t image/png'
-alias cr='rm report.aux report.bbl report.bcf report.blg report.log report.run.xml'
+alias cr='rm report.aux report.bbl report.bcf report.blg report.log report.run.xml report.out report.toc'
 alias rr='compiletex report'
 
 # hardware thingies
@@ -61,7 +62,7 @@ alias pushnew='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
 alias gitb="git rev-parse --abbrev-ref HEAD | perl -pe 'chomp if eof'"
 
 # give arguments by default
-alias ls='ls -v --group-directories-first --color=auto'
+alias ls='ls -1v --group-directories-first --color=auto'
 alias mv='mv -nv'
 alias cp='cp -nv'
 alias rm='rm -v'
