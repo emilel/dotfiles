@@ -7,12 +7,22 @@ local vmap = require('helpers').vmap
 
 -- don't copy when deleting a character
 nmap('x', '"_x')
+vmap('x', '"_x')
 
 -- but do copy on capital x
 nmap('X', 'x')
 
+-- don't copy on s
+nmap('s', "\"_s")
+
 -- and space x
 nmap('<space>x', 'x')
+
+-- original r
+vmap('R', 'r')
+
+-- don't go forward when toggling case
+nmap('~', '~h')
 
 -- don't copy when pasting
 vmap('<space>p', '"_dP')

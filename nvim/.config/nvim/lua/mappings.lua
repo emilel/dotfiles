@@ -12,6 +12,12 @@ nmap('<space>R', '<cmd>source $MYVIMRC<cr>', { noremap = true, silent = false })
 nmap('<c-space>', '<cmd>w<cr>', { noremap = true, silent = false })
 vmap('<c-space>', '<esc><cmd>w<cr>gv', { noremap = true, silent = false })
 
+-- find placeholder
+nmap('<space><space>', '/<-><cr>va>c')
+
+-- save and exit
+-- nmap('<cr><cr>', '<cmd>wq<cr>')
+
 -- WINDOW MOVEMENT
 
 -- close window
@@ -48,10 +54,12 @@ nmap('<space>YY', '<cmd>let @+ = expand("%:p")<cr>')
 vmap('<c-f>', '"qy:edit <c-r>q', { noremap = true, silent = false })
 
 -- open written path
-vmap('<cr>', '"qy:silent !xdg-open <c-r>q &disown<cr>')
+-- vmap('<cr>', '"qy:silent !xdg-open <c-r>q &disown<cr>')
 
 -- get path to file
-vim.cmd([[inoremap <expr> <c-a> fzf#vim#complete("fd <Bar> xargs realpath --relative-to " . expand("%:h"))]])
+vim.cmd([[inoremap <expr> <c-a> fzf#vim#complete("fd <Bar> xargs realpath --relative-to " . getcwd())]])
+
+vmap('<c-^>', '<esc><c-^>')
 
 -- MISC COMMANDS
 
@@ -84,6 +92,9 @@ vmap('gc', '<esc>mugvgc`u', { noremap = false })
 
 -- fold
 -- nmap('<cr>', 'za')
+
+-- disable colorcolumn
+nmap(',c', '<cmd>set colorcolumn=0<cr>')
 
 -- go to end of line
 vmap('L', '$h')
@@ -190,6 +201,12 @@ vmap('\'', '"ey`<mq`>mw')
 
 -- COPY
 
+-- append to copy register
+vmap('Y', '<esc>mi`<ms`>me`sv`e"oy`sO<esc>p`[mt`]a<cr><esc>"opmnv`td"_dd`i')
+
+-- paste from appended register
+nmap('<space>b', '<cmd>let @+ = @U<cr>"up`[mz`]xv`zd')
+
 -- don't copy when prepending space
 vmap('<space>d', '"_d')
 vmap('<space>d', '"_d')
@@ -210,10 +227,10 @@ nmap('<space>D', 'D"_dd')
 nmap('<space>p', 'a<cr><esc>P`]')
 
 -- paste inline in normal, trim newlines
-vim.cmd([[nnoremap <space>P a<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>`[V`]jokgJdw]])
+-- vim.cmd([[nnoremap <space>P a<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>`[V`]jokgJdw]])
 
 -- paste inline in visual
-vim.cmd([[vnoremap <space>P "udi<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>`[V`]jokgJdw"up`[v`]d]])
+-- vim.cmd([[vnoremap <space>P "udi<cr><esc>P`[v`]:'<,'>.!perl -pe "s/^\s*(.*?)\s*$/\1/"<cr>`[V`]jokgJdw"up`[v`]d]])
 
 -- SEARCH AND REPLACE
 
@@ -231,11 +248,10 @@ vmap('m', '"ey`<mr`>mt`qv`w"ep`rv`tp')
 nmap('<space>v', '^v$h')
 
 -- replace globally
-vmap('<space>r', '"hy:%s/<C-R>=escape(@h,\'/\\\')<CR>//gc<left><left><left>', { noremap = true, silent = false })
+vmap('<space>R', '"hy:%s/<C-R>=escape(@h,\'/\\\')<CR>//gc<left><left><left>', { noremap = true, silent = false })
 
 -- replace on one line
--- vmap('S', '"hy:s/<c-r>h//g<left><left>', { noremap = true, silent = false })
-vmap('r', '"hy:s/<C-R>=escape(@h,\'/\\\')<CR>//g<left><left>', { noremap = true, silent = false })
+vmap('r', '"hy:s/<C-R>=escape(@h,\'/\\\')<CR>//g | :noh<left><left><left><left><left><left><left><left><left>', { noremap = true, silent = false })
 
 -- replace in visual selection
-vmap('<space>R', ':s/\\%V<c-r>e//g<left><left>', { noremap = true, silent = false })
+vmap('<space>r', ':s/\\%V<c-r>e//g<left><left>', { noremap = true, silent = false })

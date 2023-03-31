@@ -176,7 +176,9 @@ local cmp = require'cmp'
 cmp.setup({
 mapping = {
   ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+  ['<C-j>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
   ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+  ['<C-k>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
   ['<down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
   ['<up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
   ['<C-u>'] = cmp.mapping.scroll_docs(-4),
@@ -195,9 +197,9 @@ vim.g.indentLine_setConceal = 0
 -- indent character
 vim.g.indentLine_char = '▏'
 
--- TELESCOPE
+-- HARPOON
 
--- add mark
+-- add mark, bookmark
 nmap('<space>\'', '<cmd>lua require("harpoon.mark").add_file()<cr>')
 
 -- open marks
@@ -227,6 +229,9 @@ nmap('yss', '<plug>Yssurround')
 nmap('ySs', '<plug>YSsurround')
 nmap('ySS', '<plug>YSSurround')
 
+-- FZF
+nmap('<space>?', '<cmd>BLines<cr>')
+
 -- VISUAL STAR
 -- vim.cmd([[vnoremap / :<C-u>call VisualStarSearchSet('/')<CR>:execute 'noautocmd vimgrep /' . @/ . '/ **'<CR>]])
 
@@ -244,5 +249,25 @@ nmap(',E', '<cmd>lua require("telescope").extensions.refactoring.refactors()<cr>
 -- SLIME
 vim.g.slime_target = "tmux"
 vim.g.slime_no_mappings = 1
-vim.g.slime_default_config = {socket_name='default', target_pane=":repl"}
+vim.g.slime_default_config = {socket_name='default', target_pane=":.1"}
 nmap('<space>L', '<Plug>SlimeConfig')
+vmap('<cr>', '<Plug>SlimeRegionSend<cr>')
+nmap('<cr>', '<cmd>SlimeSendCurrentLine<cr>')
+
+-- vim.api.nvim_create_autocmd(
+--     'BufEnter',
+--     {
+--         pattern = '*.py*',
+--         command = 'xmap <cr> <Plug>SlimeRegionSend',
+--         group = python_group
+--     }
+-- )
+
+-- vim.api.nvim_create_autocmd(
+--     'BufEnter',
+--     {
+--         pattern = '*.py*',
+--         command = 'nmap <cr> :SlimeSendCurrentLine<cr>',
+--         group = python_group
+--     }
+-- )

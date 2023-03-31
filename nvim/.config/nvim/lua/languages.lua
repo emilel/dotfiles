@@ -36,14 +36,6 @@ vim.api.nvim_create_autocmd(
         group = julia_group
     }
 )
-vim.api.nvim_create_autocmd(
-    'BufEnter',
-    {
-        pattern = '*.jl*',
-        command = 'nnoremap <space>z <cmd>JuliaFormatterFormat<cr>',
-        group = julia_group
-    }
-)
 
 -- tex
 local tex_group = vim.api.nvim_create_augroup(
@@ -62,7 +54,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.tex*',
-        command = 'nnoremap <buffer> <space>. :exec "!lualatex %"<cr>',
+        command = 'nnoremap <buffer> <space>. :exec "!pdflatex %"<cr>',
         group = tex_group
     }
 )
@@ -72,14 +64,14 @@ local python_group = vim.api.nvim_create_augroup(
     'python',
     { clear = true }
 )
-vim.api.nvim_create_autocmd(
-    'BufEnter',
-    {
-        pattern = '*.py*',
-        command = 'nnoremap <silent> <cr> <cmd>lua require("toggle").Toggle(false)<cr>',
-        group = python_group
-    }
-)
+-- vim.api.nvim_create_autocmd(
+--     'BufEnter',
+--     {
+--         pattern = '*.py*',
+--         command = 'nnoremap <silent> <cr> <cmd>lua require("toggle").Toggle(false)<cr>',
+--         group = python_group
+--     }
+-- )
 vim.api.nvim_create_autocmd(
     'BufEnter',
     {
@@ -92,7 +84,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'nnoremap <space>z <cmd>Black<cr>',
+        command = 'nnoremap <space>z <cmd>Black<cr><cmd>Isort<cr>',
         group = python_group
     }
 )
@@ -108,7 +100,15 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'setl colorcolumn=151',
+        command = 'nmap <silent> <space>R :let @+ = \'py -i ./\' . fnamemodify(expand("%"), ":~:.")<cr>',
+        group = julia_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.py*',
+        command = 'setl colorcolumn=81',
         group = python_group
     }
 )
@@ -116,7 +116,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'setl textwidth=150',
+        command = 'setl textwidth=80',
         group = python_group
     }
 )
@@ -156,7 +156,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'nnoremap ,dd opdb.set_trace()<esc>',
+        command = 'nnoremap ,dd opdb.set_trace()<esc>ggoimport pdb<esc><c-o>',
         group = python_group
     }
 )
@@ -164,7 +164,7 @@ vim.api.nvim_create_autocmd(
     'BufEnter',
     {
         pattern = '*.py*',
-        command = 'nnoremap ,DD mu?pdb.set.trace()<cr>"_dd`u:noh<cr>',
+        command = 'nnoremap ,DD <cmd>g/\\(pdb\\.set_trace\\\\|import pdb\\)/d<cr><cmd>noh<cr>',
         group = python_group
     }
 )
@@ -205,14 +205,6 @@ vim.api.nvim_create_autocmd(
     {
         pattern = '*.py*',
         command = 'set conceallevel=1',
-        group = python_group
-    }
-)
-vim.api.nvim_create_autocmd(
-    'BufEnter',
-    {
-        pattern = '*.py*',
-        command = 'xmap <cr> <Plug>SlimeRegionSend',
         group = python_group
     }
 )
@@ -304,5 +296,65 @@ vim.api.nvim_create_autocmd(
         pattern = '*.txt*',
         command = 'set nosmartindent',
         group = text_group
+    }
+)
+
+-- golang
+local go_group = vim.api.nvim_create_augroup(
+    'go',
+    { clear = true }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.go*',
+        command = 'set noexpandtab',
+        group = go_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.go*',
+        command = 'nmap <silent> <space>r :let @+ = \'go run \' . fnamemodify(expand("%"), ":~:.")<cr>',
+        group = go_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.go*',
+        command = 'nnoremap <space>z <cmd>GoFmt<cr><cmd>GoImports<cr>',
+        group = go_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.go*',
+        command = 'set colorcolumn=0',
+        group = go_group
+    }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.go*',
+        command = 'set textwidth=0',
+        group = go_group
+    }
+)
+
+-- shell
+local shell_group = vim.api.nvim_create_augroup(
+    'shell',
+    { clear = true }
+)
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        pattern = '*.sh*',
+        command = 'nmap <silent> <space>r :let @+ = \'./\' . fnamemodify(expand("%"), ":~:.")<cr>',
+        group = shell_group
     }
 )

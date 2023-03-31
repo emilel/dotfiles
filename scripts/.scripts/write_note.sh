@@ -10,8 +10,6 @@ nvim  -c "nnoremap <CR><CR> :wq<CR>" \
   -c 'lua require("harpoon.mark").add_file()' \
   -c "nnoremap q :q<cr>" \
   -c "nnoremap <esc> :q<cr>" \
-  -c "norm Go" \
-  -c "norm Go## $(date +%H:%M)" \
   -c "norm G2o" \
-  -c "norm zz" \
-  -c "startinsert" $noteFilename
+  -c "startinsert" \
+  $noteFilename

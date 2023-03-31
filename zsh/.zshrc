@@ -102,5 +102,24 @@ export GOOGLE_APPLICATION_CREDENTIALS='/home/emil/uni/eitn30/internet-inuti/tran
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
+# work
 export GO111MODULE=on
 export GOOS=linux
+export GOPRIVATE=gitlab.com/redactedgo/*,gitlab.com/redactedmobile/*
+export L4=0.0.0.0
+export API=localhost
+export KEY=REDACTED
+export DEBUG=true
+
+alias cl4='TERM=tmux-256color ssh -i ~/.ssh/emil.pem ubuntu@$L4'
+alias cloadtester='TERM=tmux-256color ssh -i ~/.ssh/emil.pem ubuntu@$LOADTESTER'
+alias mounttestserver='sshfs ubuntu@$LOADTESTER: testserver/ -o IdentityFile=~/.ssh/emil.pem'
+alias localapi='export API=localhost'
+alias l4api="export API=$L4"
+# alias andrew='TERM=tmux-256color ssh -A andrew'
+alias cdell='TERM=tmux-256color ssh -A -p 2022 redacted@0.0.0.0'
+export LOADTESTER=0.0.0.0
+export LOCATION_SOURCES=21
+alias onnx='export LOCATION_SOURCES=21'
+alias matrix='export LOCATION_SOURCES=14'
+alias l4addr='echo http://0.0.0.0:5000 | xclip -selection clipboard'

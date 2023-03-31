@@ -22,6 +22,9 @@ vim.opt.signcolumn = 'number'
 -- show line numbers in the gutter
 vim.opt.number = true
 
+-- relative number
+vim.opt.relativenumber = true
+
 -- if there are three numbers in the line number, you're doing it wrong
 vim.opt.numberwidth = 3
 
