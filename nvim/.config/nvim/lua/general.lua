@@ -76,8 +76,10 @@ vim.api.nvim_create_autocmd(
 
 vim.opt.formatoptions = 'tcrq2jl'
 
+vim.cmd([[autocmd FileType * set formatoptions-=o]])
+
 
 -- FORMATTING
 
-vim.opt.textwidth = 79
-vim.opt.colorcolumn = '80'
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = '81'

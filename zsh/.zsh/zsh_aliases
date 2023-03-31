@@ -30,8 +30,11 @@ alias setso='set_source'
 alias getso='get_source'
 alias getsi='get_sink'
 alias py='python'
+alias whatsmyip='curl --silent icanhazip.com'
+alias reload='source ~/.zshrc'
+alias openlast='open $(command ls -t | head -n1)'
+alias write='echo "$(</dev/stdin)"'
 alias s='poetry shell'
-alias r='lualatex report.tex'
 
 # navigation
 alias _='cd ~'
@@ -41,32 +44,28 @@ alias cdl='cd $(cat ~/.last_dir)'
 
 # if a ssh host is not your friend
 # alias ssh='TERM=screen-256color ssh'
+alias sshp='ssh -i ~/.ssh/emil.pem'
 
 # general cozy things to have in terminal
-alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
+# alias copy="perl -pe 'chomp if eof' | xclip -selection clipboard"
 alias bell="echo -e '\a'"
 alias countpy="fd '.*\.py' | xargs cat | sed '/^\s*#/d;/^\s*$/d' | wc -l"
 alias imcopy='xclip -selection clipboard -t image/png'
-alias cr='rm report.aux report.bbl report.bcf report.blg report.log report.run.xml report.out report.toc'
-alias rr='compiletex report'
 
 # hardware thingies
 alias sources='pactl list | grep -A2 -B0 "Source #" | view'
 alias sinks='pactl list | grep -A2 -B0 "Sink #" | view'
-
-# in case xargs does not play well
-# alias xargs='tr \\n \\0 | xargs -0 '
 
 # nice git stuff
 alias pushnew='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
 alias gitb="git rev-parse --abbrev-ref HEAD | perl -pe 'chomp if eof'"
 
 # give arguments by default
-alias ls='ls -1v --group-directories-first --color=auto'
+alias ls='ls -v --group-directories-first --color=auto'
 alias mv='mv -nv'
 alias cp='cp -nv'
 alias rm='rm -v'
-alias tree='tree -C'
+# alias tree='tree -C'
 
 # vim keys for tab suggestions
 bindkey -M menuselect 'h' vi-backward-char
@@ -89,7 +88,12 @@ bindkey '^U' n
 alias splitb='export SPLIT=h'
 alias splitv='export SPLIT=v'
 
+# go to home folder
+alias home='cd'
+
 # connect to athena
 alias athena='TERM=screen-256color ssh athena'
 
 alias sp='picom &disown'
+
+alias fz='FZF_DEFAULT_COMMAND="fd . /" fzf'

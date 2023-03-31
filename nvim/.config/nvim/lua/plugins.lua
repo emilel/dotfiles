@@ -22,9 +22,6 @@ return require('packer').startup(function()
     -- lualine
     use 'nvim-lualine/lualine.nvim'
 
-    -- format julia
-    use 'kdheepak/JuliaFormatter.vim'
-
     -- lsp
     use 'neovim/nvim-lspconfig'
 
@@ -97,4 +94,10 @@ return require('packer').startup(function()
 
     -- repl
     use 'jpalardy/vim-slime'
+
+    -- format go
+    use 'darrikonn/vim-gofmt'
+
+    -- sort python imports
+    use 'fisadev/vim-isort'
 end)

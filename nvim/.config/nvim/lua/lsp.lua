@@ -7,14 +7,14 @@ require'lspconfig'.julials.setup{}
 
 -- python
 require('lspconfig')['pyright'].setup {
-capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities = require('cmp_nvim_lsp').default_capabilities()
 }
 
 -- go
 require('lspconfig').gopls.setup{}
 
 -- lua
-require('lspconfig').sumneko_lua.setup{}
+require('lspconfig').lua_ls.setup{}
 
 -- go to definition
 nmap(',gd', '<cmd>lua vim.lsp.buf.definition()<cr>')

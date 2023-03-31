@@ -12,5 +12,5 @@ then
         cp $file ${file}.copy
     done
 else
-    cp $1 ${1}.copy
+    cp -r $1 ${1}.copy
 fi

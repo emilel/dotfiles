@@ -2,7 +2,7 @@
 open() {
     for word in $@
     do
-        mimeo $word 2>/dev/null &disown
+        xdg-open $word 2>/dev/null &disown
     done
 }
 
@@ -16,16 +16,6 @@ rmswe() {
 # mkdir and touch
 touchp() {
     mkdir -p "$(dirname "$1")" && touch "$1"
-}
-
-# cat multiple files
-rep() {
-    action="$1"
-    shift
-    for file in $@
-    do
-        $action $file
-    done
 }
 
 # open multiple files
@@ -66,18 +56,76 @@ n ()
 path() {
     if [ $# -eq 2 ]
     then
-        realpath --relative-to $2 $1 | copy
+        realpath --relative-to $2 $1
     else
-        realpath --relative-to . $1 | copy
+        realpath --relative-to . $1
     fi
 }
 
 fpath() {
-    realpath $1 | copy
+    realpath $1
 }
 
 mark() {
-    mv $1 $1-
+    for file in $@
+    do
+        if [ ${file: -1} != '-' ]
+        then
+            mv -v $file $file-
+        else
+            printf "$file was already marked!\n"
+        fi
+    done
+}
+
+umark() {
+    for file in $@
+    do
+        if [ ${file: -1} = '-' ]
+        then
+            mv -v $file ${file::-1}
+        else
+            printf "$file wasn't marked!\n"
+        fi
+    done
+}
+
+orig() {
+    for file in $@
+    do
+        if [ ${file: -5} != '.ORIG' ]
+        then
+            mv -v $file $file.ORIG
+        else
+            printf "$file was already backed up!\n"
+        fi
+    done
+}
+
+uorig() {
+    for file in $@
+    do
+        if [ ${file: -5} = '.ORIG' ]
+        then
+            mv -v $file ${file::-5}
+        else
+            printf "$file wasn't backed up!\n"
+        fi
+    done
+}
+
+bak() {
+    for file in $@
+    do
+        cp -v $file $file.BAK
+    done
+}
+
+ubak() {
+    for file in $@
+    do
+        rm -v $file.BAK
+    done
 }
 
 # get the name of a file you just wrote, in case you forgot
@@ -114,10 +162,41 @@ c() {
     cd *$1*
 }
 
-compiletex() {
-    lualatex $1
-    biber $1.bcf
-    lualatex $1
-    lualatex $1
-    cp $1.pdf "${1}_done.pdf"
+rep() {
+    n=$1
+    shift
+    for i in {1..$n}
+    do
+        printf $@'\n' | sed 's/#/'$i'/g'
+        printf $@ | sed 's/#/'$i'/g' | source /dev/stdin
+        if [ $i -ne $n ]
+        then
+            printf '\n'
+        fi
+    done
+
+}
+
+copy() {
+    text=$(perl -pe 'chomp if eof' </dev/stdin)
+    printf $text'\n'
+    printf $text | xclip -selection clipboard
+}
+
+eko() {
+    if [ $# -eq 1 ]
+    then
+        var=$1
+        print -rl -- ${(P)var}
+    else
+        var=$(printenv | cut - -d= -f1 | fzf)
+        print -rl -- ${(P)var}
+    fi
+}
+
+unt() {
+    until $@ 2>/dev/null
+    do
+        sleep 1
+    done
 }
