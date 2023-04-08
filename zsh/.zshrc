@@ -102,24 +102,6 @@ export GOOGLE_APPLICATION_CREDENTIALS='/home/emil/uni/eitn30/internet-inuti/tran
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
-# work
-export GO111MODULE=on
-export GOOS=linux
-export GOPRIVATE=gitlab.com/combaingo/*,gitlab.com/combainmobile/*
-export L4=52.17.136.153
-export API=localhost
-export KEY=29247c771a118d42448a
-export DEBUG=true
+[[ ! -f ~/.secrets.sh ]] || source ~/.secrets.sh
 
-alias cl4='TERM=tmux-256color ssh -i ~/.ssh/emil.pem ubuntu@$L4'
-alias cloadtester='TERM=tmux-256color ssh -i ~/.ssh/emil.pem ubuntu@$LOADTESTER'
-alias mounttestserver='sshfs ubuntu@$LOADTESTER: testserver/ -o IdentityFile=~/.ssh/emil.pem'
-alias localapi='export API=localhost'
-alias l4api="export API=$L4"
-# alias andrew='TERM=tmux-256color ssh -A andrew'
-alias cdell='TERM=tmux-256color ssh -A -p 2022 combain@85.235.1.33'
-export LOADTESTER=52.51.209.252
-export LOCATION_SOURCES=21
-alias onnx='export LOCATION_SOURCES=21'
-alias matrix='export LOCATION_SOURCES=14'
-alias l4addr='echo http://52.17.136.153:5000 | xclip -selection clipboard'
+export TERMINAL=kitty
