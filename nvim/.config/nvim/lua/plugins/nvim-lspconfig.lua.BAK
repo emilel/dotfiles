@@ -1,0 +1,17 @@
+return {
+	'neovim/nvim-lspconfig',
+	keys = {
+		{ '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>',  desc = "Go to previous diagnostic message" },
+		{ ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>',  desc = "Go to next diagnostic message" },
+		{ ',f', '<cmd>lua vim.diagnostic.open_float()<cr>', desc = "Open floating diagnostic message" },
+		{ ',q', '<cmd>lua vim.diagnostic.setloclist()<cr>', desc = "Open diagnostics list" }
+	},
+	dependencies = {
+		'williamboman/mason.nvim',
+		'williamboman/mason-lspconfig.nvim',
+
+		{ 'j-hui/fidget.nvim', opts = {} },
+
+		'folke/neodev.nvim',
+	},
+}

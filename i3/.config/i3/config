@@ -17,8 +17,8 @@ bindsym $mod+Shift+o exec --no-startup-id kitty \
     ~/.scripts/most_recent_note.sh
 
 # python repl
-bindsym $mod+p exec --no-startup-id kitty \
-    python
+bindsym $mod+p exec --no-startup-id kitty python
+bindsym $mod+shift+P exec --no-startup-id kitty --title quick_command python
 
 # editor
 bindsym $mod+y exec --no-startup-id kitty \
@@ -334,4 +334,21 @@ bar {
   inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
   urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
   }
+}
+
+bindsym $mod+shift+m mode "move" focus floating
+mode "move" {
+    bindsym h     move left
+    bindsym j     move down
+    bindsym k     move up
+    bindsym l     move right
+
+    bindsym shift+h     move left 100
+    bindsym shift+j     move down 100
+    bindsym shift+k     move up 100
+    bindsym shift+l     move right 100
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
