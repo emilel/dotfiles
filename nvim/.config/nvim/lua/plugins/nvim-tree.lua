@@ -23,24 +23,26 @@ local function edit_or_open()
   end
 end
 
+local function on_attach(bufnr)
+  local api = require('nvim-tree.api')
+  api.config.mappings.default_on_attach(bufnr)
+  vim.keymap.set('n', 'l', api.node.open.edit, { desc = 'Open file', buffer = bufnr })
+  vim.keymap.set('n', 'L', api.node.open.preview, { desc = 'Preview file', buffer = bufnr })
+  vim.keymap.set('n', 'h', api.tree.collapse_all, { desc = 'Collapse file node', buffer = bufnr })
+  vim.keymap.set('n', 'H', api.tree.collapse_all, { desc = 'Collapse directory node', buffer = bufnr })
+  vim.keymap.set('n', '<esc>', api.tree.close, { desc = 'Close file tree', buffer = bufnr })
+  vim.keymap.set('n', 'q', api.tree.close, { desc = 'Close file tree', buffer = bufnr })
+end
+
 return {
   "nvim-tree/nvim-tree.lua",
   keys = {
     { "-", "<cmd>NvimTreeFindFile<cr>", desc = "Toggle file tree" },
   },
   opts = {
+    on_attach = on_attach,
     view = {
       width = 40,
-      mappings = {
-        custom_only = false,
-        list = {
-          { key = "l",     action = "edit",         action_cb = edit_or_open },
-          { key = "L",     action = "preview" },
-          { key = "h",     action = "close_node" },
-          { key = "H",     action = "collapse_all", action_cb = collapse_all },
-          { key = "<esc>", action = "close" }
-        }
-      },
     },
     actions = {
       open_file = {
@@ -50,10 +52,10 @@ return {
     renderer = {
       icons = {
         show = {
-          file = true,
-          folder = true,
-          folder_arrow = true,
-          git = true
+          file = false,
+          folder = false,
+          folder_arrow = false,
+          git = false
         }
       },
       add_trailing = true
@@ -61,6 +63,5 @@ return {
   },
   version = "*",
   dependencies = {
-    "nvim-tree/nvim-web-devicons",
   },
 }

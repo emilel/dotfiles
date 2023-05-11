@@ -1,11 +1,25 @@
 -- Set highlight on search
 vim.o.hlsearch = true
 
+-- set title
+vim.opt.title = true
+vim.opt.titlestring ='%F'
+
+-- don't conceal
+vim.opt.conceallevel = 0
+
+-- line break comments
+vim.opt.formatoptions:append('t')
+vim.opt.formatoptions:append('c')
+vim.opt.formatoptions:append('r')
+vim.opt.formatoptions:append('q')
+vim.opt.formatoptions:append('2')
+vim.opt.formatoptions:append('j')
+vim.opt.formatoptions:append('l')
+-- tcrq2jl
+
 -- Make line numbers default
 vim.wo.number = true
-
--- don't add comment when opening a new line after a comment
-vim.o.formatoptions = vim.o.formatoptions:gsub('o', '')
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -50,3 +64,27 @@ vim.o.termguicolors = true
 
 -- relative numbers in number column
 vim.opt.relativenumber = true
+
+-- show whitespace
+local whitespace_group = vim.api.nvim_create_augroup(
+	'visible_whitespace',
+	{ clear = true }
+)
+vim.api.nvim_create_autocmd(
+	'InsertEnter',
+	{
+		group = whitespace_group,
+		callback = function()
+			vim.opt_local.list = false
+		end
+	}
+)
+vim.api.nvim_create_autocmd(
+	'InsertLeave',
+	{
+		group = whitespace_group,
+		callback = function()
+			vim.opt_local.list = true
+		end
+	}
+)

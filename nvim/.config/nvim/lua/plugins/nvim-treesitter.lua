@@ -1,5 +1,4 @@
 return {
-	-- Highlight, edit, and navigate code
 	'nvim-treesitter/nvim-treesitter',
 	dependencies = {
 		'nvim-treesitter/nvim-treesitter-textobjects',
@@ -7,6 +6,20 @@ return {
 	config = function()
 		pcall(require('nvim-treesitter.install').update { with_sync = true })
 		require('nvim-treesitter.configs').setup({
+			-- rainbow = {
+			-- 	enable = true,
+			-- 	query = 'rainbow-parens',
+			-- 	-- strategy = require('ts-rainbow').strategy.global,
+			-- 	hlgroups = {
+			-- 		'TSRainbowYellow',
+			-- 		'TSRainbowBlue',
+			-- 		'TSRainbowGreen',
+			-- 		'TSRainbowOrange',
+			-- 		'TSRainbowCyan',
+			-- 		'TSRainbowViolet',
+			-- 		'TSRainbowRed',
+			-- 	},
+			-- },
 			ensure_installed = { 'go', 'lua', 'python', 'vim' },
 			auto_install = true,
 			highlight = { enable = true },
@@ -25,8 +38,8 @@ return {
 					enable = true,
 					lookahead = true,
 					keymaps = {
-						['a,'] = '@parameter.outer',
-						['i,'] = '@parameter.inner',
+						-- ['a,'] = '@parameter.outer',
+						-- ['i,'] = '@parameter.inner',
 						["ac"] = "@call.outer",
 						["ic"] = "@call.inner",
 						['af'] = '@function.outer',
@@ -39,31 +52,31 @@ return {
 					enable = true,
 					set_jumps = true,
 					goto_next_start = {
-						[']m'] = '@function.outer',
-						[']]'] = '@class.outer',
+						[']f'] = '@function.outer',
+						[']c'] = '@class.outer',
 					},
 					goto_next_end = {
-						[']M'] = '@function.outer',
-						[']['] = '@class.outer',
+						[']F'] = '@function.outer',
+						[']C'] = '@class.outer',
 					},
 					goto_previous_start = {
-						['[m'] = '@function.outer',
-						['[['] = '@class.outer',
+						['[f'] = '@function.outer',
+						['[c'] = '@class.outer',
 					},
 					goto_previous_end = {
-						['[M'] = '@function.outer',
-						['[]'] = '@class.outer',
+						['[F'] = '@function.outer',
+						['[C'] = '@class.outer',
 					},
 				},
-				swap = {
-					enable = true,
-					swap_next = {
-						[',>'] = '@parameter.outer',
-					},
-					swap_previous = {
-						[',<'] = '@parameter.inner',
-					},
-				},
+				-- swap = {
+				-- 	enable = true,
+				-- 	swap_next = {
+				-- 		[',>'] = '@parameter.outer',
+				-- 	},
+				-- 	swap_previous = {
+				-- 		[',<'] = '@parameter.inner',
+				-- 	},
+				-- },
 			},
 		})
 	end,

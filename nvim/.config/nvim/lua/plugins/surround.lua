@@ -1,7 +1,7 @@
 return {
 	'tpope/vim-surround',
 	keys = {
-		{ 's',  '<plug>VSurround', mode = 'v',                 desc = "Surround selection" },
+		{ 's',  '<plug>VSurround', mode = 'x',                 desc = "Surround selection" },
 		{ 'ds', '<plug>Dsurround', desc = "Delete surrounding" },
 		{ 'cs', '<plug>Csurround', desc = "Change surrounding" },
 	},

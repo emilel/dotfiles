@@ -8,6 +8,11 @@ return {
 			desc = 'Search for highlighted string in workspace'
 		},
 		{
+			'<space>\\',
+			':lua require("telescope.builtin").live_grep()<cr>',
+			desc = 'Search in workspace'
+		},
+		{
 			'<space>m',
 			'<cmd>lua require("telescope.builtin").keymaps()<cr>',
 			desc = 'Keymaps'
@@ -23,7 +28,7 @@ return {
 			desc = 'Currently open buffers'
 		},
 		{
-			'<space>sf',
+			'<space>a',
 			'<cmd>lua require("telescope.builtin").find_files()<cr>',
 			desc = 'Search files'
 		},
@@ -48,42 +53,52 @@ return {
 			desc = 'Search diagnostics'
 		}
 	},
-	opts = {
-		pickers = {
-			find_files = {
-				hidden = true,
-			},
-			live_grep = {
-				additional_args = function(_)
-					return { '--hidden' }
-				end
-			},
-		},
-		defaults = {
-			file_ignore_patterns = {
-				'.git',
-				'old/*',
-				'%.png',
-				'%.pdf',
-				'%.pt',
-				'%.pickle',
-				'%.png',
-				'%.pkl',
-				'%.BAK'
-			},
-			layout_strategy = 'flex',
-			mappings = {
-				i = {
-					['<C-q>'] = require('telescope.actions').smart_send_to_qflist + require('telescope.actions').open_qflist,
-					['<tab>'] = require('telescope.actions').toggle_selection,
-					['<c-space>'] = require('telescope.actions').toggle_selection,
-					['<C-j>'] = require('telescope.actions').move_selection_next,
-					['<C-k>'] = require('telescope.actions').move_selection_previous,
-					['<esc>'] = require('telescope.actions').close
+	config = function()
+		require('telescope').setup({
+			pickers = {
+				find_files = {
+					hidden = true,
+				},
+				live_grep = {
+					additional_args = function(_)
+						return { '--hidden' }
+					end
 				},
 			},
-		}
-	},
+			defaults = {
+				file_ignore_patterns = {
+					'\\.git',
+					'old/*',
+					'%.png',
+					'%.pdf',
+					'%.pt',
+					'%.pickle',
+					'%.png',
+					'%.pkl',
+				},
+				layout_strategy = 'vertical',
+				mappings = {
+					i = {
+						['<C-q>'] = require('telescope.actions').smart_send_to_qflist + require('telescope.actions').open_qflist,
+						['<tab>'] = require('telescope.actions').toggle_selection,
+						['<c-space>'] = require('telescope.actions').toggle_selection,
+						['<C-j>'] = require('telescope.actions').move_selection_next,
+						['<C-k>'] = require('telescope.actions').move_selection_previous,
+						['<esc>'] = require('telescope.actions').close
+					},
+				},
+			},
+			extensions = {
+				fzf = {
+					fuzzy = true,
+					override_generic_sorter = true,
+					override_file_sorter = true,
+					case_mode = "smart_case",
+				}
+			}
+		})
+		require('telescope').load_extension('fzf')
+	end,
 	version = '*',
 	dependencies = { 'nvim-lua/plenary.nvim' }
 }
