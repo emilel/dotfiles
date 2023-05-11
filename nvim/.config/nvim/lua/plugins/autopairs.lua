@@ -1,4 +1,6 @@
 return {
 	"windwp/nvim-autopairs",
-	opts = {}
+	opts = {
+		ignored_next_char = "[%w%{,%,]"
+	}
 }

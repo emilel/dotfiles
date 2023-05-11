@@ -2,8 +2,8 @@
 alias k='echo "hoppsan..."'
 
 # conf
-alias conf='cd ~/dotfiles && nvim && cd -'
-alias vimconf='cd ~/dotfiles/nvim/.config/nvim && nvim && cd -'
+alias conf='cd ~/dotfiles && nvim -c "Telescope find_files" && cd -'
+alias vimconf='cd ~/dotfiles/nvim/.config/nvim && nvim -c "Telescope find_files" && cd -'
 
 # reload aliases
 alias areload='source ~/.zsh/zsh_aliases'
@@ -35,6 +35,7 @@ alias reload='source ~/.zshrc'
 alias openlast='open $(command ls -t | head -n1)'
 alias write='echo "$(</dev/stdin)"'
 alias s='poetry shell'
+alias n='nnn -JR'
 
 # navigation
 alias _='cd ~'

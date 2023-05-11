@@ -19,36 +19,53 @@ return {
 		'jay-babu/mason-nvim-dap.nvim',
 
 		-- Add your own debuggers here
-		'leoluz/nvim-dap-go',
+		'mfussenegger/nvim-dap-python',
 	},
 	config = function()
 		local dap = require 'dap'
 		local dapui = require 'dapui'
 
-		require('mason-nvim-dap').setup {
-			-- Makes a best effort to setup the various debuggers with
-			-- reasonable debug configurations
-			automatic_setup = true,
+		require("mason").setup()
+		require('mason-nvim-dap').setup({
+			ensure_installed = { 'python' },
+			handlers = {
+				function(config)
+					require('mason-nvim-dap').default_setup(config)
+				end,
+				python = function(config)
+					config.adapters = {
+						type = "executable",
+						command = "/usr/bin/env",
+						args = {
+							"python",
+							"-m",
+							"debugpy.adapter",
+						},
+					}
+					require('mason-nvim-dap').default_setup(config)
+				end,
+			},
+		})
 
-			-- You'll need to check that you have the required things installed
-			-- online, please don't ask me how to install them :)
-			ensure_installed = {
-				-- Update this to ensure that you have the debuggers for the langs you want
-				'delve',
+		dap.configurations.python = {
+			{
+				type = 'python',
+				request = 'launch',
+				name = "Launch file",
+				program = "${file}",
+				pythonPath = function()
+					return '/usr/bin/python'
+				end,
 			},
 		}
 
-		-- You can provide additional configuration to the handlers,
-		-- see mason-nvim-dap README for more information
-		require('mason-nvim-dap').setup_handlers()
-
 		-- Basic debugging keymaps, feel free to change to your liking!
-		vim.keymap.set('n', '<F5>', dap.continue)
-		vim.keymap.set('n', '<F1>', dap.step_into)
-		vim.keymap.set('n', '<F2>', dap.step_over)
-		vim.keymap.set('n', '<F3>', dap.step_out)
-		vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint)
-		vim.keymap.set('n', '<leader>B', function()
+		vim.keymap.set('n', '<bs>c', dap.continue)
+		vim.keymap.set('n', '<bs>l', dap.step_into)
+		vim.keymap.set('n', '<bs>j', dap.step_over)
+		vim.keymap.set('n', '<bs>k', dap.step_out)
+		vim.keymap.set('n', '<bs>b', dap.toggle_breakpoint)
+		vim.keymap.set('n', '<bs>B', function()
 			dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
 		end)
 
@@ -59,25 +76,22 @@ return {
 			--    Feel free to remove or use ones that you like more! :)
 			--    Don't feel like these are good choices.
 			icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
-			controls = {
-				icons = {
-					pause = '⏸',
-					play = '▶',
-					step_into = '⏎',
-					step_over = '⏭',
-					step_out = '⏮',
-					step_back = 'b',
-					run_last = '▶▶',
-					terminate = '⏹',
-				},
-			},
+			-- controls = {
+			-- 	icons = {
+			-- 		pause = '⏸',
+			-- 		play = '▶',
+			-- 		step_into = '⏎',
+			-- 		step_over = '⏭',
+			-- 		step_out = '⏮',
+			-- 		step_back = 'b',
+			-- 		run_last = '▶▶',
+			-- 		terminate = '⏹',
+			-- 	},
+			-- },
 		}
 
 		dap.listeners.after.event_initialized['dapui_config'] = dapui.open
 		dap.listeners.before.event_terminated['dapui_config'] = dapui.close
 		dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-		-- Install golang specific config
-		require('dap-go').setup()
 	end,
 }

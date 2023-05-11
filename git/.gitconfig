@@ -13,3 +13,5 @@
 	insteadOf = https://gitlab.com/
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[url "git@gitlab.combain.com:"]
+        insteadOf = https://gitlab.combain.com/

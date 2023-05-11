@@ -35,22 +35,22 @@ cd() {
 }
 
 # open nnn, cd on quit
-n ()
-{
-    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
-        echo "nnn is already running"
-        return
-    fi
-
-    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-
-    nnn -R "$@"
-
-    if [ -f "$NNN_TMPFILE" ]; then
-            . "$NNN_TMPFILE"
-            rm -f "$NNN_TMPFILE" > /dev/null
-    fi
-}
+# n ()
+# {
+#     if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+#         echo "nnn is already running"
+#         return
+#     fi
+#
+#     export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+#
+#     nnn -R "$@"
+#
+#     if [ -f "$NNN_TMPFILE" ]; then
+#             . "$NNN_TMPFILE"
+#             rm -f "$NNN_TMPFILE" > /dev/null
+#     fi
+# }
 
 # get path
 path() {
@@ -199,4 +199,10 @@ unt() {
     do
         sleep 1
     done
+}
+
+repl() {
+    temp_file=$(mktemp)
+    nvim +"set filetype=$1" +"nmap <space>c :q!<cr>" $temp_file
+    rm $temp_file
 }

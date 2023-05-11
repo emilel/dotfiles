@@ -16,7 +16,7 @@ export EDITOR='nvim'
 export PAGER='bat'
 
 ## and use the best editor as a man pager
-export MANPAGER='nvim +Man! -u ~/.vimrc.view'
+export MANPAGER='nvim +Man!'
 
 # plugins
 
@@ -105,3 +105,6 @@ fpath+=~/.zfunc
 [[ ! -f ~/.secrets.sh ]] || source ~/.secrets.sh
 
 export TERMINAL=kitty
+
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/zsh/.zsh/p10k.zsh.
+[[ ! -f ~/dotfiles/zsh/.zsh/p10k.zsh ]] || source ~/dotfiles/zsh/.zsh/p10k.zsh
