@@ -14,11 +14,12 @@ vim.keymap.set('n', '<space>q', '<cmd>qa<cr>', { desc = "Close all windows" })
 vim.keymap.set('n', '<space>Q', '<cmd>qa!<cr>', { desc = "Force close all windows" })
 vim.keymap.set('n', '<c-space>', '<cmd>w<cr>', { desc = "Save file" })
 vim.keymap.set('n', '<space>e', 'my<cmd>e<cr>`y', { desc = 'Reread file' })
+vim.keymap.set('n', '<c-.>', '<cmd>bn<cr>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<c-,>', '<cmd>bp<cr>', { desc = 'Previous buffer' })
 
 -- copy
 vim.keymap.set('v', '<space>p', '"_dP', { desc = 'Dont copy when pasting' })
-vim.keymap.set('v', '<space>d', '"_d', { desc = 'Don\'t copy when deleting' })
-vim.keymap.set('n', '<space>d', '"_d', { desc = 'Don\'t copy when deleting' })
+vim.keymap.set({ 'v', 'n' }, '<space>d', '"_d', { desc = 'Don\'t copy when deleting' })
 vim.keymap.set('v', '<space>c', '"_da', { desc = 'Don\'t copy when changing' })
 vim.keymap.set('n', 'x', '"_x', { desc = 'Don\'t copy when deleting' })
 vim.keymap.set('n', 'X', 'x', { desc = 'Do copy when deleting' })
@@ -30,6 +31,7 @@ vim.keymap.set('v', 'Y',
 	{ desc = 'Append selection to + register', silent = true })
 vim.keymap.set('n', '<space>yp', '<cmd>let @+ = fnamemodify(expand("%"), ":~:.")<cr>', { desc = 'Copy relative path' })
 vim.keymap.set('n', '<space>yP', '<cmd>let @+ = expand("%:p")<cr>', { desc = 'Copy absolute path' })
+vim.keymap.set('n', '<space>yb', '<cmd>let @+ = system("git rev-parse --abbrev-ref HEAD | tr -d \\"\\n\\"")<cr>')
 
 -- visual
 vim.keymap.set('v', '*', '<esc>mugv"yy/\\<<c-r>y\\><cr>`u', { desc = 'Search for exact string' })
@@ -52,7 +54,7 @@ vim.keymap.set('x', 'r',
 vim.keymap.set('v', '<space>R', '"hy:%s/<C-R>=escape(@h,\'/\\\')<CR>//gc<left><left><left>',
 	{ desc = 'Replace in whole file' })
 vim.keymap.set('v', '<space>r', ':s/\\%V<c-r>e//g<left><left>', { desc = 'Replace in selection' })
-vim.keymap.set('v', 'D', 'ygvV"_dd', { desc = 'Copy selection and delete line' })
+vim.keymap.set('v', 'D', 'ygvV"_d', { desc = 'Copy selection and delete line' })
 
 
 -- movement

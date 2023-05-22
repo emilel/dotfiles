@@ -1,7 +1,3 @@
-local shit_group = vim.api.nvim_create_augroup(
-	'shit',
-	{ clear = true }
-)
 vim.api.nvim_create_autocmd(
 	'BufEnter',
 	{
@@ -10,7 +6,10 @@ vim.api.nvim_create_autocmd(
 			vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = "lightblue" })
 			vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = "lightred" })
 		end,
-		group = shit_group
+		group = vim.api.nvim_create_augroup(
+			'shit',
+			{ clear = true }
+		)
 	}
 )
 

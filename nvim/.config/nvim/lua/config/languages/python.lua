@@ -7,6 +7,8 @@ vim.api.nvim_create_autocmd(
 			{ clear = true }
 		),
 		callback = function()
+			vim.keymap.set('n', '<space>yr', '<cmd>let @+ = \'py ./\' . fnamemodify(expand("%"), ":~:.")<cr>',
+			{ desc = 'Copy command to run file' })
 			vim.keymap.set('n', '<space>r', '<cmd>silent !tmux send-keys -t "run.bottom-right" "python " % Enter<cr>',
 				{ desc = 'Run file in tmux window "run"', buffer = true })
 			vim.keymap.set('n', '<space>R', '<cmd>silent !tmux send-keys -t "run.bottom-right" "python -i " % Enter<cr>',

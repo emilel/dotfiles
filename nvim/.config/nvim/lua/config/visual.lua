@@ -3,7 +3,7 @@ vim.opt.tabstop = 4
 
 -- cursor line
 vim.opt.cursorline = true
-vim.api.nvim_set_hl(0, 'cursorlinenr', { fg = 'darkyellow', bold = true })
+vim.api.nvim_set_hl(0, 'cursorlinenr', { fg = 'yellow', bold = true })
 vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'none' })
 local cursorline = vim.api.nvim_create_augroup(
 	'cursorline',

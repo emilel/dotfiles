@@ -7,9 +7,13 @@ vim.api.nvim_create_autocmd(
 			{ clear = true }
 		),
 		callback = function()
+			vim.opt.textwidth = 92
 			vim.keymap.set('n', '<space>r',
 				'<cmd>silent !tmux send-keys -t "run.bottom-right" C-c "include(\\"" %:p "\\")" Enter<cr>',
 				{ desc = 'Run file in tmux window "run"', buffer = true })
+			vim.keymap.set('n', '<space>R',
+				'<cmd>silent !tmux send-keys -t "run.bottom-right" C-c "include(\\"" %:p "\\")" Enter Up Up Enter<cr>',
+				{ desc = 'Reload and run file in tmux window "run"', buffer = true })
 			vim.keymap.set('n', ',dd', 'o@infiltrate<esc>ggOusing Infiltrator<esc><c-o>',
 				{ desc = 'Debug here.', buffer = true })
 			vim.keymap.set('n', ',DD',
