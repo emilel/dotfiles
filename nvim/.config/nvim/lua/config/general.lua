@@ -9,14 +9,13 @@ vim.opt.titlestring ='%F'
 vim.opt.conceallevel = 0
 
 -- line break comments
-vim.opt.formatoptions:append('t')
+vim.opt.formatoptions:append('2')
+vim.opt.formatoptions:append('j')
 vim.opt.formatoptions:append('c')
 vim.opt.formatoptions:append('r')
 vim.opt.formatoptions:append('q')
-vim.opt.formatoptions:append('2')
-vim.opt.formatoptions:append('j')
 vim.opt.formatoptions:append('l')
--- tcrq2jl
+vim.opt.formatoptions:append('t')
 
 -- Make line numbers default
 vim.wo.number = true

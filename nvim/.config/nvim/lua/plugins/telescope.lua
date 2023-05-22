@@ -8,8 +8,14 @@ return {
 			desc = 'Search for highlighted string in workspace'
 		},
 		{
+			'<space>*',
+			'<cmd>lua require("telescope.builtin").grep_string({ search = "", only_sort_text = true })<cr>',
+			mode = 'n',
+			desc = 'Fuzzy search in workspace'
+		},
+		{
 			'<space>\\',
-			':lua require("telescope.builtin").live_grep()<cr>',
+			'<cmd>Telescope live_grep<cr>',
 			desc = 'Search in workspace'
 		},
 		{
@@ -29,7 +35,7 @@ return {
 		},
 		{
 			'<space>a',
-			'<cmd>lua require("telescope.builtin").find_files()<cr>',
+			'<cmd>Telescope find_files<cr>',
 			desc = 'Search files'
 		},
 		{
@@ -64,8 +70,14 @@ return {
 						return { '--hidden' }
 					end
 				},
+				grep_string = {
+					additional_args = function(_)
+						return { '--hidden' }
+					end
+				},
 			},
 			defaults = {
+				preview = true,
 				file_ignore_patterns = {
 					'\\.git',
 					'old/*',
@@ -77,6 +89,9 @@ return {
 					'%.pkl',
 				},
 				layout_strategy = 'vertical',
+				layout_config = {
+					preview_cutoff = 0
+				},
 				mappings = {
 					i = {
 						['<C-q>'] = require('telescope.actions').smart_send_to_qflist + require('telescope.actions').open_qflist,
@@ -94,11 +109,25 @@ return {
 					override_generic_sorter = true,
 					override_file_sorter = true,
 					case_mode = "smart_case",
+				},
+				["zf-native"] = {
+					file = {
+						enable = true,
+						highlight_results = true,
+						match_filename = true,
+					},
+					generic = {
+						enable = false,
+					},
 				}
 			}
 		})
-		require('telescope').load_extension('fzf')
+		pcall(require('telescope').load_extension, 'fzf')
+		require("telescope").load_extension("zf-native")
 	end,
 	version = '*',
-	dependencies = { 'nvim-lua/plenary.nvim' }
+	dependencies = {
+		'nvim-lua/plenary.nvim',
+		'natecraddock/telescope-zf-native.nvim'
+	}
 }

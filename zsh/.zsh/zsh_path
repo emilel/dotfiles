@@ -12,3 +12,6 @@ export PATH="$HOME/.scripts:$PATH"
 
 ## go
 export PATH=$PATH:/home/emil/go/bin
+
+## julia
+export PATH=$PATH:/home/emil/install/julia-bin/pkg/julia-bin/usr/bin
