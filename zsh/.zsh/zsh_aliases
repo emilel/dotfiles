@@ -5,6 +5,9 @@ alias k='echo "hoppsan..."'
 alias conf='cd ~/dotfiles && nvim -c "Telescope find_files" && cd -'
 alias vimconf='cd ~/dotfiles/nvim/.config/nvim && nvim -c "Telescope find_files" && cd -'
 
+# setup
+alias setup='cd ~/.setup && nvim -c "Telescope find_files" && cd -'
+
 # reload aliases
 alias areload='source ~/.zsh/zsh_aliases'
 
@@ -17,7 +20,6 @@ alias web='lynx -accept_all_cookies -editor=nvim -vikeys -book'
 alias silenus='sshfs athena:/home/pi/silenus ~/silenus'
 alias treepb='tree -I __pycache__ . | bat'
 alias first='head -1'
-alias tmaa='tmux new-session -t $(tmux list-session -F "#S" | fzf)'
 
 # programs and scripts, but if you are in a hurry
 alias bt='bluetoothctl'
@@ -36,6 +38,11 @@ alias openlast='open $(command ls -t | head -n1)'
 alias write='echo "$(</dev/stdin)"'
 alias s='poetry shell'
 alias n='nnn -JR'
+alias so='xset dpms force off'
+alias attach='~/.scripts/select_and_attach_tmux_session.sh && exit'
+alias duplicate='~/.scripts/select_and_duplicate_tmux_session.sh && exit'
+alias tmconf='kitty tmconf.sh &disown && exit'
+alias note='kitty tmcreate &disown && exit'
 
 # navigation
 alias _='cd ~'

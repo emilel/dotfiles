@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# set -e
+
+dir=$1
+
+tmux rename-session $(basename $dir | tr 'A-Z' 'a-z' | tr -d '_-')
+tmux rename-window setup
+
+tmux new-window -d -c $dir -n vim
+tmux send-keys -t vim nvim Enter
+
+tmux new-window -d -c $dir -n run
+tmux split-window -t run -v -l 35 -c $dir
+
+tmux new-window -c $dir -n shell
+
+tmux new-window -d -c $dir -n repl
+tmux split-window -t repl -v -l 35 -c $dir
+
+if [ $# -eq 2 ]; then
+	eval $2
+else
+	tmux select-window -t vim
+	tmux kill-window -t setup
+fi

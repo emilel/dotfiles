@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# set -e
+
+dir=$HOME/notes
+
+tmux rename-session note
+tmux rename-window setup
+
+tmux new-window -d -c $dir -n vim
+
+tmux send-keys -t vim write_note.sh Enter
+
+tmux select-window -t vim
+tmux kill-window -t setup

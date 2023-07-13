@@ -39,28 +39,33 @@ return {
   keys = {
     { "-", "<cmd>NvimTreeFindFile<cr>", desc = "Toggle file tree" },
   },
-  opts = {
-    on_attach = on_attach,
-    view = {
-      width = 40,
-    },
-    actions = {
-      open_file = {
-        quit_on_open = true
-      }
-    },
-    renderer = {
-      icons = {
-        show = {
-          file = false,
-          folder = false,
-          folder_arrow = false,
-          git = false
+  config = function()
+    vim.g.loaded_netrw       = 1
+    vim.g.loaded_netrwPlugin = 1
+    require('nvim-tree').setup({
+      on_attach = on_attach,
+      filters = { custom = { '^.git$' }},
+      view = {
+        width = 40,
+      },
+      actions = {
+        open_file = {
+          quit_on_open = true
         }
       },
-      add_trailing = true
-    },
-  },
+      renderer = {
+        icons = {
+          show = {
+            file = false,
+            folder = false,
+            folder_arrow = false,
+            git = false
+          }
+        },
+        add_trailing = true
+      },
+    })
+  end,
   version = "*",
   dependencies = {
   },

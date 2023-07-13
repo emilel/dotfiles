@@ -60,12 +60,12 @@ return {
 		}
 
 		-- Basic debugging keymaps, feel free to change to your liking!
-		vim.keymap.set('n', '<bs>c', dap.continue)
-		vim.keymap.set('n', '<bs>l', dap.step_into)
-		vim.keymap.set('n', '<bs>j', dap.step_over)
-		vim.keymap.set('n', '<bs>k', dap.step_out)
-		vim.keymap.set('n', '<bs>b', dap.toggle_breakpoint)
-		vim.keymap.set('n', '<bs>B', function()
+		vim.keymap.set('n', '<delete>c', dap.continue)
+		vim.keymap.set('n', '<delete>l', dap.step_into)
+		vim.keymap.set('n', '<delete>j', dap.step_over)
+		vim.keymap.set('n', '<delete>k', dap.step_out)
+		vim.keymap.set('n', '<delete>b', dap.toggle_breakpoint)
+		vim.keymap.set('n', '<delete>B', function()
 			dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
 		end)
 

@@ -14,17 +14,16 @@ int main(int argc, char *argv[]) {
   char *pane_current_path = argv[1];
   char *user = argv[2];
   char *host = argv[3];
+  char *n_groups = argv[4];
 
   char *directory = strrchr(pane_current_path, '/') + 1;
 
-  char *path;
-  int n_sessions = 0;
-  FILE *fp = popen("tmux list-sessions -F ''", "r");
-  while (fgets(path, sizeof(path), fp) != NULL) {
-    n_sessions++;
-  }
+  char *n_sessions;
+  FILE *fp = popen("python /home/emil/.scripts/count_tmux_sessions.py", "r");
+  fgets(n_sessions, sizeof(n_sessions), fp);
+  n_sessions[strlen(n_sessions) -1] = '\0';
 
-  printf("#[bg=%s,fg=%s]  %s  #[bg=%s,fg=%s]  %s@%s  #[bg=%s,fg=%s]  %d  ",
+  printf("#[bg=%s,fg=%s]  %s  #[bg=%s,fg=%s]  %s@%s  #[bg=%s,fg=%s]  %s  ",
          FOLDER_BG, FOLDER_FG, directory, HOST_BG, HOST_FG, user, host, TMUX_BG,
          TMUX_FG, n_sessions);
 
