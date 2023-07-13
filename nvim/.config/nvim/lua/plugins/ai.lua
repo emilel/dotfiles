@@ -1,5 +1,5 @@
-vim.g.ai_no_mapping = 1
 vim.g.ai_indicator_text = '★'
+vim.g.ai_no_mappings = 1
 
 return {
 	'aduros/ai.vim',

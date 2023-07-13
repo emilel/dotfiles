@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# tmux send-keys -t vim ":e src/GinAnn.jl" Enter
+
+tmux send-keys -t run.0 "repl go" Enter
+
+tmux send-keys -t repl.0 "repl go" Enter
+tmux send-keys -t repl.1 "make repl" Enter
+
+tmux select-window -t vim
+tmux kill-window -t setup

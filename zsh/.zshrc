@@ -11,8 +11,7 @@ fi
 ## use the best editor of course
 export EDITOR='nvim'
 
-## use the best editor as a pager as well
-# export PAGER='nvim -R -u ~/.vimrc.view +AnsiEsc'
+## oh no use the best editor as a pager as well
 export PAGER='bat'
 
 ## and use the best editor as a man pager
@@ -102,7 +101,7 @@ export GOOGLE_APPLICATION_CREDENTIALS='/home/emil/uni/eitn30/internet-inuti/tran
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
-[[ ! -f ~/.secrets.sh ]] || source ~/.secrets.sh
+[[ ! -f ~/.setup/secrets/init.sh ]] || source ~/.setup/secrets/init.sh
 
 export TERMINAL=kitty
 

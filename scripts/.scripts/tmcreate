@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	tmux new-session sh -c "tmnote && zsh"
+else
+	tmux new-session sh -c "tmwork $1 $2 && zsh"
+fi
+

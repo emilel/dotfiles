@@ -8,6 +8,8 @@ vim.opt.titlestring ='%F'
 -- don't conceal
 vim.opt.conceallevel = 0
 
+vim.opt.textwidth = 80
+
 -- line break comments
 vim.opt.formatoptions:append('2')
 vim.opt.formatoptions:append('j')

@@ -9,7 +9,8 @@ return {
 		},
 		sections = {
 			lualine_a = { 'mode' },
-			lualine_b = {
+			lualine_b = { { 'filename', path = 1 } },
+			lualine_c = {
 				function()
 					local last
 					for token in os.getenv("PWD"):gmatch("/[^/]*") do
@@ -20,7 +21,6 @@ return {
 				end,
 				'branch'
 			},
-			lualine_c = { { 'filename', path = 1 } },
 		}
 	},
 }

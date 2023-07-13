@@ -7,12 +7,22 @@ local action_state = require "telescope.actions.state"
 local function to_relative_path(path, base)
 	local fileHandle    = assert(io.popen('realpath --relative-to ' .. base .. ' ' .. path, 'r'))
 	local commandOutput = assert(fileHandle:read('*a'))
-	commandOutput = commandOutput:sub(1, -2)
+	commandOutput       = commandOutput:sub(1, -2)
 	fileHandle:close()
 	return commandOutput
 end
 
 local M = {}
+
+local function selection_by_index(prompt_bufnr)
+	local selections = {}
+	local index = 1
+	require('telescope.actions.utils').map_selections(prompt_bufnr, function(entry)
+		selections[index] = entry.value
+		index = index + 1
+	end)
+	return selections
+end
 
 function M.insert_path(opts)
 	opts = opts or { rel = 'cwd' }
@@ -24,23 +34,62 @@ function M.insert_path(opts)
 		sorter = conf.file_sorter(opts),
 		attach_mappings = function(prompt_bufnr, _)
 			actions.select_default:replace(function()
+				local selections = selection_by_index(prompt_bufnr)
 				actions.close(prompt_bufnr)
-				local selection = action_state.get_selected_entry()[1]
-				local path
-				if opts.rel == 'file' then
-					local base = vim.fn.expand("%:h")
-					if base == '' then
-						base = '.'
+				local size = 0
+				for _ in pairs(selections) do size = size + 1 end
+				print(size)
+				if size == 0 then
+					local selection = action_state.get_selected_entry()[1]
+					local path
+					if opts.rel == 'file' then
+						local base = vim.fn.expand("%:h")
+						if base == '' then
+							base = '.'
+						end
+						path = to_relative_path(selection, base)
+					elseif opts.rel == 'cwd' then
+						path = selection
+					else
+						path = opts.base
 					end
-					path = to_relative_path(selection, base)
-				elseif opts.rel == 'cwd' then
-					path = selection
-				else
-					path = opts.base
+					vim.api.nvim_put({ path }, 'c', false, true)
+					vim.cmd('normal i')
+					vim.cmd('call cursor( line("."), col(".") + 1)')
+					return
 				end
-				vim.api.nvim_put({ path }, 'c', false, true)
-				vim.cmd('normal i')
-				vim.cmd('call cursor( line("."), col(".") + 1)')
+				local paths = {}
+				local l = 0
+				for i, selection in pairs(selections) do
+					local path
+					l = l + 1
+					if opts.rel == 'file' then
+						local base = vim.fn.expand("%:h")
+						if base == '' then
+							base = '.'
+						end
+						path = to_relative_path(selection, base)
+					elseif opts.rel == 'cwd' then
+						path = selection
+					else
+						path = opts.base
+					end
+					paths[i] = path
+				end
+
+				if l == 1 then
+					vim.api.nvim_put({ paths[1] }, 'c', false, true)
+					vim.cmd('normal i')
+					vim.cmd('call cursor( line("."), col(".") + 1)')
+				else
+					print('multiple')
+					for index, path in ipairs(paths) do
+						vim.api.nvim_put({ path }, '', false, true)
+						vim.cmd('normal o')
+					end
+					vim.cmd('normal "_ddA')
+					vim.cmd('call cursor( line("."), col(".") + 1)')
+				end
 			end)
 			return true
 		end,
@@ -49,11 +98,26 @@ end
 
 function M.join()
 	vim.ui.input(
-		{ prompt = 'Separator: ' },
+		{ prompt = 'separator: ' },
 		function(sep)
 			local content = vim.fn.getreg('+', 1, 1)
 			local output = table.concat(content, sep)
-			vim.api.nvim_put({ output }, '', true, true)
+			vim.fn.setreg('+', output)
+			print('set clipboard to \'' .. output .. '\'')
+		end)
+end
+
+function M.surround()
+	vim.ui.input(
+		{ prompt = 'surrounding: ' },
+		function(sep)
+			local content = vim.fn.getreg('+', 1, 1)
+			local newcontent = {}
+			for i, element in pairs(content) do
+				newcontent[i] = sep .. element .. sep
+				print(i .. " " .. element)
+			end
+			vim.fn.setreg('+', newcontent)
 		end)
 end
 
@@ -64,6 +128,21 @@ function M.list_snips()
 		ft_snips[item.trigger] = item.name
 	end
 	print(vim.inspect(ft_snips))
+end
+
+local telescope = require('telescope.builtin')
+local telescope_last = 0
+function M.telescope_resume()
+  if telescope_last == 0 then
+    telescope_last = 1
+    telescope.live_grep()
+  else
+    telescope.resume()
+  end
+end
+
+function M.setreg(to, from)
+	vim.fn.setreg(to, vim.fn.getreg(from, 1, 1))
 end
 
 return M

@@ -7,10 +7,11 @@ vim.api.nvim_create_autocmd(
 			{ clear = true }
 		),
 		callback = function()
-			vim.keymap.set('n', '<space><space>', '<cmd>wq<cr>',
+			vim.keymap.set('n', '<space>yr', '<cmd>let @+ = \'source \' . expand("%:p")<cr>',
+				{ desc = 'Copy command to source file' })
+			vim.keymap.set('n', '<cr><cr>', '<cmd>wq<cr>',
 				{ desc = 'Save and close file', buffer = true })
+			vim.keymap.set('n', '<cr>', '<nop>', { desc = 'Disable slime', buffer = true })
 		end
 	}
 )
-
-

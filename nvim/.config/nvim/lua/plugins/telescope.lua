@@ -3,7 +3,7 @@ return {
 	keys = {
 		{
 			'<space>*',
-			'"yy:lua require("telescope.builtin").grep_string({ search = <c-r>y })<cr>',
+			'"yy:lua require("telescope.builtin").grep_string({ search = "<c-r>y" })<cr>',
 			mode = 'v',
 			desc = 'Search for highlighted string in workspace'
 		},
@@ -19,25 +19,30 @@ return {
 			desc = 'Search in workspace'
 		},
 		{
+			'<space>/',
+			require("config.functions").telescope_resume,
+			desc = 'Continue search'
+		},
+		{
 			'<space>m',
 			'<cmd>lua require("telescope.builtin").keymaps()<cr>',
 			desc = 'Keymaps'
 		},
+		-- {
+		-- 	'<space>\\',
+		-- 	'<cmd>lua require("telescope.builtin").current_buffer_fuzzy_find()<cr>',
+		-- 	desc = 'Fuzzily search current buffer'
+		-- },
 		{
-			'<space>/',
-			'<cmd>lua require("telescope.builtin").current_buffer_fuzzy_find()<cr>',
-			desc = 'Fuzzily search current buffer'
-		},
-		{
-			'<space><space>',
+			'<space>A',
 			'<cmd>lua require("telescope.builtin").buffers()<cr>',
 			desc = 'Currently open buffers'
 		},
-		{
-			'<space>a',
-			'<cmd>Telescope find_files<cr>',
-			desc = 'Search files'
-		},
+		-- {
+		-- 	'<space>a',
+		-- 	'<cmd>Telescope find_files<cr>',
+		-- 	desc = 'Search files'
+		-- },
 		{
 			'<space>sh',
 			'<cmd>lua require("telescope.builtin").help_tags()<cr>',
@@ -73,7 +78,15 @@ return {
 				grep_string = {
 					additional_args = function(_)
 						return { '--hidden' }
-					end
+					end,
+					lsp_dynamic_workspace_symbols = {
+						sorter = require("telescope").extensions.fzf.native_fzf_sorter({
+							fuzzy = true, -- false will only do exact matching
+							override_generic_sorter = true, -- override the generic sorter
+							override_file_sorter = true, -- override the file sorter
+							case_mode = "smart_case",
+						})
+					},
 				},
 			},
 			defaults = {
@@ -107,27 +120,15 @@ return {
 				fzf = {
 					fuzzy = true,
 					override_generic_sorter = true,
-					override_file_sorter = true,
+					override_file_sorter = false,
 					case_mode = "smart_case",
 				},
-				["zf-native"] = {
-					file = {
-						enable = true,
-						highlight_results = true,
-						match_filename = true,
-					},
-					generic = {
-						enable = false,
-					},
-				}
 			}
 		})
 		pcall(require('telescope').load_extension, 'fzf')
-		require("telescope").load_extension("zf-native")
 	end,
 	version = '*',
 	dependencies = {
 		'nvim-lua/plenary.nvim',
-		'natecraddock/telescope-zf-native.nvim'
 	}
 }

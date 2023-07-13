@@ -203,6 +203,14 @@ unt() {
 
 repl() {
     temp_file=$(mktemp)
-    nvim +"set filetype=$1" +"nmap <space>c :q!<cr>" $temp_file
+    nvim +"set filetype=$1" +"nmap <space>q :q!<cr>" $temp_file
     rm $temp_file
+}
+
+join() {
+    sed ":a; N; \$!ba; s/\n/${1:-, }/g"
+}
+
+line() {
+    sed -n "${1:-1}p"
 }

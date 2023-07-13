@@ -1,0 +1,14 @@
+#!/bin/bash
+
+tmux send-keys -t vim ":e src/GinAnn.jl" Enter
+
+tmux send-keys -t run.0 "repl julia && exit" Enter
+tmux send-keys -t run.1 "make dev" Enter
+
+tmux send-keys -t repl.0 "repl julia && exit" Enter
+tmux send-keys -t repl.1 "make dev" Enter
+
+tmux send-keys -t shell "git pull" Enter
+
+tmux select-window -t vim
+tmux kill-window -t setup

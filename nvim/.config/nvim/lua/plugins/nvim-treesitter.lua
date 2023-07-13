@@ -27,9 +27,9 @@ return {
 			incremental_selection = {
 				enable = true,
 				keymaps = {
-					init_selection = ',,',
-					node_incremental = '.',
-					node_decremental = ',',
+					init_selection = '<backspace>',
+					node_incremental = '<backspace>',
+					node_decremental = '<space><backspace>',
 					-- scope_incremental = '+',
 				},
 			},
