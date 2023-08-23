@@ -43,6 +43,7 @@ alias attach='~/.scripts/select_and_attach_tmux_session.sh && exit'
 alias duplicate='~/.scripts/select_and_duplicate_tmux_session.sh && exit'
 alias tmconf='kitty tmconf.sh &disown && exit'
 alias note='kitty tmcreate &disown && exit'
+alias grip='echo http://localhost:6419 | xclip -selection clipboard && grip'
 
 # navigation
 alias _='cd ~'

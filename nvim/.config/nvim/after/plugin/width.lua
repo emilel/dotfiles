@@ -6,7 +6,9 @@ vim.api.nvim_create_autocmd(
 			{ clear = true }
 		),
 		callback = function()
-			vim.opt_local.colorcolumn = tostring(vim.opt_local.textwidth._value + 1)
+			if vim.opt_local.textwidth._value ~= 0 then
+				vim.opt_local.colorcolumn = tostring(vim.opt_local.textwidth._value + 1)
+			end
 		end
 	}
 )

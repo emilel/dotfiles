@@ -1,3 +1,6 @@
+-- surround with newline
+vim.cmd([[let g:surround_{char2nr("\<CR>")} = "\n\r\n"]])
+
 return {
 	'tpope/vim-surround',
 	keys = {

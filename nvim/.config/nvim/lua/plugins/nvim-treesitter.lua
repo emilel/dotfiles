@@ -29,7 +29,7 @@ return {
 				keymaps = {
 					init_selection = '<backspace>',
 					node_incremental = '<backspace>',
-					node_decremental = '<space><backspace>',
+					node_decremental = '<delete>',
 					-- scope_incremental = '+',
 				},
 			},

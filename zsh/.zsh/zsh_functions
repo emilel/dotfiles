@@ -214,3 +214,7 @@ join() {
 line() {
     sed -n "${1:-1}p"
 }
+
+ai() {
+	nvim +"silent AISetRole $1" +"AIChat"
+}

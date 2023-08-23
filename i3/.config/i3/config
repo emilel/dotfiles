@@ -38,7 +38,7 @@ exec --no-startup-id flameshot
 # start a terminal
 bindsym $mod+BackSpace exec --no-startup-id \
     kitty tmux new-session -n shell -s $(~/.scripts/get_session_name.py)
-bindsym $mod+shift+BackSpace exec --no-startup-id kitty ~/.scripts/attach.sh
+bindsym $mod+shift+BackSpace exec --no-startup-id kitty
 bindsym Control+$mod+BackSpace exec --no-startup-id kitty ~/.scripts/duplicate.sh
 
 # kill focused window

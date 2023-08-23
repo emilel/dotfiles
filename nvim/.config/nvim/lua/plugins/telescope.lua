@@ -34,7 +34,7 @@ return {
 		-- 	desc = 'Fuzzily search current buffer'
 		-- },
 		{
-			'<space>A',
+			'<space>sb',
 			'<cmd>lua require("telescope.builtin").buffers()<cr>',
 			desc = 'Currently open buffers'
 		},
@@ -87,6 +87,9 @@ return {
 							case_mode = "smart_case",
 						})
 					},
+				},
+				lsp_dynamic_workspace_symbols = {
+					sorter = require("telescope").extensions.fzf.native_fzf_sorter()
 				},
 			},
 			defaults = {
