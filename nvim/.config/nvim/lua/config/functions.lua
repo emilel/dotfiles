@@ -4,6 +4,10 @@ local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
+function trim(s)
+	return s:match '^%s*(.*%S)' or ''
+end
+
 local function to_relative_path(path, base)
 	local fileHandle    = assert(io.popen('realpath --relative-to ' .. base .. ' ' .. path, 'r'))
 	local commandOutput = assert(fileHandle:read('*a'))
@@ -96,12 +100,29 @@ function M.insert_path(opts)
 	}):find()
 end
 
+function M.split()
+	vim.ui.input(
+		{ prompt = 'separator: ' },
+		function(sep)
+			local contents = vim.fn.getreg('+', 1, 1)
+			local content = table.concat(contents, " ")
+			local t = {}
+			for str in string.gmatch(content, "([^" .. sep .. "]+)") do
+				table.insert(t, str)
+			end
+			vim.fn.setreg('+', t)
+		end)
+end
+
 function M.join()
 	vim.ui.input(
 		{ prompt = 'separator: ' },
 		function(sep)
-			local content = vim.fn.getreg('+', 1, 1)
-			local output = table.concat(content, sep)
+			local contents = vim.fn.getreg('+', 1, 1)
+			for i, content in pairs(contents) do
+				contents[i] = trim(content)
+			end
+			local output = table.concat(contents, sep)
 			vim.fn.setreg('+', output)
 			print('set clipboard to \'' .. output .. '\'')
 		end)
@@ -133,12 +154,12 @@ end
 local telescope = require('telescope.builtin')
 local telescope_last = 0
 function M.telescope_resume()
-  if telescope_last == 0 then
-    telescope_last = 1
-    telescope.live_grep()
-  else
-    telescope.resume()
-  end
+	if telescope_last == 0 then
+		telescope_last = 1
+		telescope.live_grep()
+	else
+		telescope.resume()
+	end
 end
 
 function M.setreg(to, from)

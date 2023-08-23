@@ -46,8 +46,8 @@ return {
 			nmap(',D', vim.lsp.buf.type_definition, 'Type definition')
 			nmap(',f', vim.diagnostic.open_float, 'Open diagnostic in floating window')
 			nmap(',dq', vim.diagnostic.setqflist, 'Open diagnostics in quickfix list')
-			nmap(',ds', require('telescope.builtin').lsp_document_symbols, 'Document symbols')
-			nmap(',ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace symbols')
+			nmap(',A', require('telescope.builtin').lsp_document_symbols, 'Document symbols')
+			nmap(',a', require('telescope.builtin').lsp_workspace_symbols, 'Workspace symbols')
 
 			-- See `:help K` for why this keymap
 			nmap('K', vim.lsp.buf.hover, 'Hover documentation')
@@ -87,10 +87,10 @@ return {
 			}),
 			mapping = cmp.mapping.preset.insert {
 				['<C-Space>'] = cmp.mapping.complete {},
-				['<CR>'] = cmp.mapping.confirm {
-					behavior = cmp.ConfirmBehavior.Replace,
-					select = true,
-				},
+				-- ['<CR>'] = cmp.mapping.confirm {
+				-- 	behavior = cmp.ConfirmBehavior.Replace,
+				-- 	select = true,
+				-- },
 				['<c-l>'] = cmp.mapping(function(fallback)
 					if luasnip.expand_or_jumpable() then
 						luasnip.expand_or_jump()

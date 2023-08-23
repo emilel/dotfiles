@@ -15,6 +15,9 @@ tmux split-window -t run -v -l 35 -c $dir
 
 tmux new-window -c $dir -n shell
 
+tmux new-window -d -c $dir -n chatgpt
+tmux send-keys -t chatgpt 'ai developer && exit' Enter
+
 tmux new-window -d -c $dir -n repl
 tmux split-window -t repl -v -l 35 -c $dir
 

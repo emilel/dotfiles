@@ -10,6 +10,8 @@ vim.opt.conceallevel = 0
 
 vim.opt.textwidth = 80
 
+vim.opt.shiftwidth = 4
+
 -- line break comments
 vim.opt.formatoptions:append('2')
 vim.opt.formatoptions:append('j')

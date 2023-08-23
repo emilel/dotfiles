@@ -1,17 +1,24 @@
 vim.api.nvim_create_autocmd(
 	'FileType',
 	{
-		pattern = 'markdown',
+		pattern = 'tex',
 		group = vim.api.nvim_create_augroup(
-			'markdown',
+			'latex',
 			{ clear = true }
 		),
 		callback = function()
-			vim.opt_local.textwidth = 80
-			vim.opt_local.colorcolumn = '81'
-			vim.opt_local.shiftwidth = 2
-			vim.opt_local.spell = true
-			vim.opt_local.spelllang = 'en_us'
+			vim.opt_local.shiftwidth = 4
+
+
+			vim.keymap.set('n', '<cr>r',
+				':silent !tmux send-keys -t "shell.bottom-right" "pdflatex --output-directory " %:h \\ %:p Enter<cr>',
+				{
+					desc = 'Compile document in tmux window "shell"',
+					buffer = true,
+					silent =
+						true
+				})
+
 			vim.keymap.set('n', '<space>z', 'gwap', { desc = 'Format paragraph', buffer = true })
 			vim.keymap.set('n', '<space>Z', 'mygggqG`y', { desc = 'Format file', buffer = true })
 			vim.keymap.set("n", ",ca", function()

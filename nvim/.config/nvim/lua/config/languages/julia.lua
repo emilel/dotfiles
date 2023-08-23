@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd(
 				{ desc = 'Format julia file', buffer = true, silent = true })
 			vim.keymap.set('i', '<c-a>', '<cmd>lua require("config.functions").insert_path({rel="file"})<cr>',
 				{ desc = 'Insert path', buffer = true, silent = true })
-			vim.keymap.set('n', '<space>yr', ':silent let @+ = \'include(\"\' . fnamemodify(expand("%"), ":~:.") . \'\");\'<cr>',
+			vim.keymap.set('n', '<space>yr', ':silent let @+ = \'include(\"\' . expand("%:p") . \'\");\'<cr>',
 				{ desc = 'Copy command to run file', buffer = true, silent = true })
 			vim.keymap.set('n', '<space>yR', ':silent let @+ = \'include(\"src/scripts/rund.jl\")\\;\'<cr>',
 				{ desc = 'Copy command to run main', buffer = true, silent = true })
