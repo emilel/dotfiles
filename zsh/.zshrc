@@ -15,7 +15,7 @@ export EDITOR='nvim'
 export PAGER='bat'
 
 ## and use the best editor as a man pager
-export MANPAGER='nvim +Man!'
+# export MANPAGER='nvim +Man!'
 
 # plugins
 
@@ -35,8 +35,8 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ## aww yiss, fzf
 zle -N fzf-file-widget
 zle -N fzf-cd-widget
-source ~/.vim/plugged/fzf/shell/key-bindings.zsh
-source ~/.vim/plugged/fzf/shell/completion.zsh
+source ~/.fzf/shell/key-bindings.zsh
+source ~/.fzf/shell/completion.zsh
 
 # program settings
 
@@ -47,6 +47,7 @@ export NNN_PLUG='p:preview-tui;a:fzopen;s:fzcd;o:open-selected;e:open-editor;j:d
 
 # fzf
 export FZF_DEFAULT_COMMAND="fd --color=never --hidden --no-ignore-vcs"
+export FZF_TMUX=1
 export FZF_DEFAULT_OPTS='--preview-window=down'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'

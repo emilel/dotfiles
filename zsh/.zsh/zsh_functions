@@ -216,5 +216,5 @@ line() {
 }
 
 ai() {
-	nvim +"silent AISetRole $1" +"AIChat"
+	nvim +"silent AISetRole $1" +"AIChat" +"w"
 }

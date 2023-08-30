@@ -1,7 +1,0 @@
-return {
-	'vifm/vifm.vim',
-	config = function ()
-		vim.g.vifm_exec_args = '--select'
-		vim.keymap.set('n', '-', '<cmd>EditVifm %<cr>', {})
-	end
-}

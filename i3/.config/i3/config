@@ -244,9 +244,9 @@ bindsym Control+$mod+C exec --no-startup-id picom -b
 bindsym Control+$mod+V restart
 
 # monitor stuff
-bindsym Control+$mod+1 exec --no-startup-id ~/.screenlayout/monitors_1.sh
-bindsym Control+$mod+2 exec --no-startup-id ~/.screenlayout/monitors_2.sh
-bindsym Control+$mod+3 exec --no-startup-id ~/.screenlayout/monitors_3.sh
+bindsym Control+$mod+1 exec --no-startup-id ~/.screenlayout/1.sh
+bindsym Control+$mod+2 exec --no-startup-id ~/.screenlayout/2.sh
+bindsym Control+$mod+3 exec --no-startup-id ~/.screenlayout/3.sh
 
 # power and lock
 bindsym $mod+x exec --no-startup-id \
@@ -260,7 +260,7 @@ bindsym $mod+Shift+b exec reboot
 
 # wallpaper
 exec_always --no-startup-id \
-    feh --bg-fill ~/wallpapers/1.jpg ~/wallpapers/2.jpg
+    feh --bg-fill ~/Downloads/522905.jpg ~/Downloads/930701.jpg
 
 # on startup
 exec_always --no-startup-id setxkbmap -model pc80 -option caps:escape

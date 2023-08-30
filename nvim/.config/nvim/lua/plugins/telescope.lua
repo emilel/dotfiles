@@ -62,7 +62,8 @@ return {
 			'<space>sd',
 			'<cmd>lua require("telescope.builtin").diagnostics()<cr>',
 			desc = 'Search diagnostics'
-		}
+		},
+			{'<space>p', require('telescope.builtin').registers, 'Paste register content'}
 	},
 	config = function()
 		require('telescope').setup({
