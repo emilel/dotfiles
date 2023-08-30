@@ -1,11 +1,11 @@
-require('config.languages.python')
-require('config.languages.markdown')
-require('config.languages.go')
-require('config.languages.julia')
-require('config.languages.sh')
-require('config.languages.zsh')
-require('config.languages.gitcommit')
-require('config.languages.latex')
-require('config/languages/text')
-require('config/languages/aichat')
-require('config/languages/lua')
+local path = debug.getinfo(1, "S").source:sub(2)
+local dir = path:match("(.*[/\\])"):sub(1, -2)
+
+package.path = dir .. "/?.lua;" .. package.path
+
+for _, filename in ipairs(vim.fn.globpath(dir, "*.lua", false, true)) do
+	if filename ~= path then
+		local module_name = filename:sub(#dir + 2, -5):gsub("/", ".")
+		require(module_name)
+	end
+end

@@ -162,7 +162,7 @@ return {
 		{ '<c-s>', ':<c-u>execute "\'<,\'>AIChat " | w<left><left><left><left><left>', mode = 'v', desc = 'Chat with AI' },
 		{ '<c-i>', ':AIEdit ', mode = 'v', desc = 'Edit with AI' },
 		{ '<space><c-r>', ':AISetRole ',    desc = 'Set ChatGPT personality' },
-		{ '<space><c-n>', ':AIChatNew<cr>', desc = 'Create new AI chat',     silent = true },
+		{ '<space><c-n>', ':AIChatNew<cr>:e<cr>', desc = 'Create new AI chat',     silent = true },
 		{ '<space><c-g>', ':AIGetRole<cr>', desc = 'Get AI role',     silent = true },
 	},
 	config = function()

@@ -1,8 +1,0 @@
-return {
-	'lmburns/lf.nvim',
-	opts = { direction = 'vertical' },
-	dependencies = { 'akinsho/toggleterm.nvim' },
-	keys = {
-		{ '-', '<cmd>Lf<cr>', desc = 'Open file explorer (LF)' }
-	}
-}

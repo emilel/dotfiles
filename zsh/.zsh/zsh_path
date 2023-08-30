@@ -14,7 +14,8 @@ export PATH="$HOME/.scripts:$PATH"
 export PATH=$PATH:/home/emil/go/bin
 
 ## julia
-export PATH=$PATH:/home/emil/downloads/julia-1.9.0/bin
+export PATH=$PATH:/home/emil/.installed/julia-1.9.3/bin
+
 
 ## setup
 export PATH=$PATH:/home/emil/.setup

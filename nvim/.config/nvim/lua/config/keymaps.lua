@@ -15,10 +15,9 @@ vim.keymap.set('n', '<c-space>', '<cmd>w<cr>', { desc = "Save file" })
 vim.keymap.set('n', '<space>e', 'my<cmd>e<cr>`y', { desc = 'Reread file' })
 
 -- copy
-vim.keymap.set('v', '<space>p', '"_dP', { desc = 'Dont copy when pasting' })
-vim.keymap.set({ 'v', 'n' }, '<space>d', '"_d', { desc = 'Don\'t copy when deleting' })
-vim.keymap.set('n', '<space>D', '"_D', { desc = 'Don\'t copy when deleting' })
-vim.keymap.set('v', '<space>c', '"_da', { desc = 'Don\'t copy when changing' })
+vim.keymap.set('n', 'D', '"_D', { desc = 'Don\'t copy when deleting' })
+vim.keymap.set('v', 'C', '"_da', { desc = 'Don\'t copy when changing' })
+vim.keymap.set('n' , '<space>d', '"_d', { desc = 'Don\'t copy when deleting' })
 vim.keymap.set('n', 'x', '"_x', { desc = 'Don\'t copy when deleting' })
 vim.keymap.set('v', 'x', '"_x', { desc = 'Don\'t copy when deleting' })
 vim.keymap.set('n', 'X', 'x', { desc = 'Do copy when deleting' })
@@ -88,6 +87,7 @@ vim.keymap.set('n', '<space>f', '<cmd>only<cr>', { desc = 'Make full screen' })
 vim.keymap.set('n', '=h', '^vf=be', { desc = 'Select LHS in assignment' })
 vim.keymap.set('n', '=l', '0f=wv$h', { desc = 'Select HHS in assignment' })
 vim.keymap.set('n', '<space>L', '<cmd>Log<cr>', { desc = 'Start log mode'})
+vim.keymap.set('v', '<c-n>', ':%norm ', {desc = 'Execute normal commands on very line' })
 
 -- search and replace
 vim.keymap.set('n', '?', ':set hlsearch | let @/ = ""<left>',
@@ -100,12 +100,14 @@ vim.keymap.set('x', 'r',
 vim.keymap.set('v', '<space>R', '"hy:%s/\\<<C-R>=escape(@h,\'/\\\')<CR>\\>//gc<left><left><left>',
 	{ desc = 'Replace in whole file' })
 vim.keymap.set('v', '<space>r', ':s/\\%V<c-r>e//g<left><left>', { desc = 'Replace in selection' })
-vim.keymap.set('v', 'D', 'ygvV"_d', { desc = 'Copy selection and delete line' })
+vim.keymap.set('v', '<space>D', 'ygvV"_d', { desc = 'Copy selection and delete line' })
 
 
 -- buffer movement
 vim.keymap.set('v', '<c-j>', ':m \'>+1<cr>gv=gv', { desc = 'Move line down' })
 vim.keymap.set('v', '<c-k>', ':m \'<-2<cr>gv=gv', { desc = 'Move line up' })
+vim.keymap.set('v', '<space>J', '<esc>`>j"_ddgv', { desc = 'Remove line below' })
+vim.keymap.set('v', '<space>K', '<esc>`<k"_ddgv', { desc = 'Remove line above' })
 vim.keymap.set('v', '\'', '"ey`<mq`>mw', { desc = 'Mark word' })
 vim.keymap.set('v', 'm', '"ey`<mr`>mt`qv`w"ep`rv`tp', { desc = 'Switch with marked word' })
 vim.keymap.set('v', 'L', '$h', { desc = 'Select until end of line' })

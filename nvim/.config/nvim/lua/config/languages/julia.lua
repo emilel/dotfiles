@@ -9,6 +9,7 @@ vim.api.nvim_create_autocmd(
 		callback = function()
 			vim.opt_local.textwidth = 92
 			vim.opt_local.colorcolumn = "93"
+			vim.opt_local.expandtab = true
 			vim.keymap.set('n', '<cr>r',
 				':silent !tmux send-keys -t "run.bottom-right" "include(\\"" %:p "\\")\\;" Enter<cr>',
 				{ desc = 'Reload and run file in tmux window "run"', buffer = true, silent = true })
@@ -19,12 +20,12 @@ vim.api.nvim_create_autocmd(
 				{ desc = "Toggle break point", buffer = true, silent = true })
 			vim.keymap.set('n', '<cr>e', ':silent !tmux send-keys -t "run.bottom-right" "@exit" Enter C-c<cr>',
 				{ desc = "Exit break point", buffer = true, silent = true })
-			vim.keymap.set('n', ',di', 'o@infiltrate<esc>',
+			vim.keymap.set('n', ',di', 'oMain.@infiltrate<esc>',
 				{ desc = 'Debug here', buffer = true, silent = true })
-			vim.keymap.set('n', ',de', 'o@exfiltrate<esc>',
+			vim.keymap.set('n', ',de', 'oMain.@exfiltrate<esc>',
 				{ desc = 'Debug here', buffer = true, silent = true })
 			vim.keymap.set('n', ',dd',
-				':silent let view = winsaveview()<cr>:g/\\(@infiltrate\\|@exfiltrate\\)/d<cr><cmd>noh<cr>:call winrestview(view)<cr>',
+				':silent let view = winsaveview()<cr>:g/\\(Main.@infiltrate\\|Main.@exfiltrate\\)/d<cr><cmd>noh<cr>:call winrestview(view)<cr>',
 				{ desc = 'Remove debug lines', buffer = true, silent = true })
 			vim.keymap.set('n', '<space>z',
 				'<cmd>silent !tmux send-keys -t "repl.bottom-right" "format_file(\\"" %:p "\\")" Enter<cr>',
