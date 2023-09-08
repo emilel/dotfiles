@@ -1,0 +1,255 @@
+# general
+
+## default modifier
+
+set $mod Mod4
+
+## floating modifier
+
+floating_modifier $mod normal
+
+set $prompt foot \
+    --override=locked-title=yes \
+    --title prompt \
+    --override=colors.background=000000 \
+    --override=colors.alpha=0.3  \
+    --override=pad=600x400 \
+    --override=font='Source Code Pro':size=40
+
+## default application launcher 
+
+bindsym $mod+d exec $prompt "$HOME/.config/scripts/open_application.sh"
+
+## idle after ten minutes
+
+exec swayidle \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    &
+
+## turn screen off
+
+bindsym $mod+z exec "$HOME/.config/scripts/turn_off_screen.sh"
+
+## wallpaper
+
+output * bg ~/downloads/lake.jpg fill
+
+## reload the configuration file
+
+bindsym $mod+Shift+r reload
+
+## log out
+
+bindsym $mod+Shift+e exec swaymsg exit
+
+## turn off computer
+
+bindsym $mod+Shift+x exec sudo shutdown -h now
+
+# windows
+
+## focus
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+## move
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+## close window
+
+bindsym $mod+q kill
+
+## split horizontally
+
+bindsym $mod+v splith
+
+## split vertically
+
+bindsym $mod+b splitv
+
+## switch layout
+
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+## full screen
+bindsym $mod+f fullscreen
+
+## toggle floating
+
+bindsym $mod+shift+return floating toggle
+
+## toggle focus
+
+bindsym $mod+return focus mode_toggle
+
+## focus parent
+
+bindsym $mod+a focus parent
+
+## resize container
+
+mode "resize" {
+    bindsym h resize shrink width 10px
+    bindsym j resize grow height 10px
+    bindsym k resize shrink height 10px
+    bindsym l resize grow width 10px
+
+    # finish resizing
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# workspaces
+
+## go to workspace
+
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+## move to workspace
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+## go to previous/next workspace
+
+bindsym $mod+control+h workspace prev
+bindsym $mod+control+l workspace next
+
+## go to last workspace
+
+bindsym $mod+p workspace back_and_forth
+
+## rename workspace
+
+bindsym $mod+m exec $prompt "$HOME/.config/scripts/rename_workspace.sh"
+
+# applications
+
+## terminal
+
+bindsym $mod+space exec foot
+bindsym $mod+backspace exec foot
+
+## web browser
+
+bindsym $mod+ctrl+m exec firefox
+
+## prompt
+
+for_window [ title="prompt" ] \
+    floating enable, \
+    resize set 100 ppt 100 ppt, \
+    move position center, \
+    border none
+
+bindsym $mod+shift+space exec $prompt zsh
+
+## screenshot
+
+bindsym $mod+control+p exec slurp | grim -g - - | wl-copy
+
+# scratchpad
+
+## move to scratchpad
+
+bindsym $mod+minus move scratchpad
+
+## 'move back from scratchpad' (toggle floating)
+
+bindsym $mod+equal toggle floating toggle
+
+## show applications in scratch pad
+
+bindsym $mod+underscore scratchpad show
+
+# hardware
+
+## keyboard settings
+
+input type:keyboard {
+    repeat_rate 40
+    repeat_delay 260
+}
+
+## use shift+caps lock to toggle between swedish and us keyboard layout
+
+input type:keyboard {
+    xkb_layout us,se
+    xkb_options grp:shift_caps_toggle
+}
+
+## always use swedish language for laptop
+
+input "1:1:AT_Translated_Set_2_keyboard" {
+    xkb_layout "se"
+    xkb_options caps:swapescape
+}
+
+## brightness control
+
+bindsym XF86MonBrightnessUp exec --no-startup-id \
+    brightnessctl s 1500
+
+bindsym XF86MonBrightnessDown exec --no-startup-id \
+    brightnessctl s 1
+
+## volume control
+
+bindsym XF86AudioRaiseVolume exec \
+    wpctl set-volume @DEFAULT_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec \
+    wpctl set-volume @DEFAULT_SINK@ 5%-
+bindsym XF86AudioMute exec \
+    wpctl set-mute @DEFAULT_SINK@ toggle
+
+# styling
+
+titlebar_border_thickness 3
+titlebar_padding 3 3
+default_border normal 1
+
+## colors
+
+set $active-text-color   #000000
+set $bg-color            #bbbbbb
+set $inactive-border     #000000
+set $inactive-bg-color   #222222
+set $text-color          #000000
+set $inactive-text-color #bfbfbf
+set $urgent-bg-color     #E53935
+set $indicator           #bababa
+
+client.focused $bg-color $bg-color $text-color $indicator
+client.focused_inactive $inactive-border $inactive-border $inactive-text-color $inactive-bg-color
+client.unfocused $inactive-border $inactive-border $inactive-text-color  $inactive-bg-color
+
+bar swaybar_command waybar
