@@ -1,3 +1,0 @@
-#!/bin/bash
-
-optimus-manager --print-mode | awk -F: '{ print $2 }' | xargs
