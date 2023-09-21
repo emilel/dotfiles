@@ -6,7 +6,7 @@ alias reload='source ~/.config/zsh/.zshrc'
 
 ## open dotfiles
 
-alias conf='nvim +"cd ~/dotfiles" ~/dotfiles'
+alias conf='cd ~/dotfiles && nvim . && cd -'
 
 # quick ones
 
@@ -18,11 +18,11 @@ alias up='cd ..'
 
 alias back='cd -'
 
+## send bell
+
+alias bell='echo -e "\a"'
+
 # programs
-
-## file browser
-
-alias n='nnn'
 
 ## write temporary markdown
 

@@ -1,6 +1,7 @@
 # default applications
 
 export EDITOR=nvim
+export MANPAGER='nvim +Man!'
 
 # vi mode
 
@@ -8,9 +9,17 @@ export EDITOR=nvim
 
 bindkey -v
 
+## but still have ctrl a
+
+bindkey "^A" vi-beginning-of-line
+
 ## escape without delay
 
 KEYTIMEOUT=1
+
+## backspace always deletes
+
+bindkey "^?" backward-delete-char
 
 # history
 
@@ -33,3 +42,12 @@ setopt HIST_IGNORE_ALL_DUPS
 ## don't find duplicates
 
 setopt HIST_FIND_NO_DUPS
+
+# completion
+
+## enable autocompletion when middle of word is written
+
+zstyle ':completion:*' completer _complete
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+autoload -Uz compinit
+compinit

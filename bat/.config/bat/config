@@ -1,4 +1,5 @@
 --theme="base16"
 --italic-text=always
---style changes
+--style=changes
 --paging=never
+--wrap=never

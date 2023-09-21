@@ -6,6 +6,10 @@ local globals = require('globals')
 
 vim.opt.number = true
 
+-- ## don't have the line all the way up/down
+
+vim.opt.scrolloff = 8
+
 -- ## show sign column
 
 vim.opt.signcolumn = 'yes'
@@ -53,6 +57,7 @@ vim.opt.formatoptions = globals.formatoptions
 
 -- ## ignore case
 
+vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- # terminal mode
@@ -69,3 +74,28 @@ vim.api.nvim_create_autocmd({ 'TermOpen' }, {
         end)
     end,
 })
+
+-- # startup
+
+-- ## ignore the empty buffer
+
+local function check_and_delete_empty_buffer()
+    local buffers = vim.api.nvim_list_bufs()
+    local non_empty_buffers = 0
+    for _, buf in ipairs(buffers) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.fn.bufname(buf) ~= "" then
+            non_empty_buffers = non_empty_buffers + 1
+        end
+    end
+    if non_empty_buffers == 1 and vim.fn.bufname("%") == "" then
+        vim.api.nvim_command("bd")
+    end
+end
+
+vim.api.nvim_create_autocmd(
+    { 'BufAdd,BufNewFile' },
+    {
+        group = vim.api.nvim_create_augroup('buffer_cleanup', { clear = true }),
+        callback = check_and_delete_empty_buffer
+    }
+)

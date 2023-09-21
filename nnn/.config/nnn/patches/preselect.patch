@@ -1,0 +1,97 @@
+diff --git a/src/nnn.c b/src/nnn.c
+index 21a7370b..8234ebcf 100644
+--- a/src/nnn.c
++++ b/src/nnn.c
+@@ -2290,6 +2290,28 @@ static bool initcurses(void *oldmask)
+ 	return TRUE;
+ }
+ 
++/* Preselect entry */
++void preselect_entry_function(const char *preselect_entry) {
++    // Step 1: Ensure `preselect_entry` is not NULL and refers to a valid file
++    if (preselect_entry == NULL || access(preselect_entry, F_OK) == -1) {
++        return;
++    }
++
++    // Step 2: Find the index of `preselect_entry` in your file list
++    int index_to_preselect = -1;
++    for (int i = 0; i < ndents; ++i) {
++        if (strcmp(pdents[i].name, preselect_entry) == 0) {
++            index_to_preselect = i;
++            break;
++        }
++    }
++
++    // Step 3: If the file was found in your list, update the current selection index
++    if (index_to_preselect != -1) {
++        cur = index_to_preselect;
++    }
++}
++
+ /* No NULL check here as spawn() guards against it */
+ static char *parseargs(char *cmd, char **argv, int *pindex)
+ {
+@@ -6724,7 +6746,7 @@ static void showselsize(const char *path)
+ 	printmsg(coolsize(cfg.blkorder ? sz << blk_shift : sz));
+ }
+ 
+-static bool browse(char *ipath, const char *session, int pkey)
++static bool browse(char *ipath, const char *session, int pkey, char *preselect_entry)
+ {
+ 	alignas(max_align_t) char newpath[PATH_MAX];
+ 	alignas(max_align_t) char runfile[NAME_MAX + 1];
+@@ -6849,6 +6871,8 @@ begin:
+ 	cd = TRUE;
+ 
+ 	populate(path, lastname);
++    preselect_entry_function(preselect_entry);
++
+ 	if (g_state.interrupt) {
+ 		g_state.interrupt = cfg.apparentsz = cfg.blkorder = 0;
+ 		blk_shift = BLK_SHIFT_512;
+@@ -8360,6 +8384,7 @@ static void usage(void)
+ #ifndef NOX11
+ 		" -x      notis, selection sync, xterm title\n"
+ #endif
++		" -w      preselect entry\n\n"
+ 		" -h      show help\n\n"
+ 		"v%s\n%s\n", __func__, VERSION, GENERAL_INFO);
+ }
+@@ -8515,9 +8540,11 @@ int main(int argc, char *argv[])
+ 	bool rlhist = FALSE;
+ #endif
+ 
++    char *preselect_entry = NULL;
++
+ 	while ((opt = (env_opts_id > 0
+ 		       ? env_opts[--env_opts_id]
+-		       : getopt(argc, argv, "aAb:BcCdDeEfF:gHiJKl:nop:P:QrRs:St:T:uUVxh"))) != -1) {
++		       : getopt(argc, argv, "aAb:BcCdDeEfF:gHiJKl:nop:P:QrRs:St:T:uUVxhw:"))) != -1) {
+ 		switch (opt) {
+ #ifndef NOFIFO
+ 		case 'a':
+@@ -8660,6 +8687,9 @@ int main(int argc, char *argv[])
+ 		case 'h':
+ 			usage();
+ 			return EXIT_SUCCESS;
++        case 'w':
++            preselect_entry = optarg;
++            break;
+ 		default:
+ 			usage();
+ 			return EXIT_FAILURE;
+@@ -8946,12 +8976,13 @@ int main(int argc, char *argv[])
+ #else
+ 	if (!initcurses(NULL))
+ #endif
++
+ 		return EXIT_FAILURE;
+ 
+ 	if (sort)
+ 		set_sort_flags(sort);
+ 
+-	opt = browse(initpath, session, pkey);
++	opt = browse(initpath, session, pkey, preselect_entry);
+ 
+ #ifndef NOSSN
+ 	if (session && g_state.prstssn)
