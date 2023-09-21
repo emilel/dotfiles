@@ -1,0 +1,11 @@
+[Added Associations]
+
+[Default Applications]
+application/javascript=nvim.desktop;
+application/json=nvim.desktop;
+application/pdf=zathura.desktop;
+application/x-yaml=nvim.desktop;
+image/jpeg=imv.desktop;
+text/*=nvim.desktop;
+text/markdown=nvim.desktop;
+x-scheme-handler/terminal=org.codeberg.dnkl.foot-server.desktop;

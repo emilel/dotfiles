@@ -6,7 +6,7 @@
     "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad"],
     "modules-center": ["mpd"],
     // "battery", "clock", "tray"],
-    "modules-right": ["network", "wireplumber", "cpu", "memory", "battery", "clock", "tray"],
+    "modules-right": ["network", "cpu", "memory", "custom/audio-source", "wireplumber", "battery", "clock", "tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -34,11 +34,15 @@
         }
     },
     "wireplumber": {
-        "format": "VOL {volume} %",
+        "format": "VOL {node_name} {volume} %",
         "format-muted": "MUTE",
-        "on-click": "helvum",
         "max-volume": 150,
         "scroll-step": 0.2
+    },
+    "custom/audio-source": {
+        "format": "ASR {}",
+        "exec": "$HOME/.config/scripts/get_current_audio_source.sh",
+        "interval": 5
     },
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
@@ -91,15 +95,17 @@
         "timezone": "Europe/Stockholm",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "{:%Y-%m-%d %H:%M}",
-        "format-alt": "{:%U %A}"
+        "format-alt": "{:%U %A}",
+        "locale": "sv_SE.UTF-8"
     },
     "cpu": {
         "format": "CPU {usage} %",
         "tooltip": false,
-        "interval": 5
+        "interval": 1
     },
     "memory": {
-        "format": "RAM {avail} GiB"
+        "format": "RAM {avail} GiB",
+        "interval": 5
     },
     "temperature": {
         // "thermal-zone": 2,

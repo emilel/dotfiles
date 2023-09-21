@@ -12,7 +12,7 @@ return {
         { 'rafamadriz/friendly-snippets' },
         { 'neovim/nvim-lspconfig' },
     },
-    ft = { 'lua', 'sh', 'zsh', 'bash' },
+    ft = { 'lua', 'sh', 'zsh', 'bash', 'swayconfig', 'gitignore' },
     lazy = true,
     config = function()
         local lspconfig = require('lspconfig')

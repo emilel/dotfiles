@@ -1,0 +1,119 @@
+#!/usr/bin/env sh
+
+set -e
+
+NNN_TEXT_PREVIEW=$(echo "${NNN_TEXT_PREVIEW:-application/x-pie-executable}" | tr ';' '\n')
+TERMINAL=foot
+
+kill_if_started_again() {
+    if [ "$(pgrep -f "$0" | wc -l)" -gt 2 ]; then
+        pkill -f "$0"
+    fi
+}
+
+cleanup() {
+    rm -f $view_fifo
+    if [[ $pid -ne -1 ]]; then
+        echo "Killing $pid and its child processes"
+        for child_pid in $(pgrep -P $pid); do
+            kill $child_pid
+        done
+        kill $pid
+    fi
+}
+
+preview_with_text() {
+    mimetype=$1
+    echo "${NNN_TEXT_PREVIEW}" | grep -qx "$mimetype"
+    return $?
+}
+
+get_text_preview_command() {
+    file=$1
+    if command -v eza >/dev/null 2>&1; then
+        echo "eza --long --header --group --bytes --git $file; file --mime-type $file"
+    else
+        echo "ls --long --human-readable $file; file --mime-type $file"
+    fi
+}
+
+get_directory_preview_command() {
+    directory=$1
+    max_lines=$(($(tput lines) - 2))
+    depth=1
+    last_good_depth=0
+
+    prev_line_count=0
+    while :; do
+        line_count=$(eza --level=$depth --tree --color=never "$directory" | wc -l)
+
+        if [ $line_count -ge $max_lines ] || [ $line_count -eq $prev_line_count ]; then
+            break
+        fi
+        last_good_depth=$depth
+        prev_line_count=$line_count
+        depth=$((depth + 1))
+    done
+
+    # Find the deepest depth with hidden files
+    depth=$last_good_depth
+    last_good_depth_with_hidden=$last_good_depth
+    prev_line_count=0
+    while :; do
+        line_count=$(eza --level=$depth --all --tree --color=never "$directory" | wc -l)
+
+        if [ $line_count -ge $max_lines ] || [ $line_count -eq $prev_line_count ]; then
+            break
+        fi
+        last_good_depth_with_hidden=$depth
+        prev_line_count=$line_count
+        depth=$((depth + 1))
+    done
+
+    if [ $last_good_depth_with_hidden -gt $last_good_depth ]; then
+        echo "eza --level=$last_good_depth_with_hidden --all --tree --color=always \"$directory\""
+    else
+        echo "eza --level=$last_good_depth --tree --color=always \"$directory\""
+    fi
+}
+
+assure_terminal_open() {
+    if [ "$term_open" != "1" ]; then
+        $TERMINAL -e sh -c "$viewer" &
+        term_open=1
+        pid=$!
+    fi
+}
+
+
+kill_if_started_again
+view_fifo="$NNN_FIFO.view"
+mkfifo $view_fifo
+viewer="#!/usr/bin/env sh
+echo -ne '\e[?7l'
+while true; do
+    read -r command < $view_fifo
+    max_lines=\$((\$(tput lines) - 1))
+    clear
+    eval \$command | head --lines \$max_lines
+done"
+
+trap cleanup EXIT
+term_open=0
+
+while read -r selection; do
+    mimetype=$(file --mime-type -b "$selection")
+    if [ -d "$selection" ]; then
+        command=$(get_directory_preview_command $selection)
+        assure_terminal_open
+        echo $command >$view_fifo
+    elif preview_with_text $mimetype; then
+        command=$(get_text_preview_command $selection)
+        assure_terminal_open
+        echo $command >$view_fifo
+    else
+        command="bat --color=always --style=changes $selection"
+        assure_terminal_open
+        echo $command >$view_fifo
+    fi
+done <"$NNN_FIFO"

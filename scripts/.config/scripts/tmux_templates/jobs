@@ -1,0 +1,29 @@
+#!/bin/zsh -f
+
+set -e
+
+name=jobs
+dir="$HOME/docs/work"
+
+$HOME/.config/scripts/rename_workspace.sh $name
+tmux new-session -ds $name -c $dir
+
+tmux rename-window -t $name:1 letter
+tmux send-keys -t "${name}:letter" 'nvim .' Enter
+
+tmux new-window -t $name -c $dir -n advert
+tmux send-keys -t "${name}:advert" 'nvim .' Enter
+
+tmux new-window -t $name -n shell -c $dir
+
+tmux new-window -t $name -c $dir -n chatgpt3
+tmux send-keys -t "${name}:chatgpt3" chatgpt3 Enter
+tmux select-pane -mt "${name}:chatgpt3"
+
+tmux new-window -t $name -c $dir -n chatgpt4
+tmux send-keys -t "${name}:chatgpt4" chatgpt4 Enter
+
+tmux new-window -t $name -c $dir -n run
+
+swaymsg exec "foot tmux new-session -t $name"
+tmux attach -t ${name}:letter

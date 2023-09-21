@@ -1,3 +1,3 @@
 #!/bin/zsh -f
 
-sleep 0.3; killall -USR1 swayidle
+sleep 0.5; killall -USR1 swayidle
