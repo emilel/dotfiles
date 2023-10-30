@@ -1,0 +1,24 @@
+#!/bin/zsh -f
+
+set -e
+
+name=yac
+dir="$HOME/prog/yac"
+
+$HOME/.config/scripts/rename_workspace.sh $name
+tmux new-session -ds $name -c $dir
+
+tmux rename-window -t $name:1 vim
+tmux send-keys -t "${name}:vim" 'poetry run nvim && poetry shell' Enter
+
+tmux new-window -t $name -n run -c $dir
+tmux send-keys -t "${name}:run" 'poetry shell' Enter
+
+tmux new-window -t $name -n shell -c $dir
+
+tmux new-window -t $name -n repl -c $dir
+tmux send-keys -t "${name}:repl" 'poetry run ipython' Enter
+
+tmux attach -t ${name}:vim
+
+sleep 3 && tmux send-keys -t "${name}:vim" nvim Enter

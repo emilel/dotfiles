@@ -115,7 +115,9 @@ vim.keymap.set('n', '<space>V', 'ggVG', { desc = 'Select entire file' })
 
 -- ## edit + register content
 
-vim.keymap.set('n', '<space>+', temp.edit_register, { desc = 'Edit + register content' })
+vim.keymap.set('n', '<space>+', function()
+    temp.edit_register(); vim.cmd('SaveToCopy')
+end, { desc = 'Edit + register content' })
 
 -- ## don't copy when deleting
 
@@ -139,11 +141,15 @@ vim.keymap.set('n', '<space>yf', yank.file, { desc = 'Copy entire file' })
 
 -- ## edit selection before yanking
 
-vim.keymap.set('x', '<space>ye', function() temp.selection(); vim.cmd('SaveToCopy') end, { desc = 'Edit selection before copying' })
+vim.keymap.set('x', '<space>ye', function()
+    temp.selection(); vim.cmd('SaveToCopy')
+end, { desc = 'Edit selection before copying' })
 
 -- ## edit file before copying
 
-vim.keymap.set('n', '<space>ye', function() temp.file(); vim.cmd('SaveToCopy') end, { desc = 'Edit file before copying' })
+vim.keymap.set('n', '<space>ye', function()
+    temp.file(); vim.cmd('SaveToCopy')
+end, { desc = 'Edit file before copying' })
 
 -- ## copy entire file and trim
 
@@ -170,7 +176,32 @@ vim.keymap.set('n', '?', search.without_jumping, { desc = 'Search without jumpin
 
 -- ## don't jump with star
 
-vim.keymap.set('n', '*', 'my*<c-o>`y', { desc = 'Search without jumping' })
+vim.keymap.set('n', '*', search.current, { desc = 'Search for current word' })
+
+-- # search for selection
+
+vim.keymap.set('x', '/', '"yy:lua require("functions.search").escape("<c-r>y")<cr>',
+    { desc = 'Search for selection', silent = true })
+
+-- # search for selected word
+
+vim.keymap.set('x', '*', '"yy:lua require("functions.search").escape("\\\\<<c-r>y\\\\>")<cr>',
+    { desc = 'Search for selected word', silent = true })
+
+-- # replace in selection
+
+vim.keymap.set('v', '<space>r', ':s/\\%V<c-r>e//g<left><left>', { desc = 'Replace in selection' })
+
+-- # replace in file
+
+vim.keymap.set('v', '<space>R', '"hy:%s/\\<<C-R>=escape(@h,\'/\\\')<CR>\\>//gc<left><left><left>',
+    { desc = 'Replace in whole file' })
+
+-- # replace on line
+
+vim.keymap.set('x', 'r',
+    '"hymu:s/<C-R>=escape(@h,\'/\\\')<CR>//g | :noh | :normal `u<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>',
+    { desc = 'Replace selection on current line' })
 
 -- # run
 

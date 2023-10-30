@@ -10,11 +10,12 @@ return {
                 formatters_by_ft = {
                     sh = { 'shfmt', 'beautysh' },
                     bash = { 'shfmt', 'beautysh' },
+                    python = { 'black', 'isort' },
                 }
             },
         },
     },
-    ft = { 'tex', 'c' },
+    ft = { 'tex', 'c', 'python' },
     cmd = { 'Mason' },
     lazy = true,
     config = function()
@@ -27,11 +28,11 @@ return {
 
         local server_specific_settings = {
             lua_ls = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { 'vim' },
-                        },
+                Lua = {
+                    diagnostics = {
+                        globals = { 'vim' },
                     },
+                },
             },
         }
 

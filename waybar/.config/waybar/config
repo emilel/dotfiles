@@ -120,7 +120,7 @@
     "battery": {
         "states": {
             "good": 95,
-            "warning": 30,
+            "warning": 40,
             "critical": 15
         },
         "format": "BAT {capacity} %",

@@ -46,14 +46,14 @@ local function go_to_directory(opts)
 end
 
 vim.api.nvim_create_autocmd(
-    { 'VimEnter' },
+    'VimEnter',
     {
         group = vim.api.nvim_create_augroup('nnn', { clear = true }),
         callback = function()
             vim.cmd([[silent! autocmd! FileExplorer *]])
             if vim.fn.isdirectory(vim.fn.expand('%')) == 1 then
                 vim.cmd('let g:nnn#command="nnn -w ' ..
-                vim.fn.expand("%:t") .. '" | let g:nnn#layout = "enew" | NnnPicker %')
+                    vim.fn.expand("%:t") .. '" | let g:nnn#layout = "enew" | NnnPicker %')
             end
         end
     }

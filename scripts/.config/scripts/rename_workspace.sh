@@ -3,7 +3,10 @@
 if [[ -n $1 ]]; then
     name=$1
 else
-    read "name?rename:   "
+    name=$(cat ~/.config/sway/workspace_names | tofi)
+    if [[ -z "$name" ]]; then
+        return 1
+    fi
 fi
 
 workspace_number=$($HOME/.config/scripts/get_workspace_number.sh)

@@ -25,7 +25,7 @@ bindkey "^?" backward-delete-char
 
 ## set file location
 
-export HISTFILE="$HOME/.config/zsh/.history.zsh"
+export HISTFILE="$HOME/.config/zsh/.history"
 
 ## how many are loaded in memory
 
@@ -44,6 +44,10 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
 
 # completion
+
+## autocomplete hidden files
+
+setopt dotglob
 
 ## enable autocompletion when middle of word is written
 

@@ -1,5 +1,5 @@
 local G = {}
 
-G.formatoptions = "crqnjw"
+G.formatoptions = "crqnj"
 
 return G

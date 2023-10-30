@@ -1,3 +1,11 @@
+vim.api.nvim_create_user_command('OpenFile', function()
+    local telescope = require('telescope')
+    -- telescope.load_extension("smart_open")
+    telescope.extensions.smart_open.smart_open({
+        cwd_only = true
+    })
+end, { nargs = '*' })
+
 return {
     'danielfalk/smart-open.nvim',
     lazy = true,

@@ -29,8 +29,6 @@ return {
         local cmp = require('cmp')
         local luasnip = require('luasnip')
 
-        local select_opts = {behavior = cmp.SelectBehavior.Select}
-
         cmp.setup({
             snippet = {
                 expand = function(args)

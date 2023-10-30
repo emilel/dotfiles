@@ -1,0 +1,110 @@
+#!/usr/bin/env sh
+
+NNN_PREVIEW_LOG=${NNN_PREVIEW_LOG:-/dev/null}
+
+if [ "$(pgrep -f "$0" | wc -l)" -gt 2 ]; then
+	pkill -f "$0"
+fi
+
+view_fifo="$NNN_FIFO.view"
+mkfifo $view_fifo
+viewer="#\!/usr/bin/env sh
+while true; do
+    read -r command < $view_fifo
+    clear
+    eval \$command
+done"
+
+cleanup() {
+	rm $view_fifo
+	if [[ $pid -ne -1 ]]; then
+		echo "Killing $pid and its child processes" >>$NNN_PREVIEW_LOG
+		for child_pid in $(pgrep -P $pid); do
+			kill $child_pid
+		done
+		kill $pid
+	fi
+}
+
+trap cleanup EXIT
+
+last_app=''
+pid=-1
+while read -r selection; do
+	focused_container=$(swaymsg -t get_tree | jq 'recurse(.nodes[]) | select(.focused==true).id')
+	mimetype=$(file --mime-type -b "$selection")
+	if [[ $mimetype == "inode/directory" ]]; then
+		echo "folder, don't care" >>$NNN_PREVIEW_LOG
+		continue
+	fi
+	app=$(xdg-mime query default $mimetype)
+	if [[ -z $app ]]; then
+		app="view"
+	fi
+	open_file="$NNN_FIFO.$app.file"
+
+	if [[ "$app" == "$last_app" ]]; then
+		if [[ "$app" == "nvim.desktop" ]]; then
+			nvim --server /tmp/nvim.pipe --remote $selection
+			echo still $pid >>$NNN_PREVIEW_LOG
+			continue
+		elif [[ "$app" == "view" ]]; then
+			echo "reusing terminal for viewing" >>$NNN_PREVIEW_LOG
+			echo "bat '$selection'" >$view_fifo
+		else
+			echo "putting content of $selection into $open_file" >>$NNN_PREVIEW_LOG
+			cat $selection >$open_file
+			continue
+		fi
+	fi
+
+	if [[ $pid -ne -1 ]]; then
+		echo killing $pid and its child processes >>$NNN_PREVIEW_LOG
+		for child_pid in $(pgrep -P $pid); do
+			kill $child_pid
+		done
+		kill $pid
+	fi
+
+	echo app is $app >>$NNN_PREVIEW_LOG
+
+	if [[ $app != 'view' ]]; then
+		for dir in /usr/share/applications /usr/local/share/applications ~/.local/share/applications; do
+			path="$dir/$app"
+			if [ -f "$path" ]; then
+				echo "$mimetype, $app: $path" >>$NNN_PREVIEW_LOG
+				break
+			fi
+		done
+		command=$(cat $path | grep -Po 'Exec=\K(.*)' | sed "s#%[fF]#\"$open_file\"#")
+		if grep -q "Terminal=true" "$path"; then
+			terminal_command="foot -e"
+		else
+			terminal_command=""
+		fi
+
+		eval "$terminal_command $command &"
+		last_app=$app
+		pid=$!
+		echo "executed new command $command: $pid" >>$NNN_PREVIEW_LOG
+	else
+		echo starting terminal with viewer >>$NNN_PREVIEW_LOG
+		foot sh -c "$viewer" &
+		pid=$!
+		real_path=$(realpath "$selection")
+		echo "bat '$real_path'" >"$view_fifo"
+		echo putting command into viewer >>$NNN_PREVIEW_LOG
+	fi
+
+	swaymsg -t subscribe '["window"]' |
+		while read -r event; do
+			event_app_pid=$(echo "$event" | jq '.container.pid')
+
+			if [ "$event_app_pid" = "$pid" ]; then
+				break
+			fi
+		done
+	swaymsg "[con_id=$focused_container]" focus
+	sleep 1
+	swaymsg "[con_id=$focused_container]" focus
+done <"$NNN_FIFO"

@@ -25,7 +25,6 @@ temp.file = function()
 end
 
 temp.edit_register = function(arg)
-    local register = arg or '+'
     temp.open_yank_buffer(vim.bo.filetype)
     vim.api.nvim_feedkeys('P', 'n', true)
 end

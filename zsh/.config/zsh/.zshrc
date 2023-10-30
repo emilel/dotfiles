@@ -6,7 +6,7 @@ source_files_in_folder() {
         local files=("$folder"/**/*.zsh)
 
         for file in ${files[@]}; do
-            if [ -f $file ] && [ "$file" != $current_file ] && [ $(basename $file) != ".history.zsh" ] ; then
+            if [ -f $file ] && [ "$file" != $current_file ] ; then
                 source "$file"
             fi
         done

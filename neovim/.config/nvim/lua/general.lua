@@ -93,9 +93,52 @@ local function check_and_delete_empty_buffer()
 end
 
 vim.api.nvim_create_autocmd(
-    { 'BufAdd,BufNewFile' },
+    { 'BufNewFile' },
     {
         group = vim.api.nvim_create_augroup('buffer_cleanup', { clear = true }),
         callback = check_and_delete_empty_buffer
+    }
+)
+
+vim.api.nvim_create_autocmd(
+    { 'BufAdd' },
+    {
+        group = vim.api.nvim_create_augroup('buffer_cleanup', { clear = true }),
+        callback = check_and_delete_empty_buffer
+    }
+)
+
+vim.api.nvim_create_autocmd(
+    'VimEnter',
+    {
+        group = vim.api.nvim_create_augroup('startup', { clear = true }),
+        callback = function()
+            vim.defer_fn(function()
+                if vim.fn.expand('%') ~= '' or (vim.fn.line('$') > 1 and vim.fn.line2byte(1) ~= -1) then
+                    return
+                end
+
+                for _, arg in ipairs(vim.v.argv) do
+                    if string.match(arg, "^%-c") or string.match(arg, "^%+") then
+                        return
+                    end
+                end
+
+                local jumps = vim.fn.getjumplist()[1]
+                local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':p')
+
+                local count = #jumps
+                for i = count, 1, -1 do
+                    local jump = jumps[i]
+                    local buffer_name = vim.fn.fnamemodify(vim.fn.bufname(jump.bufnr), ':p')
+
+                    if string.sub(buffer_name, 1, #cwd) == cwd then
+                        vim.cmd(string.format("edit %s", buffer_name))
+                        vim.api.nvim_win_set_cursor(0, { jump.lnum, jump.col })
+                        return
+                    end
+                end
+            end, 0)
+        end
     }
 )

@@ -10,5 +10,3 @@ rule = {
 }
 
 table.insert(alsa_monitor.rules, rule)
-
-

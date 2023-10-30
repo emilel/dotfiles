@@ -6,7 +6,7 @@ alias reload='source ~/.config/zsh/.zshrc'
 
 ## open dotfiles
 
-alias conf='cd ~/dotfiles && nvim . && cd -'
+alias conf='cd ~/dotfiles && nvim +OpenFile && cd -'
 
 # quick ones
 
@@ -27,3 +27,11 @@ alias bell='echo -e "\a"'
 ## write temporary markdown
 
 alias tempmd='nvim +TempMD'
+
+## python in a hurry
+
+alias py='ipython'
+
+## start shell
+
+alias psh='poetry shell'
