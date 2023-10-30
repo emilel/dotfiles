@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-handlr open $1
+handlr open $@

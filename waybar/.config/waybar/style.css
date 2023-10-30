@@ -125,6 +125,10 @@ button:hover {
     animation-direction: alternate;
 }
 
+#battery.warning:not(.charging) {
+    color: #e0b076;
+}
+
 label:focus {
     background-color: #000000;
 }

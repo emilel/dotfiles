@@ -2,5 +2,8 @@
 
 set -e
 
-session=$(tmux list-sessions -F "#{session_name}" | fzf --no-info --no-scrollbar --no-color --pointer=' ' --layout=reverse)
+session=$(tmux list-sessions -F "#{session_name}" | tofi)
+if [[ -z "$session" ]]; then
+    return 1
+fi
 swaymsg exec "foot tmux attach -t $session"

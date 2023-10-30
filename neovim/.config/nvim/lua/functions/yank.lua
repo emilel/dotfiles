@@ -12,13 +12,13 @@ yank.file = function()
 end
 
 yank.relative_path = function()
-    path = vim.api.nvim_buf_get_name(0)
+    local path = vim.api.nvim_buf_get_name(0)
     vim.fn.setreg('+', path)
     print('Relative path copied to clipboard')
 end
 
 yank.full_path = function()
-    path = vim.fn.expand('%:p')
+    local path = vim.fn.expand('%:p')
     vim.fn.setreg('+', path)
     print('Full path copied to clipboard')
 end
@@ -37,7 +37,9 @@ yank.remove_hard_line_breaks = function()
             table.insert(merged_lines, "")
         else
             table.insert(current_paragraph, line)
-            if line:sub(-1) == " " then
+            if line:sub(-1) == " "
+                or line:match("^%s*[%*'+]")
+                or line:match("^%s*[0-9]+%.") then
                 table.insert(merged_lines, table.concat(current_paragraph, " "))
                 current_paragraph = {}
             end

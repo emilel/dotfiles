@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-# show dotfiles last
+# show dotfiles first
 export LC_COLLATE="C"
 
 # for previews
@@ -19,7 +19,7 @@ export NNN_TRASH=1
 export NNN_OPTS='ARUr'
 
 # plugins
-export NNN_PLUG="p:preview-tui;P:-!&\"$HOME/.config/nnn/plugins/preview-window\";d:-!git diff \"$nnn*\";D:-!git diff*;s:-!git status \"\$nnn*\";S:-!git status*;l:-!git log \"\$nnn*\";L:-!git log*;x:!chmod +x \"\$nnn\"*;y:!wl-copy \"\$nnn\";b:!acp -rv \"\$nnn\" \"\$nnn.bak\"*;g:fzcd;Y:!wl-copy < \"\$nnn\"*"
+export NNN_PLUG="p:preview-tui;P:preview-window;d:-!git diff \"$nnn*\";D:-!git diff*;s:-!git status \"\$nnn\";S:-!git status;l:-!git log \"\$nnn*\";L:-!git log*;x:!chmod +x \"\$nnn\"*;y:!wl-copy \"\$nnn\";b:!acp -rv \"\$nnn\" \"\$nnn.bak\"*;g:fzcd;Y:!wl-copy < \"\$nnn\"*"
 
 # cd on quit
 n ()

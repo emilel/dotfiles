@@ -1,4 +1,5 @@
 local search = {}
+local escape_symbols = '/~.'
 
 search.without_jumping = function()
     vim.ui.input(
@@ -8,8 +9,23 @@ search.without_jumping = function()
                 return
             end
 
-            vim.cmd('set hlsearch | let @/ = "' .. term .. '"')
+            vim.o.hlsearch = true
+            vim.fn.setreg('/', term)
         end)
+end
+
+search.escape = function(arg)
+    local escaped = vim.fn.escape(arg, escape_symbols)
+    vim.fn.setreg('/', escaped)
+    vim.o.hlsearch = true
+end
+
+search.current = function()
+    vim.api.nvim_feedkeys('"yyiw', 'x', true)
+    local escaped = vim.fn.escape(vim.fn.getreg('y'), escape_symbols)
+    print(escaped)
+    vim.o.hlsearch = true
+    vim.fn.setreg('/', escaped)
 end
 
 return search

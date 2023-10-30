@@ -1,70 +1,14 @@
-local function run_window_exists()
-    local handle = io.popen("tmux list-windows -F '#W' | grep -w 'run'")
-    if not handle then
-        print("Failed to run tmux command")
-        return false
-    end
-
-    local result = handle:read("*a")
-    handle:close()
-    if result then
-        return result:gsub("%s+", "") ~= ""
-    else
-        return false
-    end
-end
-
-local function running()
-    local handle = io.popen("tmux display-message -p -t run -F '#{pane_current_command}'")
-    if not handle then
-        print("Failed to execute command")
-        return false
-    end
-    local result = handle:read("*a")
-    handle:close()
-    return result and result:gsub("%s+", "") ~= "zsh"
-end
-
-local function empty()
-    local handle = io.popen("tmux capture-pane -t run -p | tail -n1")
-    if not handle then
-        print("Failed to execute command")
-        return false
-    end
-    local result = handle:read("*a")
-    handle:close()
-    return not (result and result:match("%w"))
-end
-
-local function clear_prompt()
-    local tmux_command = 'tmux send-keys -t run C-c'
-    io.popen(tmux_command)
-end
-
-local function assure_no_copy_mode()
-    local handle = io.popen("tmux display-message -p -t run -F '#{pane_in_mode}'")
-    if not handle then
-        print("Failed to execute command")
-        return false
-    end
-    local result = handle:read("*a")
-    handle:close()
-
-    if result and result:match("1") then
-        io.popen("tmux send-keys -t run q")
-    end
-end
-
+local helpers = require('functions.helpers')
 
 local run = {}
 
 run.send = function(command)
-    if not run_window_exists() then
+    if not helpers.run_window_exists() then
         print('No run window exists')
         return
     end
 
-    if running() then
+    if helpers.running() then
         print('An active command is already running')
         return
     end
@@ -76,9 +20,9 @@ run.send = function(command)
     local success_actions = "{ bell; makoctl dismiss -n 0; notify-send 'Finished running command!' }"
     local error_notification = "{ makoctl dismiss -n 0; notify-send 'Error sending command!' }"
 
-    assure_no_copy_mode()
-    if not empty() then
-        clear_prompt()
+    helpers.assure_no_copy_mode()
+    if not helpers.empty() then
+        helpers.clear_prompt()
     end
 
     local command_to_send = string.format(
@@ -91,7 +35,7 @@ run.send = function(command)
 end
 
 run.interrupt = function()
-    if not run_window_exists() then
+    if not helpers.run_window_exists() then
         print('No run window exists')
         return
     end

@@ -15,7 +15,7 @@ return {
         {
             '<space>a',
             function()
-                require('telescope.builtin').buffers({ sort_lastused = true, ignore_current_buffer = true })
+                require('telescope.builtin').buffers({ sort_lastused = true, ignore_current_buffer = false })
             end,
             desc = 'Go to buffer'
         },
@@ -64,6 +64,7 @@ return {
                 },
                 mappings = {
                     i = {
+                        ['<c-a>'] = require('telescope.actions').toggle_all,
                         ['<c-h>'] = require('telescope.actions').toggle_selection,
                         ['<c-j>'] = require('telescope.actions').move_selection_next,
                         ['<c-k>'] = require('telescope.actions').move_selection_previous,

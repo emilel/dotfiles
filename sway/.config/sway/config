@@ -8,17 +8,25 @@ set $mod Mod4
 
 floating_modifier $mod normal
 
+## prompt
+
+for_window [ title="prompt" ] \
+    floating enable, \
+    resize set 100 ppt 100 ppt, \
+    move position center, \
+    border none
+
 set $prompt foot \
     --override=locked-title=yes \
     --title prompt \
     --override=colors.background=000000 \
-    --override=colors.alpha=0.3  \
+    --override=colors.alpha=0.4  \
     --override=pad=600x300 \
     --override=font='Source Code Pro':size=40
 
-## default application launcher 
+## default application launcher
 
-bindsym $mod+shift+d exec $prompt "$HOME/.config/scripts/open_application.sh"
+bindsym $mod+d exec "$HOME/.config/scripts/open_application.sh"
 
 ## idle after ten minutes
 
@@ -171,7 +179,7 @@ bindsym $mod+p workspace back_and_forth
 
 ## rename workspace
 
-bindsym $mod+m exec $prompt "$HOME/.config/scripts/rename_workspace.sh"
+bindsym $mod+m exec "$HOME/.config/scripts/rename_workspace.sh"
 
 ## move workspace to other monitor
 
@@ -184,15 +192,15 @@ bindsym $mod+Shift+Control+l move workspace to output right
 
 ## create tmux session
 
-bindsym $mod+d exec $prompt "$HOME/.config/scripts/create_tmux_session_from_template.sh"
+bindsym $mod+shift+d exec "$HOME/.config/scripts/create_tmux_session_from_template.sh"
 
 ## attach tmux session
 
-bindsym $mod+t exec $prompt "$HOME/.config/scripts/attach_tmux_session.sh"
+bindsym $mod+t exec "$HOME/.config/scripts/attach_tmux_session.sh"
 
 ## attach tmux session
 
-bindsym $mod+shift+t exec $prompt "$HOME/.config/scripts/duplicate_tmux_session.sh"
+bindsym $mod+shift+t exec "$HOME/.config/scripts/duplicate_tmux_session.sh"
 
 ## terminal with tmux
 
@@ -212,17 +220,14 @@ bindsym $mod+delete exec $prompt
 
 bindsym $mod+ctrl+m exec firefox
 
-## prompt
+## spotify
 
-for_window [ title="prompt" ] \
-    floating enable, \
-    resize set 100 ppt 100 ppt, \
-    move position center, \
-    border none
+bindsym $mod+ctrl+s exec spotify
 
 ## screenshot
 
-bindsym $mod+control+p exec slurp | grim -g - - | wl-copy
+bindsym $mod+control+shift+p exec slurp | grim -g - - | wl-copy
+bindsym $mod+control+p exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy
 
 # scratchpad
 
@@ -240,6 +245,17 @@ bindsym $mod+underscore scratchpad show
 
 # hardware
 
+## monitors
+
+output eDP-1 pos 2560 0
+output DP-1 pos 0 0
+
+## tap to click
+
+input "1739:31251:DLL07BE:01_06CB:7A13_Touchpad" {
+    tap enabled
+}
+
 ## hide cursor after three seconds of inactivity
 
 seat seat0 hide_cursor 3000
@@ -249,20 +265,15 @@ seat seat0 hide_cursor 3000
 input type:keyboard {
     repeat_rate 40
     repeat_delay 260
+    xkb_layout se
+    xkb_options caps:swapescape
 }
 
 ## use caps lock to toggle between swedish and us keyboard layout
 
-input type:keyboard {
+input 10730:258:Kinesis_Advantage2_Keyboard {
     xkb_layout us,se
     xkb_options grp:caps_toggle
-}
-
-## always use swedish language for laptop
-
-input "1:1:AT_Translated_Set_2_keyboard" {
-    xkb_layout "se"
-    xkb_options caps:swapescape
 }
 
 # us layout
