@@ -3,7 +3,7 @@ local run = require('functions.run')
 vim.keymap.set('n', '<space>z', 'gqip', { desc = 'Format paragraph', buffer = true })
 
 vim.keymap.set('n', '<cr>r', function()
-    run.send('latexmk -cd -pdf %; latexmk -cd -c %')
+    run.send_check('latexmk -cd -pdf %; latexmk -cd -c %')
 end, { desc = 'Compile document', buffer = true })
 
 vim.keymap.set('n', '<cr>o', function()

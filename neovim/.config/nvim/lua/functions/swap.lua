@@ -1,3 +1,5 @@
+local globals = require('globals')
+
 S = {}
 
 S.mark = function()
@@ -24,6 +26,21 @@ S.swap = function()
     vim.fn.setpos("'<", vim.g.marked_position[1])
     vim.fn.setpos("'>", vim.g.marked_position[2])
     vim.cmd('normal! gv"up')
+end
+
+S.prepare_replace = function()
+    S.mark()
+    vim.ui.input(
+        { prompt = '> ' },
+        function(replace_with)
+            vim.g.replace_with = replace_with
+        end)
+end
+
+S.do_replace = function()
+    vim.api.nvim_input(
+        ':s/' ..
+        vim.fn.escape(vim.fn.getreg('y', 1, 1)[1], globals.escape_symbols) .. '/' .. vim.g.replace_with .. '/g<cr>')
 end
 
 return S
