@@ -72,6 +72,11 @@ vim.keymap.set('v', '<space>O', '<esc>my`<O<esc>`ygv', { desc = 'Add line above'
 vim.keymap.set('x', "\'", require('functions.swap').mark, { desc = 'Mark text for swapping' })
 vim.keymap.set('x', "m", require('functions.swap').swap, { desc = 'Swap with marked text' })
 
+-- ## replace text
+
+vim.keymap.set('x', "<space>\'", require('functions.swap').prepare_replace, { desc = 'Mark text for replace' })
+vim.keymap.set('x', "<cr>", require('functions.swap').do_replace, { desc = 'Do replace in selection' })
+
 -- ## changing settings
 
 vim.keymap.set('n', '<space>sf', require('functions.settings').toggle_autoformat, { desc = 'Toggle autoformat' })

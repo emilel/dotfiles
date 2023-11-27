@@ -1,0 +1,25 @@
+#!/bin/zsh -f
+
+set -e
+
+name=power_measure
+dir="$HOME/work/power_measure"
+
+$HOME/.config/scripts/rename_workspace.sh $name
+tmux new-session -ds $name -c $dir
+
+tmux rename-window -t $name:1 vim
+tmux send-keys -t "${name}:vim" 'source ~/.local/pipx/venvs/textual/bin/activate && nvim' Enter
+
+tmux new-window -t $name -n run -c $dir
+tmux send-keys -t "${name}:run" 'source ~/.local/pipx/venvs/textual/bin/activate' Enter
+
+tmux new-window -t $name -n shell -c $dir
+
+tmux new-window -t $name -n repl -c $dir
+tmux send-keys -t "${name}:repl" 'source ~/.local/pipx/venvs/textual/bin/activate' Enter
+
+tmux attach -t ${name}:vim
+
+sleep 3 && tmux send-keys -t "${name}:vim" nvim Enter
+

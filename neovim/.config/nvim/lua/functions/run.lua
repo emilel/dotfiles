@@ -2,7 +2,7 @@ local helpers = require('functions.helpers')
 
 local run = {}
 
-run.send = function(command)
+run.send_check = function(command)
     if not helpers.run_window_exists() then
         print('No run window exists')
         return
@@ -34,6 +34,29 @@ run.send = function(command)
     io.popen(tmux_command)
 end
 
+run.send = function(command)
+    if not helpers.run_window_exists() then
+        print('No run window exists')
+        return
+    end
+
+    if helpers.running() then
+        print('An active command is already running')
+        return
+    end
+
+    helpers.assure_no_copy_mode()
+    if not helpers.empty() then
+        helpers.clear_prompt()
+    end
+
+    local buffer_name = vim.api.nvim_buf_get_name(0)
+    local sanitized_command = string.gsub(command, '%%', buffer_name)
+
+    local tmux_command = string.format('tmux send-keys -t run "%s" Enter', sanitized_command)
+    io.popen(tmux_command)
+end
+
 run.interrupt = function()
     if not helpers.run_window_exists() then
         print('No run window exists')
@@ -55,12 +78,12 @@ run.compile_letter = function()
     if role == "" then
         return
     end
-    run.send("compile_letter.sh % '" .. role .. "'")
+    run.send_check("compile_letter.sh % '" .. role .. "'")
 end
 
 run.open_compiled_letter = function()
     local pdf_file = string.gsub(vim.api.nvim_buf_get_name(0), 'letter.md', 'emil_eliasson-cover_letter.pdf')
-    run.send("handlr open " .. pdf_file)
+    run.send_check("handlr open " .. pdf_file)
 end
 
 return run
