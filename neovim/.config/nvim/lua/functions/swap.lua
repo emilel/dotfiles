@@ -25,6 +25,7 @@ S.swap = function()
     vim.api.nvim_feedkeys('"ud"yP', 'x', true)
     vim.fn.setpos("'<", vim.g.marked_position[1])
     vim.fn.setpos("'>", vim.g.marked_position[2])
+    vim.api.nvim_buf_clear_namespace(vim.api.nvim_get_current_buf(), -1, vim.g.marked_position[1][2] - 1, vim.g.marked_position[2][2])
     vim.cmd('normal! gv"up')
 end
 
