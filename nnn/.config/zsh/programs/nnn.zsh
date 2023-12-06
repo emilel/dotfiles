@@ -16,7 +16,7 @@ export NNN_TRASH=1
 # R - no rollover 
 # U - show user and group in status bar 
 # r - use advcpmv
-export NNN_OPTS='ARUr'
+export NNN_OPTS='ARU'
 
 # plugins
 export NNN_PLUG="p:preview-tui;P:preview-window;d:-!git diff \"$nnn*\";D:-!git diff*;s:-!git status \"\$nnn\";S:-!git status;l:-!git log \"\$nnn*\";L:-!git log*;x:!chmod +x \"\$nnn\"*;y:!wl-copy \"\$nnn\";b:!acp -rv \"\$nnn\" \"\$nnn.bak\"*;g:fzcd;Y:!wl-copy < \"\$nnn\"*"

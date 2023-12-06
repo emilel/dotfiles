@@ -2,8 +2,7 @@ local function show_file_or_cwd_in_nnn_buffer(directory)
     directory = directory or vim.fn.getcwd()
     local bufname = vim.fn.bufname()
     if bufname ~= "" and bufname ~= nil then
-        vim.cmd('let g:nnn#command="nnn -w ' ..
-            vim.fn.expand("%:t") .. '" | let g:nnn#layout = "enew" | NnnPicker %:p:h')
+        vim.cmd('let g:nnn#layout = "enew" | NnnPicker %:p:h')
     else
         vim.api.nvim_command('NnnPicker ' .. directory)
     end
@@ -12,8 +11,7 @@ end
 local function show_file_or_cwd_in_nnn_sidebar()
     local bufname = vim.fn.bufname()
     if bufname ~= "" and bufname ~= nil then
-        vim.cmd('let g:nnn#command="nnn -w ' ..
-            vim.fn.expand("%:t") .. '" | let g:nnn#layout = { "left": "35" } | NnnPicker %:p:h')
+        vim.cmd('let g:nnn#layout = { "left": "35" } | NnnPicker %:p:h')
     else
         vim.cmd('NnnPicker ' .. vim.fn.getcwd())
     end
@@ -23,7 +21,6 @@ local function go_to_directory(opts)
     local finders = require 'telescope.finders'
     local pickers = require 'telescope.pickers'
     local conf = require 'telescope.config'.values
-    print('hello')
     opts = opts or {}
 
     pickers.new(opts, {

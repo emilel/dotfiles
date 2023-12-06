@@ -1,10 +1,10 @@
 if [ ! -d "/usr/share/fzf" ]; then
-    exit 0
+    # exit 0
 fi
 
 # get extra functionality
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
+source "$HOME/.local/share/fzf/completion.zsh"
+source "$HOME/.local/share/fzf/key-bindings.zsh"
 
 # use tmux by default
 export FZF_TMUX=1
