@@ -186,12 +186,12 @@ vim.keymap.set('n', '*', search.current, { desc = 'Search for current word' })
 -- # search for selection
 
 vim.keymap.set('x', '/', '"yy:lua require("functions.search").escape("<c-r>y")<cr>',
-    { desc = 'Search for selection', silent = true })
+    { desc = 'Search for selection' })
 
--- # search for selected word
-
-vim.keymap.set('x', '*', '"yy:lua require("functions.search").escape("\\\\<<c-r>y\\\\>")<cr>',
-    { desc = 'Search for selected word', silent = true })
+-- -- # search for selected word
+--
+-- vim.keymap.set('x', '*', '"yy:lua require("functions.search").escape("\\\\<<c-r>y\\\\>")<cr>',
+--     { desc = 'Search for selected word', silent = true })
 
 -- # replace in selection
 

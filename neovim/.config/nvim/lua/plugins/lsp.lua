@@ -1,52 +1,55 @@
 return {
-    'neovim/nvim-lspconfig',
+    "williamboman/mason-lspconfig.nvim",
     dependencies = {
-        { 'williamboman/mason-lspconfig.nvim' },
-        { 'williamboman/mason.nvim' },
-        { 'nvim-treesitter/nvim-treesitter-textobjects' },
+        "williamboman/mason.nvim",
+        "neovim/nvim-lspconfig",
         {
             'stevearc/conform.nvim',
             opts = {
                 formatters_by_ft = {
-                    sh = { 'shfmt', 'beautysh' },
-                    bash = { 'shfmt', 'beautysh' },
-                    python = { 'black', 'isort' },
+                    lua = {},
                 }
             },
         },
     },
-    ft = { 'tex', 'c', 'python' },
-    cmd = { 'Mason' },
-    lazy = true,
     config = function()
         require("mason").setup()
         require("mason-lspconfig").setup()
 
-        local lspconfig = require('lspconfig')
-        local get_servers = require('mason-lspconfig').get_installed_servers()
-        local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+        require("mason-lspconfig").setup_handlers({
+            function(server_name)
+                require("lspconfig")[server_name].setup {}
+            end,
 
-        local server_specific_settings = {
-            lua_ls = {
-                Lua = {
-                    diagnostics = {
-                        globals = { 'vim' },
-                    },
-                },
-            },
-        }
+            ['lua_ls'] = function()
+                require('lspconfig').lua_ls.setup({
+                    on_init = function(client)
+                        local path = client.workspace_folders[1].name
+                        if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+                            return
+                        end
 
-        for _, server_name in ipairs(get_servers) do
-            local server_settings = server_specific_settings[server_name] or {}
-
-            lspconfig[server_name].setup({
-                capabilities = lsp_capabilities,
-                settings = server_settings,
-            })
-        end
+                        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                            runtime = {
+                                version = 'LuaJIT'
+                            },
+                            workspace = {
+                                checkThirdParty = false,
+                                library = {
+                                    vim.env.VIMRUNTIME
+                                }
+                            }
+                        })
+                    end,
+                    settings = {
+                        Lua = {}
+                    }
+                })
+            end
+        })
 
         vim.api.nvim_create_autocmd('LspAttach', {
-            desc = 'LSP actions',
+            desc = 'Language server protocol',
             callback = function()
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover,
                     { desc = 'Hover documentation', buffer = true }
@@ -67,11 +70,15 @@ return {
                     { desc = 'Format file' }
                 )
                 vim.keymap.set('n', ',ca', vim.lsp.buf.code_action, { desc = 'Code action' })
-                vim.keymap.set('n', ',z', function() require('conform').format({ lsp_fallback = true }) end,
+                vim.keymap.set('n', ',z', function()
+                        require('conform').format({ lsp_fallback = true })
+                    end,
                     { desc = 'Format buffer' })
-                vim.keymap.set('x', ',z', function() require('conform').format({ lsp_fallback = true }) end,
+                vim.keymap.set('x', ',z', function()
+                        require('conform').format({ lsp_fallback = true })
+                    end,
                     { desc = 'Format selection' })
             end
         })
-    end
+    end,
 }

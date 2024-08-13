@@ -1,79 +1,21 @@
-vim.opt.termguicolors = true
+local utils = require('utils')
 
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable',
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
+require('config.lazy')
 
-vim.g.mapleader = ' '
-require('lazy').setup('plugins', { change_detection = { notify = false }})
+utils.require_directory('keymaps')
+utils.require_directory('settings')
 
-require('general')
-require('keymaps')
-require('globals')
-require('visual')
-require('commands')
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+    callback = function()
+        local clients = vim.lsp.get_clients()
 
-local telescope = require'telescope'
-local finders = require'telescope.finders'
-local pickers = require'telescope.pickers'
-local actions = require'telescope.actions'
-local conf = require'telescope.config'.values
+        for _, client in ipairs(clients) do
+            local id = client.id
 
-telescope.setup{
-  extensions = {
-    nnn_picker = {
-      -- Add any configuration options you want for your extension here
-    }
-  }
-}
+            vim.lsp.completion.enable(true, id, 1, { autotrigger = true })
 
-telescope.register_extension{
-  exports = {
-    nnn_picker = function(opts)
-      opts = opts or {}
-
-      -- Function to find directories. Adjust this to suit your needs.
-      local function find_dirs()
-        local dirs = {}
-        local p = io.popen('find . -type d')
-        for dir in p:lines() do
-          table.insert(dirs, dir)
+            return
         end
-        return dirs
-      end
-
-      pickers.new(opts, {
-        prompt_title = 'Find Directories',
-        finder = finders.new_table{
-          results = find_dirs(),
-          entry_maker = function(entry)
-            return {
-              value = entry,
-              display = entry,
-              ordinal = entry,
-            }
-          end,
-        },
-        sorter = conf.file_sorter(opts),
-        attach_mappings = function(prompt_bufnr)
-          actions.select_default:replace(function()
-            local selection = actions.get_selected_entry(prompt_bufnr)
-            actions.close(prompt_bufnr)
-            -- Run nnnPicker with the selected directory
-            vim.cmd('NnnPicker ' .. selection.value)
-          end)
-          return true
-        end,
-      }):find()
     end,
-  },
-}
+
+})
