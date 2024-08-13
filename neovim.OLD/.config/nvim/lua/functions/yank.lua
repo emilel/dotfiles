@@ -27,21 +27,38 @@ yank.remove_hard_line_breaks = function()
     local lines = vim.fn.getreg('+', 1, 1)
     local merged_lines = {}
     local current_paragraph = {}
+    local in_code_block = false
 
     for _, line in ipairs(lines) do
-        if line == "" then
-            if #current_paragraph > 0 then
+        -- Check if the line is starting or ending a code block
+        if line:match("^```") then
+            in_code_block = not in_code_block
+            -- Add the code block line as is
+            table.insert(merged_lines, line)
+            -- Reset current paragraph at the end of a code block
+            if not in_code_block and #current_paragraph > 0 then
                 table.insert(merged_lines, table.concat(current_paragraph, " "))
                 current_paragraph = {}
             end
-            table.insert(merged_lines, "")
+        elseif in_code_block then
+            -- Inside a code block, add lines as is
+            table.insert(merged_lines, line)
         else
-            table.insert(current_paragraph, line)
-            if line:sub(-1) == " "
-                or line:match("^%s*[%*'+]")
-                or line:match("^%s*[0-9]+%.") then
-                table.insert(merged_lines, table.concat(current_paragraph, " "))
-                current_paragraph = {}
+            -- Normal text processing
+            if line == "" then
+                if #current_paragraph > 0 then
+                    table.insert(merged_lines, table.concat(current_paragraph, " "))
+                    current_paragraph = {}
+                end
+                table.insert(merged_lines, "")
+            else
+                table.insert(current_paragraph, line)
+                if line:sub(-1) == " "
+                    or line:match("^%s*[%*'+]")
+                    or line:match("^%s*[0-9]+%.") then
+                    table.insert(merged_lines, table.concat(current_paragraph, " "))
+                    current_paragraph = {}
+                end
             end
         end
     end
