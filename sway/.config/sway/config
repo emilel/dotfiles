@@ -219,6 +219,10 @@ bindsym $mod+delete exec $prompt
 
 bindsym $mod+ctrl+m exec firefox
 
+## work
+
+bindsym $mod+ctrl+r exec remmina
+
 ## spotify
 
 bindsym $mod+ctrl+s exec spotify
@@ -248,6 +252,7 @@ bindsym $mod+underscore scratchpad show
 
 output eDP-1 pos 2560 0
 output DP-1 pos 0 0
+output HDMI-A-1 pos 0 0
 
 ## tap to click
 

@@ -35,3 +35,7 @@ alias py='ipython'
 ## start shell
 
 alias psh='poetry shell'
+
+## find ip address
+
+alias whatsmyip='curl ifconfig.io'

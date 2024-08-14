@@ -4,4 +4,4 @@ vim.keymap.set('n', '<space>Z', 'mzgggqG<cmd>silent %s/\\s\\+$//e<cr><cmd>noh<cr
 vim.keymap.set('n', '<cr>l', require('functions.run').compile_letter, { desc = 'Compile letter' })
 vim.keymap.set('n', '<cr>o', require('functions.run').open_compiled_letter, { desc = 'Open compile letter' })
 
-vim.opt_local.formatoptions = "tnaq"
+vim.opt_local.formatoptions = "tnq"
