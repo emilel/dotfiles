@@ -15,7 +15,7 @@ return {
             },
         },
     },
-    ft = { 'tex', 'c', 'python' },
+    ft = { 'tex', 'c', 'python', 'rust' },
     cmd = { 'Mason' },
     lazy = true,
     config = function()
