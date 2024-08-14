@@ -186,12 +186,12 @@ vim.keymap.set('n', '*', search.current, { desc = 'Search for current word' })
 -- # search for selection
 
 vim.keymap.set('x', '/', '"yy:lua require("functions.search").escape("<c-r>y")<cr>',
-    { desc = 'Search for selection', silent = true })
+    { desc = 'Search for selection' })
 
--- # search for selected word
-
-vim.keymap.set('x', '*', '"yy:lua require("functions.search").escape("\\\\<<c-r>y\\\\>")<cr>',
-    { desc = 'Search for selected word', silent = true })
+-- -- # search for selected word
+--
+-- vim.keymap.set('x', '*', '"yy:lua require("functions.search").escape("\\\\<<c-r>y\\\\>")<cr>',
+--     { desc = 'Search for selected word', silent = true })
 
 -- # replace in selection
 
@@ -207,6 +207,10 @@ vim.keymap.set('v', '<space>R', '"hy:%s/\\<<C-R>=escape(@h,\'/\\\')<CR>\\>//gc<l
 vim.keymap.set('x', 'r',
     '"hymu:s/<C-R>=escape(@h,\'/\\\')<CR>//g | :noh | :normal `u<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>',
     { desc = 'Replace selection on current line' })
+
+-- # save in location list
+
+vim.keymap.set('n', '\'', 'm\'', { desc = 'Set jump list location' })
 
 -- # run
 

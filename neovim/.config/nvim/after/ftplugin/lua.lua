@@ -1,1 +1,3 @@
-vim.opt_local.formatoptions = require('globals').formatoptions
+local globals = require('globals')
+
+vim.opt.formatoptions = globals.formatoptions

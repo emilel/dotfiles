@@ -1,5 +1,6 @@
 # use pure theme
 
+fpath+=($HOME/.zsh/pure)
 autoload -U promptinit; promptinit
 prompt pure
 
