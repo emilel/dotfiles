@@ -16,3 +16,14 @@ vim.keymap.set('n', '<space>l', '<cmd>wincmd l<cr>', { desc = 'Focus window to t
 -- close Neovim
 vim.keymap.set('n', '<space>q', '<cmd>q<cr>', { desc = 'Close Neovim' })
 vim.keymap.set('n', '<space>Q', '<cmd>q!<cr>', { desc = 'Force close Neovim' })
+
+-- limit text width
+vim.opt.textwidth = 80
+
+-- move cursor
+vim.keymap.set('i', '<c-j>', '<down>', { desc = 'Move cursor down' })
+vim.keymap.set('i', '<c-k>', '<up>', { desc = 'Move cursor up' })
+
+-- keep visual selection when indenting
+vim.keymap.set('v', '<', '<gv', { desc = 'Keep visual selection when indenting' })
+vim.keymap.set('v', '>', '>gv', { desc = 'Keep visual selection when indenting' })

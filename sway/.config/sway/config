@@ -33,6 +33,12 @@ workspace 7 output eDP-1
 workspace 8 output eDP-1
 workspace 9 output eDP-1
 
+## move workspace to other monitor
+bindsym $mod+Shift+Control+h move workspace to output left
+bindsym $mod+Shift+Control+j move workspace to output down
+bindsym $mod+Shift+Control+k move workspace to output up
+bindsym $mod+Shift+Control+l move workspace to output right
+
 # SWAY
 
 ## reload configuration file
