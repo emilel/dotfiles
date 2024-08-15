@@ -1,19 +1,19 @@
-local telescope = require('telescope')
-local builtin = require('telescope.builtin')
-local actions = require('telescope.actions')
-
 return {
     'nvim-telescope/telescope.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     keys = {
         {
             '<space>f',
-            builtin.find_files,
+            function()
+                require('telescope.builtin').find_files()
+            end,
             desc = 'Find files'
         },
         {
             '<space>/',
-            builtin.live_grep,
+            function()
+                require('telescope.builtin').live_grep()
+            end,
             desc = 'Grep all files'
         },
         {
@@ -25,17 +25,27 @@ return {
         },
     },
     config = function()
-        telescope.setup({
+        require('telescope').setup({
             defaults = {
                 layout_strategy = 'vertical',
                 mappings = {
                     i = {
-                        ['<esc>'] = actions.close,
-                        ['<c-j>'] = actions.move_selection_next,
-                        ['<c-k>'] = actions.move_selection_previous,
+                        ['<esc>'] = require('telescope.actions').close,
+                        ['<c-j>'] = require('telescope.actions').move_selection_next,
+                        ['<c-k>'] = require('telescope.actions').move_selection_previous,
                         ["<c-x>"] = "delete_buffer"
                     }
                 }
+            },
+            pickers = {
+                find_files = {
+                    hidden = true
+                },
+                live_grep = {
+                    additional_args = function(_)
+                        return { "--hidden" }
+                    end
+                },
             }
         })
     end,

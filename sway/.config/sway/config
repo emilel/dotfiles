@@ -1,329 +1,194 @@
-# general
-
-## default modifier
-
+# modifier key
 set $mod Mod4
 
-## floating modifier
+# direction variables
+set $left h
+set $down j
+set $up k
+set $right l
 
-floating_modifier $mod normal
+# Your preferred terminal emulator
+set $term foot
+# Your preferred application launcher
+set $menu bemenu
 
-## prompt
+# wallpaper
+output * bg @datadir@/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
-for_window [ title="prompt" ] \
-    floating enable, \
-    resize set 100 ppt 100 ppt, \
-    move position center, \
-    border none
+# monitors
+output eDP-1 pos 2560 0
+output DP-1 pos 0 0
 
-set $prompt foot \
-    --override=locked-title=yes \
-    --title prompt \
-    --override=colors.background=000000 \
-    --override=colors.alpha=0.4  \
-    --override=pad=600x300 \
-    --override=font='Source Code Pro':size=40
+# help: swaymsg -t get_outputs
 
-## default application launcher
+### Idle configuration
+#
+# Example configuration:
+#
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
 
-bindsym $mod+d exec "$HOME/.config/scripts/open_application.sh"
+### Input configuration
+#
+# Example configuration:
+#
+#   input "2:14:SynPS/2_Synaptics_TouchPad" {
+#       dwt enabled
+#       tap enabled
+#       natural_scroll enabled
+#       middle_emulation enabled
+#   }
+#
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
 
-## idle after ten minutes
+### Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym $mod+Return exec $term
 
-exec swayidle \
-    timeout 600 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-    &
+    # Kill focused window
+    bindsym $mod+q kill
 
-## turn screen off
+    # Start your launcher
+    bindsym $mod+d exec $menu
 
-bindsym $mod+z exec "$HOME/.config/scripts/turn_off_screen.sh"
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
 
-## start notification handler
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
 
-exec mako
+    # log out
+    bindsym $mod+Shift+e exec swaymsg exit
 
-## wallpaper
+    # move focus
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
 
-output * bg ~/downloads/images/lake.jpg fill
+    # move focused window
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
 
-## reload the configuration file
+    # change workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
 
-bindsym $mod+Shift+r reload
+    # move window or container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
 
-## log out
+    # split container
+    bindsym $mod+v splith
+    bindsym $mod+b splitv
 
-bindsym $mod+Shift+e exec swaymsg exit
+    # switch layout
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
 
-## turn off computer
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
 
-bindsym $mod+Shift+x exec sudo shutdown -h now
-
-## reboot
-
-bindsym $mod+Shift+b exec sudo reboot
-
-# windows
-
-## focus
-
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-
-## move
-
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
-
-## close window
-
-bindsym $mod+q kill
-
-## split horizontally
-
-bindsym $mod+v splith
-
-## split vertically
-
-bindsym $mod+b splitv
-
-## switch layout
-
-# bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-## full screen
-bindsym $mod+f fullscreen
-
-## toggle floating
-
-bindsym $mod+shift+return floating toggle
-
-## toggle focus
-
-bindsym $mod+return focus mode_toggle
-
-## focus parent
-
-bindsym $mod+a focus parent
-
-## resize container
-
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+# #
+# # Scratchpad:
+# #
+#     # Sway has a "scratchpad", which is a bag of holding for windows.
+#     # You can send windows there and get them back later.
+# 
+#     # Move the currently focused window to the scratchpad
+#     bindsym $mod+Shift+minus move scratchpad
+# 
+#     # Show the next scratchpad window or hide the focused scratchpad window.
+#     # If there are multiple scratchpad windows, this command cycles through them.
+#     bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
 mode "resize" {
-    bindsym h resize shrink width 10px
-    bindsym j resize grow height 10px
-    bindsym k resize shrink height 10px
-    bindsym l resize grow width 10px
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
 
-    # finish resizing
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
 bindsym $mod+r mode "resize"
+#
+# Utilities:
+#
+    # Special keys to adjust volume via PulseAudio
+    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+    bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    # Special keys to adjust brightness via brightnessctl
+    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+    # Special key to take a screenshot with grim
+    bindsym Print exec grim
 
-# workspaces
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+    position top
 
-## assign to monitors
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
 
-workspace 1 output DP-1
-workspace 2 output DP-1
-workspace 3 output DP-1
-workspace 4 output DP-1
-workspace 5 output DP-1
-workspace 6 output DP-1
-workspace 7 output eDP-1
-workspace 8 output eDP-1
-workspace 9 output eDP-1
-
-## go to workspace
-
-bindsym $mod+1 workspace number 1
-bindsym $mod+2 workspace number 2
-bindsym $mod+3 workspace number 3
-bindsym $mod+4 workspace number 4
-bindsym $mod+5 workspace number 5
-bindsym $mod+6 workspace number 6
-bindsym $mod+7 workspace number 7
-bindsym $mod+8 workspace number 8
-bindsym $mod+9 workspace number 9
-bindsym $mod+0 workspace number 10
-
-## move to workspace
-
-bindsym $mod+Shift+1 move container to workspace number 1
-bindsym $mod+Shift+2 move container to workspace number 2
-bindsym $mod+Shift+3 move container to workspace number 3
-bindsym $mod+Shift+4 move container to workspace number 4
-bindsym $mod+Shift+5 move container to workspace number 5
-bindsym $mod+Shift+6 move container to workspace number 6
-bindsym $mod+Shift+7 move container to workspace number 7
-bindsym $mod+Shift+8 move container to workspace number 8
-bindsym $mod+Shift+9 move container to workspace number 9
-bindsym $mod+Shift+0 move container to workspace number 10
-
-## go to previous/next workspace
-
-bindsym $mod+control+h workspace prev
-bindsym $mod+control+l workspace next
-
-## go to last workspace
-
-bindsym $mod+p workspace back_and_forth
-
-## rename workspace
-
-bindsym $mod+m exec "$HOME/.config/scripts/rename_workspace.sh"
-
-## move workspace to other monitor
-
-bindsym $mod+Shift+Control+h move workspace to output left
-bindsym $mod+Shift+Control+j move workspace to output down
-bindsym $mod+Shift+Control+k move workspace to output up
-bindsym $mod+Shift+Control+l move workspace to output right
-
-# applications
-
-## create tmux session
-
-bindsym $mod+shift+d exec "$HOME/.config/scripts/create_tmux_session_from_template.sh"
-
-## attach tmux session
-
-bindsym $mod+t exec "$HOME/.config/scripts/attach_tmux_session.sh"
-
-## attach tmux session
-
-bindsym $mod+shift+t exec "$HOME/.config/scripts/duplicate_tmux_session.sh"
-
-## terminal with tmux
-
-bindsym $mod+space exec foot "$HOME/.config/scripts/new_tmux_session.sh"
-bindsym $mod+backspace exec foot "$HOME/.config/scripts/new_tmux_session.sh"
-
-## terminal without tmux
-
-bindsym $mod+shift+space exec foot
-bindsym $mod+shift+backspace exec foot
-
-## transparent floating
-
-bindsym $mod+delete exec $prompt
-
-## web browser
-
-bindsym $mod+ctrl+m exec firefox
-
-## work
-
-bindsym $mod+ctrl+r exec remmina
-
-## spotify
-
-bindsym $mod+ctrl+s exec spotify
-
-## screenshot
-
-bindsym $mod+control+shift+p exec slurp | grim -g - - | wl-copy
-bindsym $mod+control+p exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy
-
-# scratchpad
-
-## move to scratchpad
-
-bindsym $mod+minus move scratchpad
-
-## 'move back from scratchpad' (toggle floating)
-
-bindsym $mod+equal toggle floating toggle
-
-## show applications in scratch pad
-
-bindsym $mod+underscore scratchpad show
-
-# hardware
-
-## monitors
-
-output eDP-1 pos 2560 0
-output DP-1 pos 0 0
-output HDMI-A-1 pos 0 0
-
-## tap to click
-
-input "1739:31251:DLL07BE:01_06CB:7A13_Touchpad" {
-    tap enabled
+    colors {
+        statusline #ffffff
+        background #323232
+        inactive_workspace #32323200 #32323200 #5c5c5c
+    }
 }
 
-## hide cursor after three seconds of inactivity
-
-seat seat0 hide_cursor 3000
-
-## keyboard settings
-
-input type:keyboard {
-    repeat_rate 40
-    repeat_delay 260
-    xkb_layout se
-    xkb_options caps:swapescape
-}
-
-## use caps lock to toggle between swedish and us keyboard layout
-
-input 10730:258:Kinesis_Advantage2_Keyboard {
-    xkb_layout us,se
-    xkb_options grp:caps_toggle
-}
-
-# us layout
-
-bindsym $mod+u exec "swaymsg input 10730:258:Kinesis_Advantage2_Keyboard xkb_layout us"
-
-## swedish layout
-
-bindsym $mod+s exec "swaymsg input 10730:258:Kinesis_Advantage2_Keyboard xkb_layout se"
-
-## brightness control
-
-bindsym XF86MonBrightnessUp exec --no-startup-id \
-    brightnessctl s 1500
-
-bindsym XF86MonBrightnessDown exec --no-startup-id \
-    brightnessctl s 1
-
-## volume control
-
-bindsym XF86AudioRaiseVolume exec \
-    wpctl set-volume @DEFAULT_SINK@ 5%+
-bindsym XF86AudioLowerVolume exec \
-    wpctl set-volume @DEFAULT_SINK@ 5%-
-bindsym XF86AudioMute exec \
-    wpctl set-mute @DEFAULT_SINK@ toggle
-
-# styling
-
-titlebar_border_thickness 3
-titlebar_padding 3 3
-default_border normal 1
-
-## colors
-
-set $active-text-color   #000000
-set $bg-color            #bbbbbb
-set $inactive-border     #000000
-set $inactive-bg-color   #222222
-set $text-color          #000000
-set $inactive-text-color #bfbfbf
-set $urgent-bg-color     #E53935
-set $indicator           #bababa
-
-client.focused $bg-color $bg-color $text-color $indicator
-client.focused_inactive $inactive-border $inactive-border $inactive-text-color $inactive-bg-color
-client.unfocused $inactive-border $inactive-border $inactive-text-color  $inactive-bg-color
-
-bar swaybar_command waybar
+include @sysconfdir@/sway/config.d/*
