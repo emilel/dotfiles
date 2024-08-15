@@ -1,3 +1,5 @@
+* copy private and public ssh keys to ~/.ssh
+
 * install `git`, `stow`, `neovim`, `zsh`, `nnn` and `gcc`
 
 * set up configuration folders
@@ -5,20 +7,13 @@
   ```
   git clone https://github.com/emilel/dotfiles ~/dotfiles
   cd ~/dotfiles
-  stow neovim zsh nnn scripts
+  stow neovim zsh nnn scripts git
   ```
 
 * start `nvim` and install language servers using `:Mason` and tree sitter
   language support with `:TSInstall <language>`
 
-* set up git:
-
-  ```
-  cd ~/dotfiles
-  stow git
-  ```
-
-* set `zsh` up:
+* change shell to `zsh`:
 
   ```
   chsh -s $(which zsh)
