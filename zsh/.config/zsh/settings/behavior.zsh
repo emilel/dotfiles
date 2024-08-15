@@ -47,3 +47,6 @@ setopt HIST_IGNORE_ALL_DUPS
 
 ## don't find duplicates
 setopt HIST_FIND_NO_DUPS
+
+# set LS_COLORS variable for ls and tree
+eval $(dircolors -b)

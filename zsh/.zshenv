@@ -1,1 +1,1 @@
-ZDOTDIR=/home/emil-eliasson/.config/zsh
+ZDOTDIR=/home/emil/.config/zsh
