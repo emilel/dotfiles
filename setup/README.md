@@ -3,7 +3,7 @@
 * set up configuration folders
 
   ```
-  git clone http://github.com/emilel/dotfiles ~/dotfiles
+  git clone https://github.com/emilel/dotfiles ~/dotfiles
   cd ~/dotfiles
   stow neovim zsh nnn scripts
   ```
