@@ -1,1 +1,0 @@
-alias open='handlr open'

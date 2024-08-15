@@ -1,8 +1,0 @@
-#!/bin/zsh -f
-
-name=conf
-tmux new-session -ds $name
-tmux rename-window -t $name:1 files
-tmux send-keys -t $name:files conf Enter
-$HOME/.config/scripts/rename_workspace.sh $name
-tmux attach -t $name
