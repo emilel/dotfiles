@@ -9,3 +9,6 @@ vim.opt.undofile = true
 
 -- format options (see :h fo-table)
 vim.opt.formatoptions = globals.formatoptions
+
+-- don't wrap text
+vim.opt.wrap = false

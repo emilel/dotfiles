@@ -1,18 +1,20 @@
-source_files_in_folder() {
-    local folder="$1"
+#/bin/zsh
 
-    if [ -d $folder ]; then
-        local current_file="$0"
-        local files=("$folder"/**/*.zsh)
+source_directory() {
+    local directory="$1"
+    local files=("$directory"/**/*.zsh(N))
 
-        for file in ${files[@]}; do
-            if [ -f $file ] && [ "$file" != $current_file ] ; then
-                source "$file"
-            fi
-        done
-    fi
+    for file in ${files[@]}; do
+        if [ -f $file ] ; then
+            source "$file"
+        fi
+    done
 }
 
-source_files_in_folder "$HOME/.config/zsh"
-source_files_in_folder "$HOME/.secret"
-source "$HOME/.config/scripts/init_aliases.sh"
+ZSH_DIR="$HOME/.config/zsh"
+
+source "$ZSH_DIR/aliases.zsh"
+
+source_directory "$ZSH_DIR/programs"
+source_directory "$ZSH_DIR/settings"
+source_directory "$ZSH_DIR/plugins"

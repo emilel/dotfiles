@@ -39,12 +39,14 @@ return {
             },
             pickers = {
                 find_files = {
-                    hidden = true
+                    hidden = true,
+                    file_ignore_patterns = { ".git" }
                 },
                 live_grep = {
                     additional_args = function(_)
                         return { "--hidden" }
-                    end
+                    end,
+                    file_ignore_patterns = { ".git" }
                 },
             }
         })
