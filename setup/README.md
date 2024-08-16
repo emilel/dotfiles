@@ -28,7 +28,13 @@
   append `<username> ALL=(ALL) NOPASSWD:ALL`
 
 * install other nice programs and `stow` possible configurations: `tmux`,
-  `fd`/`fd-find`, `ripgrep`, `tree`
+  `fd`/`fd-find`, `ripgrep`, `tree`, `bat`
+
+  * if ubuntu, create a symlink to `batcat`:
+
+    ```
+    sudo ln -s /usr/bin/batcat /usr/local/bin/bat
+    ```
 
 * for gui:
 
