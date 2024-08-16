@@ -7,7 +7,7 @@
   ```
   git clone https://github.com/emilel/dotfiles ~/dotfiles
   cd ~/dotfiles
-  stow neovim zsh nnn scripts git
+  stow neovim zsh nnn scripts git setup
   ```
 
 * start `nvim` and install language servers using `:Mason` and tree sitter
@@ -35,6 +35,8 @@
     ```
     sudo ln -s /usr/bin/batcat /usr/local/bin/bat
     ```
+
+* store computer specific zsh files in ~/.setup which will be sourced on startup
 
 * for gui:
 
