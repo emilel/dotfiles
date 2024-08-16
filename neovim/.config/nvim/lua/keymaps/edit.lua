@@ -15,3 +15,6 @@ vim.keymap.set('n', '<space>z', 'mygwap`y', { desc = 'Format paragraph' })
 -- don't copy when deleting or changing
 vim.keymap.set({ 'n', 'x' }, '<space>d', '"_d', { desc = 'Delete without copying' })
 vim.keymap.set({ 'n', 'x' }, '<space>c', '"_c', { desc = 'Change without copying' })
+
+-- don't copy when starting insert mode on a character
+vim.keymap.set('n', 's', '"_s', { desc = 'Don\'t copy letter when pressing `s`' })
