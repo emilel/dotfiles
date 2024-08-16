@@ -23,6 +23,17 @@ return {
             end,
             desc = 'Go to buffer'
         },
+        {
+            '<space>*',
+            function()
+                vim.cmd('normal! "yy')
+                local search_term = vim.fn.getreg('y')
+                search_term = vim.fn.escape(search_term, '\\\\')
+                require('telescope.builtin').grep_string({ search = search_term })
+            end,
+            desc = 'Search for selected string in current working directory',
+            mode = 'x'
+        }
     },
     config = function()
         require('telescope').setup({
@@ -48,6 +59,11 @@ return {
                     end,
                     file_ignore_patterns = { ".git" }
                 },
+                grep_string = {
+                    additional_args = function(_)
+                        return { "--hidden" }
+                    end,
+                }
             }
         })
     end,

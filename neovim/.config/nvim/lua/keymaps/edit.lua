@@ -18,3 +18,6 @@ vim.keymap.set({ 'n', 'x' }, '<space>c', '"_c', { desc = 'Change without copying
 
 -- don't copy when starting insert mode on a character
 vim.keymap.set('n', 's', '"_s', { desc = 'Don\'t copy letter when pressing `s`' })
+
+-- apply normal mode command for every line
+vim.keymap.set('x', '<space>:', ':%norm ', { desc = 'Execute normal mode commands on every line' })
