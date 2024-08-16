@@ -33,10 +33,8 @@ zvm_vi_yank () {
 bindkey "^?" backward-delete-char
 
 # save history
-export HISTFILE="$HOME/zsh/.history"
-
-# search history
-bindkey '^R' history-incremental-search-backward
+setopt appendhistory
+export HISTFILE=~/.zsh/.history
 
 # history in memory
 export HISTSIZE=10000
