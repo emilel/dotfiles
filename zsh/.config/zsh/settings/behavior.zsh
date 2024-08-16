@@ -50,3 +50,7 @@ setopt HIST_FIND_NO_DUPS
 
 # set LS_COLORS variable for ls and tree
 eval $(dircolors -b)
+
+# ignore case when autocompleting
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
