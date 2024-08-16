@@ -1,0 +1,53 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "modules-left": [
+    "sway/workspaces",
+    "sway/mode"
+  ],
+  "modules-right": [
+    "network",
+    "bluetooth",
+    "wireplumber",
+    "battery",
+    "clock"
+  ],
+  "battery": {
+    "format-full": "CHR {capacity} %",
+    "format-charging": "CHR {capacity} %",
+    "format-discharging": "BAT {capacity} %",
+    "tooltip-format": ""
+  },
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M:%S}",
+    "interval": 1
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "SCR {percent} %",
+    "tooltip": false,
+    "on-scroll-up": "",
+    "on-scroll-down": ""
+  },
+  "wireplumber": {
+    "format": "VOL {node_name} {volume} %",
+    "format-muted": "VOL {node_name} MUTE",
+    "max-volume": 100,
+    "on-click": "pavucontrol",
+    "tooltip": false
+  },
+  "bluetooth": {
+    "format-disabled": "",
+    "format-off": "",
+    "format-on": "BT 0",
+    "format-connected": "BT {num_connections}",
+    "on-click": "blueman-manager"
+  },
+  "network": {
+    "format-wifi": "{essid} ({signaldBm} dBm)",
+    "format-ethernet": "ETH",
+    "tooltip": false,
+    "on-click": "nm-connection-editor"
+  },
+  "style": "~/.config/waybar/style.css"
+}

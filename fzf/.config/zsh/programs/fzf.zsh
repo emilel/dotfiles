@@ -2,7 +2,7 @@
 
 file="/usr/share/doc/fzf/examples/key-bindings.zsh"
 if [[ ! -f "$file" ]]; then
-    exit
+    return
 fi
 
 source $file

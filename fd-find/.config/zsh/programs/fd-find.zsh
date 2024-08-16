@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-alias fd='fdfind'
+# alias fd='fdfind'

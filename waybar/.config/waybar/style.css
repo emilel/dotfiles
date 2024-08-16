@@ -1,0 +1,39 @@
+window#waybar {
+  background-color: black;
+  color: white;
+  font-family: "Source Code Pro";
+}
+
+#workspaces button {
+    padding: 0 5px;
+    color: white;
+    border-radius: 0;
+    border-left: 1px solid gray;
+}
+
+#workspaces button:first-child {
+    border-left: none;
+}
+
+#workspaces button.focused {
+    background-color: #333333;
+    border-left: none;
+}
+
+#workspaces button.urgent {
+    background-color: #eb4d4b;
+}
+
+#network,
+#bluetooth,
+#backlight,
+#wireplumber,
+#battery,
+#clock {
+  padding: 0 15px;
+  border-right: 1px solid gray;
+}
+
+#clock {
+  border-right: none;
+}
