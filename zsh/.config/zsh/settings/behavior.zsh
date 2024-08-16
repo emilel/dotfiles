@@ -1,7 +1,9 @@
 #!/bin/zsh
 
 # copy depending on display server
-if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+if grep -qi microsoft /proc/version; then
+    alias copyr='clip.exe'
+elif [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     alias copyr='wl-copy'
 else
     alias copyr='xclip -selection clipboard'
