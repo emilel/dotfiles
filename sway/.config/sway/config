@@ -1,3 +1,7 @@
+# FONT
+
+font pango:SourceCodePro Regular 10
+
 # VARIABELS
 
 ## modifier key
@@ -8,6 +12,12 @@ set $left h
 set $down j
 set $up k
 set $right l
+
+## colors
+set $black #000000
+set $dark_gray #111111
+set $light_gray #aaaaaa
+set $white #ffffff
 
 ## terminal emulator
 set $term foot
@@ -39,7 +49,34 @@ bindsym $mod+Shift+Control+j move workspace to output down
 bindsym $mod+Shift+Control+k move workspace to output up
 bindsym $mod+Shift+Control+l move workspace to output right
 
-# SWAY
+# INPUT
+
+## keyboard settings
+input type:keyboard {
+    repeat_rate 40
+    repeat_delay 260
+    xkb_layout se
+    xkb_options caps:swapescape
+}
+
+## brightness buttons
+bindsym XF86MonBrightnessUp exec sudo brightnessctl set +20%
+bindsym XF86MonBrightnessDown exec sudo brightnessctl set 20%-
+
+## sound buttons
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_SINK@ toggle
+
+# APPLETS
+
+## bluetooth
+exec blueman-applet
+
+## network
+exec nm-applet
+
+# DESKTOP
 
 ## reload configuration file
 bindsym $mod+Shift+r reload
@@ -49,6 +86,9 @@ bindsym $mod+Shift+e exec swaymsg exit
 
 ## turn off computer
 bindsym $mod+Shift+x exec sudo shutdown -h now
+
+## reboot
+bindsym $mod+Shift+b exec sudo reboot
 
 # LAUNCH
 
@@ -77,6 +117,9 @@ bindsym $mod+Shift+$left move left
 bindsym $mod+Shift+$down move down
 bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
+
+## toggle floating
+bindsym $mod+Space floating toggle
 
 # WORKSPACES
 
@@ -123,7 +166,6 @@ bindsym $mod+f fullscreen
 bindsym $mod+a focus parent
 
 # Resize containers
-
 bindsym $mod+r mode "resize"
 mode "resize" {
     bindsym $left resize shrink width 10px
@@ -136,30 +178,8 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 
-# input
 
-## keyboard settings
-input type:keyboard {
-    repeat_rate 40
-    repeat_delay 260
-    xkb_layout se
-    xkb_options caps:swapescape
-}
+client.focused $light_gray $light_gray $black
+client.unfocused $black $black $white
 
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-bar {
-    position bottom
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while $HOME/dotfiles/scripts/.scripts/status_bar.sh; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
-}
+bar swaybar_command waybar

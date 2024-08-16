@@ -30,10 +30,11 @@
 * install other nice programs and `stow` possible configurations: `tmux`,
   `fd`/`fd-find`, `ripgrep`, `tree`, `bat`
 
-  * if ubuntu, create a symlink to `batcat`:
+  * if ubuntu, create symlinks to `batcat` and `find`:
 
     ```
     sudo ln -s /usr/bin/batcat /usr/local/bin/bat
+    sudo ln -s /usr/bin/fdfind /usr/local/bin/fd
     ```
 
 * store computer specific zsh files in ~/.setup which will be sourced on startup
@@ -60,3 +61,5 @@
     ```
     sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop
     ```
+
+  * xdg-desktop-portal-wlr???

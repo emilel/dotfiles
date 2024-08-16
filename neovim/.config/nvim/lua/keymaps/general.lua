@@ -30,3 +30,6 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Keep visual selection when indenting' 
 
 -- select entire file
 vim.keymap.set('n', '<space>V', 'gg0VG', { desc = 'Select entire file' })
+
+-- select pasted text
+vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select pasted text' })
