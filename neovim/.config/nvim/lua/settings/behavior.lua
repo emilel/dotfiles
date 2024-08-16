@@ -12,3 +12,6 @@ vim.opt.formatoptions = globals.formatoptions
 
 -- don't wrap text
 vim.opt.wrap = false
+
+-- ignore case
+vim.opt.ignorecase = true
