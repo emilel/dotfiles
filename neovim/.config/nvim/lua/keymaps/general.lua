@@ -27,3 +27,6 @@ vim.keymap.set('i', '<c-k>', '<up>', { desc = 'Move cursor up' })
 -- keep visual selection when indenting
 vim.keymap.set('v', '<', '<gv', { desc = 'Keep visual selection when indenting' })
 vim.keymap.set('v', '>', '>gv', { desc = 'Keep visual selection when indenting' })
+
+-- select entire file
+vim.keymap.set('n', '<space>V', 'gg0VG', { desc = 'Select entire file' })
