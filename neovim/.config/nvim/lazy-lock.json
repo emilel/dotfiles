@@ -4,7 +4,7 @@
   "improved-ft.nvim": { "branch": "main", "commit": "f2259e9c4123339cb99430befcabf22f4689b97c" },
   "lazy.nvim": { "branch": "main", "commit": "077102c5bfc578693f12377846d427f49bc50076" },
   "lualine.nvim": { "branch": "master", "commit": "b431d228b7bbcdaea818bdc3e25b8cdbe861f056" },
-  "mason-lspconfig.nvim": { "branch": "main", "commit": "3ed90180e70a6a50cd37ce7ecc3693bcdaa7b290" },
+  "mason-lspconfig.nvim": { "branch": "main", "commit": "1c55991321d1a861537e32446affc5de5d9a6eaf" },
   "mason.nvim": { "branch": "main", "commit": "e2f7f9044ec30067bc11800a9e266664b88cda22" },
   "nnn.nvim": { "branch": "master", "commit": "662034c73718885ee599ad9fb193ab1ede70fbcb" },
   "nvim-lspconfig": { "branch": "master", "commit": "a89de2e049b5f89a0ee55029d5a31213bd4de6f8" },
