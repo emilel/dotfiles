@@ -55,15 +55,15 @@ button:hover {
 }
 
 #network {
-  color: #8ec07c;
+  color: #e0d176;
 }
 
 #bluetooth {
-  color: #5a97b0;
+  color: #5A97A0;
 }
 
 #backlight {
-  color: #e0d3af;
+  color: #bfb28b;
 }
 
 #wireplumber {
@@ -101,5 +101,5 @@ button:hover {
 #clock {
   color: #e0d3af;
   border-right: none;
-  padding-right: 5px;
+  padding-right: 10px;
 }
