@@ -59,7 +59,7 @@
     ```
 
 * install other nice programs and `stow` possible configurations: `tmux`,
-  `fd`/`fd-find`, `ripgrep`, `tree`, `bat`
+  `fd`/`fd-find`, `ripgrep`, `tree`, `bat`, `fzf`, `brightnessctl`
 
   * if ubuntu, create symlinks to `batcat` and `find`:
 
