@@ -7,11 +7,18 @@
   ```
   git clone https://github.com/emilel/dotfiles ~/dotfiles
   cd ~/dotfiles
-  stow neovim zsh nnn scripts git setup
+  stow neovim zsh nnn scripts setup
   ```
 
 * start `nvim` and install language servers using `:Mason` and tree sitter
   language support with `:TSInstall <language>`
+
+* set up git
+
+  ```
+  cd ~/dotfiles
+  stow git
+  ```
 
 * change shell to `zsh`:
 
@@ -27,27 +34,16 @@
 
   append `<username> ALL=(ALL) NOPASSWD:ALL`
 
-* install other nice programs and `stow` possible configurations: `tmux`,
-  `fd`/`fd-find`, `ripgrep`, `tree`, `bat`
-
-  * if ubuntu, create symlinks to `batcat` and `find`:
-
-    ```
-    sudo ln -s /usr/bin/batcat /usr/local/bin/bat
-    sudo ln -s /usr/bin/fdfind /usr/local/bin/fd
-    ```
-
-* store computer specific zsh files in ~/.setup which will be sourced on startup
-
 * for gui:
 
-  * install `sway`, `foot`, `bemenu` and `wl-clipboard`
+  * install `sway`, `foot`, `bemenu`, `wl-clipboard`, `waybar`, `blueman`,
+    `pavucontrol`
 
-  * set up sway configuration
+  * set up gui configuration
 
     ```
     cd ~/dotfiles
-    stow sway
+    stow sway waybar foot
     ```
 
   * install adobe source code pro
@@ -62,4 +58,14 @@
     sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop
     ```
 
-  * xdg-desktop-portal-wlr???
+* install other nice programs and `stow` possible configurations: `tmux`,
+  `fd`/`fd-find`, `ripgrep`, `tree`, `bat`
+
+  * if ubuntu, create symlinks to `batcat` and `find`:
+
+    ```
+    sudo ln -s /usr/bin/batcat /usr/local/bin/bat
+    sudo ln -s /usr/bin/fdfind /usr/local/bin/fd
+    ```
+
+* store computer specific zsh files in ~/.setup which will be sourced on startup
