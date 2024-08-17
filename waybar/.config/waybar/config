@@ -8,11 +8,18 @@
   "modules-right": [
     "network",
     "bluetooth",
+    "backlight",
     "wireplumber",
+    "memory",
     "battery",
     "clock"
   ],
   "battery": {
+    "states": {
+      "good": 95,
+      "warning": 40,
+      "critical": 15
+    },
     "format-full": "CHR {capacity} %",
     "format-charging": "CHR {capacity} %",
     "format-discharging": "BAT {capacity} %",
@@ -25,9 +32,11 @@
   "backlight": {
     "device": "intel_backlight",
     "format": "SCR {percent} %",
-    "tooltip": false,
-    "on-scroll-up": "",
-    "on-scroll-down": ""
+    "tooltip": false
+  },
+  "memory": {
+    "format": "RAM {avail} GiB",
+    "interval": 5
   },
   "wireplumber": {
     "format": "VOL {node_name} {volume} %",

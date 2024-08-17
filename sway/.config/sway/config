@@ -60,8 +60,8 @@ input type:keyboard {
 }
 
 ## brightness buttons
-bindsym XF86MonBrightnessUp exec sudo brightnessctl set +20%
-bindsym XF86MonBrightnessDown exec sudo brightnessctl set 20%-
+bindsym XF86MonBrightnessUp exec sudo brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec sudo brightnessctl set 10%-
 
 ## sound buttons
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_SINK@ 5%+
@@ -173,13 +173,17 @@ mode "resize" {
     bindsym $up resize shrink height 10px
     bindsym $right resize grow width 10px
 
-    # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
+# DESIGN
 
 client.focused $light_gray $light_gray $black
 client.unfocused $black $black $white
+
+titlebar_border_thickness 1
+titlebar_padding 5 1
+default_border normal 1
 
 bar swaybar_command waybar
