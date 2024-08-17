@@ -46,7 +46,11 @@ local function get_file_name()
 end
 
 -- copy entire file
-vim.keymap.set('n', '<space>yf', 'mygg0yG`y', { desc = 'Copy entire file' })
+vim.keymap.set('n', '<space>yf', function()
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local content = table.concat(lines, '\n')
+  vim.fn.setreg('+', content)
+end, { desc = 'Copy entire file' })
 
 -- copy relative path
 vim.keymap.set('n', '<space>yp', function()
@@ -135,3 +139,29 @@ vim.keymap.set('n', '<space>yE', function()
   vim.fn.setreg('+', repo_info)
   print('Copied: ' .. repo_info)
 end, { desc = 'Copy repository, branch, file and line number' })
+
+-- append to copy register
+vim.keymap.set('x', 'Y', function()
+  vim.cmd('normal! "yy')
+  local selected_text = vim.fn.getreg('y')
+  local current_clipboard = vim.fn.getreg('+')
+  local new_clipboard_content = current_clipboard .. '\n' .. selected_text
+  vim.fn.setreg('+', new_clipboard_content)
+end, { desc = 'Append to copy register' })
+
+-- open yank buffer
+vim.keymap.set('n', '<space>+', function()
+  local filetype = vim.bo.filetype
+  local filename = vim.fn.system("mktemp")
+  vim.api.nvim_command('edit ' .. vim.fn.trim(filename))
+  vim.api.nvim_buf_set_option(0, 'filetype', filetype)
+  local yanked_content = vim.fn.getreg('"')
+  yanked_content = vim.fn.trim(yanked_content, '\n')
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(yanked_content, '\n'))
+  vim.keymap.set('n', '<cr><cr>', function()
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    local content = table.concat(lines, '\n')
+    vim.fn.setreg('+', content)
+    vim.cmd('bdelete!')
+  end, { buffer = true, desc = 'Copy content and close buffer' })
+end, { desc = 'Open yank buffer' })
