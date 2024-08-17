@@ -39,7 +39,7 @@
     "interval": 5
   },
   "wireplumber": {
-    "format": "VOL {node_name} {volume} %",
+    "format": "VOL {volume} %",
     "format-muted": "VOL {node_name} MUTE",
     "max-volume": 100,
     "on-click": "pavucontrol",
