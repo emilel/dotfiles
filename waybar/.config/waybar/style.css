@@ -4,6 +4,7 @@ window#waybar {
   font-family: "Source Code Pro";
 }
 
+/* workspaces */
 #workspaces button {
     padding: 0 5px;
     color: white;
@@ -11,29 +12,94 @@ window#waybar {
     border-left: 1px solid gray;
 }
 
-#workspaces button:first-child {
-    border-left: none;
+/* disable effects on buttons */
+button:hover {
+  box-shadow: none;
+  text-shadow: none;
+  background: none;
+  border-color: transparent;
 }
 
+/* focused workspace */
 #workspaces button.focused {
-    background-color: #333333;
+    background-color: #aaaaaa;
     border-left: none;
+    color: #000000;
 }
 
+/* urgent workspace */
 #workspaces button.urgent {
     background-color: #eb4d4b;
 }
 
+/* no border on first workspace */
+#workspaces button:first-child {
+    border-left: none;
+}
+
+/* little padding for mode */
+#mode {
+  padding: 0 10px;
+}
+
+/* padding and spacing between modules */
 #network,
 #bluetooth,
 #backlight,
 #wireplumber,
 #battery,
+#memory,
 #clock {
   padding: 0 15px;
   border-right: 1px solid gray;
 }
 
+#network {
+  color: #8ec07c;
+}
+
+#bluetooth {
+  color: #5a97b0;
+}
+
+#backlight {
+  color: #e0d3af;
+}
+
+#wireplumber {
+  color: #a8959a;
+}
+
+#memory {
+  color: #a7856b
+}
+
+#battery {
+  color: #8ec07c;
+}
+
+/* animation when critical battery */
+#battery.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* low battery */
+#battery.warning:not(.charging) {
+    color: #e0b076;
+}
+
+#volume {
+  color: #b49e9a;
+}
+
 #clock {
+  color: #e0d3af;
   border-right: none;
+  padding-right: 5px;
 }
