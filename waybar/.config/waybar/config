@@ -40,7 +40,7 @@
   },
   "wireplumber": {
     "format": "VOL {volume} %",
-    "format-muted": "VOL {node_name} MUTE",
+    "format-muted": "VOL MUTE",
     "max-volume": 100,
     "on-click": "pavucontrol",
     "tooltip": false
