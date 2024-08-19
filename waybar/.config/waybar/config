@@ -42,7 +42,7 @@
     "format": "VOL {volume} %",
     "format-muted": "VOL MUTE",
     "max-volume": 100,
-    "on-click": "pavucontrol",
+    "on-click": "pavucontrol -t 3",
     "tooltip": false
   },
   "bluetooth": {
