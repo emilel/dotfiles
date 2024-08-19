@@ -1,8 +1,11 @@
 return {
-    'luukvbaal/nnn.nvim',
-    lazy = true,
-    keys = {
-	    { '-', '<cmd>NnnPicker %:p:h<cr>', { desc = 'Open file picker' } }
-    },
-    opts = {}
+  'luukvbaal/nnn.nvim',
+  lazy = true,
+  cmd = {
+    'NnnPicker'
+  },
+  keys = {
+    { '-', '<cmd>NnnPicker %:p:h<cr>', { desc = 'Open file picker' } }
+  },
+  opts = {}
 }
