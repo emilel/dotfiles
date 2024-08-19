@@ -59,6 +59,11 @@ input type:keyboard {
     xkb_options caps:swapescape
 }
 
+# one, two and three finger tap
+input "1739:31251:DLL07BE:01_06CB:7A13_Touchpad" {
+    tap enabled
+}
+
 ## brightness buttons
 bindsym XF86MonBrightnessUp exec sudo brightnessctl set +10%
 bindsym XF86MonBrightnessDown exec sudo brightnessctl set 10%-
@@ -67,6 +72,11 @@ bindsym XF86MonBrightnessDown exec sudo brightnessctl set 10%-
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_SINK@ 5%+
 bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_SINK@ 5%-
 bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_SINK@ toggle
+
+# WALLPAPER
+
+output eDP-1 bg ~/wallpapers/forest_1.jpg fill
+output DP-1 bg ~/wallpapers/forest_2.jpg fill
 
 # APPLETS
 
