@@ -1,3 +1,6 @@
+vim.keymap.set('n', '<space>G', function() require('functions.directory').go_to_directory() end,
+  { desc = 'Go to directory' })
+
 return {
   'nvim-telescope/telescope.nvim',
   dependencies = { 'nvim-lua/plenary.nvim' },
@@ -35,12 +38,13 @@ return {
       function() require('telescope.builtin').resume() end,
       desc =
       'Resume telescope'
-    }, {
-    '<space>m',
-    function() require('telescope.builtin').keymaps() end,
-    desc =
-    'Show mappings'
-  },
+    },
+    {
+      '<space>m',
+      function() require('telescope.builtin').keymaps() end,
+      desc =
+      'Show mappings'
+    },
   },
   config = function()
     require('telescope').setup({
@@ -51,6 +55,8 @@ return {
             ['<esc>'] = require('telescope.actions').close,
             ['<c-j>'] = require('telescope.actions').move_selection_next,
             ['<c-k>'] = require('telescope.actions').move_selection_previous,
+            ['<c-q>'] = require('telescope.actions').smart_send_to_qflist,
+            ['<c-space>'] = require('telescope.actions').toggle_selection,
             ["<c-x>"] = "delete_buffer"
           }
         }
@@ -71,7 +77,7 @@ return {
             return { "--hidden" }
           end,
         }
-      }
+      },
     })
   end,
   lazy = true

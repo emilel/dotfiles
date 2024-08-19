@@ -33,3 +33,10 @@ vim.keymap.set('n', '<space>V', 'gg0VG', { desc = 'Select entire file' })
 
 -- select pasted text
 vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select pasted text' })
+
+-- open quickfix list
+vim.keymap.set('n', '<space><c-q>', '<cmd>copen<cr><cmd>wincmd k<cr>', { desc = 'Open quickfix list' })
+
+-- navigate quickfix list
+vim.keymap.set('n', '<c-j>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix' })
+vim.keymap.set('n', '<c-k>', '<cmd>cprev<cr>', { desc = 'Previous item in quickfix' })
