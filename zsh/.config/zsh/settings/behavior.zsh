@@ -12,8 +12,18 @@ fi
 # print what's copied
 copy() {
     text=$(perl -pe 'chomp if eof' </dev/stdin)
-    printf $text'\n'
-    printf $text | copyr
+    printf "$text\n"
+    printf "$text" | copyr
+}
+
+# copy command and output
+copyc() {
+  local command="$1"
+  shift
+  local args="$@"
+  local output=$($command $args 2>&1 | perl -pe 'chomp if eof')
+  printf "> $command $args\n\n$output" | copyr
+  printf "$output"
 }
 
 # enable vi mode
@@ -51,6 +61,6 @@ setopt HIST_FIND_NO_DUPS
 # set LS_COLORS variable for ls and tree
 eval $(dircolors -b)
 
-# ignore case when autocompleting
+# no case and find middle of word when autocompleting
 autoload -Uz compinit && compinit
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
