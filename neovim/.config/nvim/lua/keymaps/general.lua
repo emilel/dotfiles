@@ -54,3 +54,9 @@ vim.keymap.set('x', '*', function()
   vim.o.hlsearch = true
   vim.fn.setreg('/', search_term)
 end, { desc = "Don't jump when pressing star" })
+
+-- edit search register
+vim.keymap.set('n', '?', function()
+  local search_term = vim.fn.getreg('/')
+  vim.api.nvim_feedkeys('/' .. search_term, 'n', false)
+end, { desc = 'Edit search' })

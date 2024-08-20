@@ -21,3 +21,6 @@ vim.keymap.set('n', 's', '"_s', { desc = 'Don\'t copy letter when pressing `s`' 
 
 -- apply normal mode command for every line
 vim.keymap.set('x', '<space>:', ':%norm ', { desc = 'Execute normal mode commands on every line' })
+
+-- L to go to end of line
+vim.keymap.set('x', 'L', '$h', { desc = 'Go to end of line' })
