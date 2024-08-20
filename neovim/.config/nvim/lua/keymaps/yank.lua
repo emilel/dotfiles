@@ -47,9 +47,9 @@ end
 
 -- copy entire file
 vim.keymap.set('n', '<space>yf', function()
-  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  local content = table.concat(lines, '\n')
-  vim.fn.setreg('+', content)
+  local scroll_pos = vim.fn.winsaveview()
+  vim.cmd('normal gg0yG', 'n', true)
+  vim.fn.winrestview(scroll_pos)
 end, { desc = 'Copy entire file' })
 
 -- copy relative path
