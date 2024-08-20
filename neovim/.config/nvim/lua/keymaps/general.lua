@@ -40,3 +40,17 @@ vim.keymap.set('n', '<space><c-q>', '<cmd>copen<cr><cmd>wincmd k<cr>', { desc = 
 -- navigate quickfix list
 vim.keymap.set('n', '<c-j>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix' })
 vim.keymap.set('n', '<c-k>', '<cmd>cprev<cr>', { desc = 'Previous item in quickfix' })
+
+-- don't jump on star
+vim.keymap.set('n', '*', function()
+  local search_term = vim.fn.expand('<cword>')
+  vim.o.hlsearch = true
+  vim.fn.setreg('/', search_term)
+end, { desc = "Don't jump when pressing star" })
+vim.keymap.set('x', '*', function()
+  vim.cmd('normal! "yy')
+  local search_term = vim.fn.getreg('y')
+  search_term = vim.fn.escape(search_term, '\\\\')
+  vim.o.hlsearch = true
+  vim.fn.setreg('/', search_term)
+end, { desc = "Don't jump when pressing star" })
