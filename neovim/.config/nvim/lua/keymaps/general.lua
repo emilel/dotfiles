@@ -29,7 +29,7 @@ vim.keymap.set('v', '<', '<gv', { desc = 'Keep visual selection when indenting' 
 vim.keymap.set('v', '>', '>gv', { desc = 'Keep visual selection when indenting' })
 
 -- select line
-vim.keymap.set('n', '<space>v', '0v$h', { desc = 'Select line' })
+vim.keymap.set('n', '<space>v', '^v$h', { desc = 'Select line' })
 
 -- select entire file
 vim.keymap.set('n', '<space>V', 'gg0VG', { desc = 'Select entire file' })
