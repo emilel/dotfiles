@@ -15,3 +15,6 @@ vim.opt.wrap = false
 
 -- ignore case
 vim.opt.ignorecase = true
+
+-- have some lines of padding
+vim.opt.scrolloff = 8
