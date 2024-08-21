@@ -63,3 +63,7 @@ vim.keymap.set('n', '?', function()
   local search_term = vim.fn.getreg('/')
   vim.api.nvim_feedkeys('/' .. search_term, 'n', false)
 end, { desc = 'Edit search' })
+
+-- horizontal scroll
+vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll to the left' })
+vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll to the right' })

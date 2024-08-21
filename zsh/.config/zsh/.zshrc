@@ -11,12 +11,11 @@ source_directory() {
     done
 }
 
-ZSH_DIR="$HOME/.config/zsh"
+ZSH_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 
 source "$ZSH_DIR/aliases.zsh"
 source "$ZSH_DIR/plugins.zsh"
 
 source_directory "$ZSH_DIR/programs"
 source_directory "$ZSH_DIR/settings"
-source_directory "$ZSH_DIR/plugins"
 source_directory "$HOME/.setup"
