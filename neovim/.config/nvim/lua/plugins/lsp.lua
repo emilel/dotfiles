@@ -57,16 +57,9 @@ return {
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition,
           { desc = 'Go to definition', buffer = true }
         )
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references,
-          { desc = 'Find references', buffer = true }
-        )
-        vim.keymap.set('n', '\\rn', vim.lsp.buf.rename,
-          { desc = 'Rename symbol', buffer = true }
-        )
         vim.keymap.set('n', '\\f', vim.diagnostic.open_float,
           { desc = 'Open diagnostic' }
         )
-        vim.keymap.set('n', '\\a', vim.lsp.buf.code_action, { desc = 'Code action' })
         vim.keymap.set({ 'n', 'x' }, '\\z', function()
             require('conform').format({ lsp_fallback = true })
           end,

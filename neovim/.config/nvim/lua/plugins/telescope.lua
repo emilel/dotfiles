@@ -92,7 +92,7 @@ return {
       pickers = {
         find_files = {
           hidden = true,
-          file_ignore_patterns = { "^%.git$" }
+          file_ignore_patterns = { "^%.git/" }
         },
         live_grep = {
           additional_args = function(_)
