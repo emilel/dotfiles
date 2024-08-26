@@ -32,6 +32,15 @@ set $menu bemenu-run
 output eDP-1 pos 2560 0
 output DP-1 pos 0 0
 
+## turn off screen after ten minutes
+exec swayidle \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    &
+
+## turn off screen with key binding
+bindsym $mod+z exec sleep 0.5 && killall -USR1 swayidle
+
 ## assign workspaces
 workspace 1 output DP-1
 workspace 2 output DP-1
