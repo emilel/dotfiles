@@ -45,6 +45,9 @@ local function get_file_name()
   return file_name
 end
 
+-- copy line content
+vim.keymap.set('n', '<space>yy', 'my^y$`y', { desc = 'Copy line content' })
+
 -- copy entire file
 vim.keymap.set('n', '<space>yf', function()
   local scroll_pos = vim.fn.winsaveview()

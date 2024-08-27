@@ -69,7 +69,7 @@ return {
       'Show mappings'
     },
     {
-      '<c-g>',
+      '<space>g',
       go_to_directory,
       desc = 'Go to directory'
     },

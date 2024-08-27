@@ -14,3 +14,6 @@ alias up='cd ..'
 
 # reload zsh configuration
 alias reload='source ~/.config/zsh/.zshrc'
+
+# add to local gitignore
+alias lgi="$EDITOR .git/info/exclude"
