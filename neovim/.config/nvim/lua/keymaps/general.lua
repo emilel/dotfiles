@@ -48,7 +48,7 @@ vim.keymap.set('n', '<c-k>', '<cmd>cprev<cr>', { desc = 'Previous item in quickf
 vim.keymap.set('n', '*', function()
   local search_term = vim.fn.expand('<cword>')
   vim.o.hlsearch = true
-  vim.fn.setreg('/', search_term)
+  vim.fn.setreg('/', '\\<' .. search_term .. '\\>')
 end, { desc = "Don't jump when pressing star" })
 vim.keymap.set('x', '*', function()
   vim.cmd('normal! "yy')
@@ -67,3 +67,6 @@ end, { desc = 'Edit search' })
 -- horizontal scroll
 vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll to the left' })
 vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll to the right' })
+
+-- make full screen
+vim.keymap.set('n', '<c-q>', '<cmd>only<cr>', { desc = 'Make full screen' })
