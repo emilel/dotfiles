@@ -6,6 +6,11 @@
 sudo alsa force-reload
 ```
 
+```
+echo "blacklist snd_soc_avs" | sudo tee /etc/modprobe.d/blacklist-snd-soc-avs.conf
+sudo update-initramfs -u
+```
+
 ### waybar doesn't show up
 
 ```

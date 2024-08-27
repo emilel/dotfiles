@@ -4,7 +4,7 @@
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   alias copyr='wl-copy'
 elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
-  alias copyr='xclip-selection clipboard'
+  alias copyr='xclip -selection clipboard'
 elif grep -qi microsoft /proc/version; then
   alias copyr='clip.exe'
 else
