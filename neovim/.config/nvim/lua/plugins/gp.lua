@@ -2,27 +2,27 @@ return {
   'Robitx/gp.nvim',
   keys = {
     {
-      '<c-s>n',
+      '<c-s><c-s>',
+      '<cmd>GpChatToggle popup<cr>',
+      desc = 'Toggle AI chat'
+    },
+    {
+      '<c-s><c-n>',
       '<cmd>GpChatNew popup<cr>',
       desc = 'Start new AI chat'
     },
     {
-      '<c-s><space>',
+      '<c-s><c-s>',
       ':GpChatPaste popup<cr>',
       mode = 'x',
       desc = 'Paste to AI chat',
     },
     {
-      '<c-s>r',
+      '<c-s><c-r>',
       '<cmd>GpRewrite<cr>',
       mode = 'x',
       desc = 'Rewrite selected text with AI'
     },
-    {
-      '<c-s><space>',
-      '<cmd>GpChatToggle popup<cr>',
-      desc = 'Toggle AI chat'
-    }
   },
   config = function()
     require('gp').setup({

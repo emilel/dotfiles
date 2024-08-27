@@ -3,8 +3,8 @@ return {
     lazy = true,
     keys = {
         { '<c-g><c-g>', '<cmd>Git<cr><cmd>only<cr>', { desc = 'Open git' } },
-        { '<c-g>j', '<cmd>Git pull<cr>', { desc = 'Git pull' } },
-        { '<c-g>k', '<cmd>Git push<cr>', { desc = 'Git push' } },
-        { '<c-g>c', ':Git ', { desc = 'Run git command' } }
+        { '<c-g><c-j>', '<cmd>Git pull<cr>', { desc = 'Git pull' } },
+        { '<c-g><c-k>', '<cmd>Git push<cr>', { desc = 'Git push' } },
+        { '<c-g><c-c>', ':Git ', { desc = 'Run git command' } }
     }
 }
