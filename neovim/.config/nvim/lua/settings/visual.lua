@@ -9,6 +9,9 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 
+-- don't hide characters
+vim.opt.conceallevel = 0
+
 -- highlight on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function()

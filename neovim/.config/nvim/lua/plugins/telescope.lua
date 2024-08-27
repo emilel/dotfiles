@@ -41,7 +41,7 @@ return {
     {
       '<space>a',
       function()
-        require('telescope.builtin').buffers({ sort_lastused = true, ignore_current_buffer = false })
+        require('telescope.builtin').buffers()
       end,
       desc = 'Go to buffer'
     },
@@ -85,7 +85,7 @@ return {
             ['<c-k>'] = require('telescope.actions').move_selection_previous,
             ['<c-q>'] = require('telescope.actions').smart_send_to_qflist,
             ['<c-space>'] = require('telescope.actions').toggle_selection,
-            ["<c-x>"] = "delete_buffer"
+            ['<c-x>'] = require('telescope.actions').delete_buffer,
           }
         }
       },
@@ -98,12 +98,17 @@ return {
           additional_args = function(_)
             return { "--hidden" }
           end,
-          file_ignore_patterns = { "^%.git$" }
+          file_ignore_patterns = { "^%.git/" }
         },
         grep_string = {
           additional_args = function(_)
             return { "--hidden" }
           end,
+        },
+        buffers = {
+          sort_lastused = true,
+          ignore_current_buffer = true,
+          file_ignore_patterns = { "^fugitive://" }
         }
       },
     })
