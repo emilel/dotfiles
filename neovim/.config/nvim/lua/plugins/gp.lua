@@ -38,6 +38,7 @@ return {
       chat_conceal_model_params = false,
       chat_template = require("gp.defaults").short_chat_template,
       chat_free_cursor = true,
+      style_popup_max_width = 80,
     })
   end
 }

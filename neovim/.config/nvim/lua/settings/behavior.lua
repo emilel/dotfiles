@@ -21,3 +21,6 @@ vim.opt.smartcase = true
 
 -- have some lines of padding
 vim.opt.scrolloff = 8
+
+-- don't wrap to beginning of file when searching
+vim.opt.wrapscan = false
