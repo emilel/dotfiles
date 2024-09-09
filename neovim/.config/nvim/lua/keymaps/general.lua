@@ -70,3 +70,15 @@ vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll to the right' })
 
 -- make full screen
 vim.keymap.set('n', '<c-q>', '<cmd>only<cr>', { desc = 'Make full screen' })
+
+-- toggle fold
+vim.keymap.set('n', '<cr>', 'za', { desc = 'Toggle fold' })
+
+-- set filetype
+vim.keymap.set('n', '<space>T', ':set filetype=', { desc = 'Set filetype' })
+
+-- keep cursor still after visual mode
+vim.keymap.set('x', 'y', 'ygv<esc>', { desc = 'Keep cursor when copying visual selection' })
+
+-- L to go to end of line
+vim.keymap.set('x', 'L', '$h', { desc = 'Go to end of line' })

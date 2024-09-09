@@ -12,8 +12,16 @@ alias view='nvim -R'
 # go up a directory
 alias up='cd ..'
 
+# go back a directory
+alias back='cd -'
+
 # reload zsh configuration
 alias reload='source ~/.config/zsh/.zshrc'
 
 # add to local gitignore
 alias lgi="$EDITOR .git/info/exclude"
+
+# go to the output of the last command
+cdlast() {
+  cd -P -- "$(!!)"
+}
