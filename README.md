@@ -7,7 +7,7 @@
   ```
   git clone https://github.com/emilel/dotfiles ~/dotfiles
   cd ~/dotfiles
-  stow neovim zsh nnn scripts setup
+  stow neovim zsh nnn scripts
   ```
 
 * start `nvim` and install language servers using `:Mason` and tree sitter
