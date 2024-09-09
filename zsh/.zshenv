@@ -1,1 +1,1 @@
-ZDOTDIR=/home/emil/.config/zsh
+ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
