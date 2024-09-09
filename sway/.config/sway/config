@@ -32,11 +32,14 @@ set $menu bemenu-run
 output eDP-1 pos 2560 0
 output DP-1 pos 0 0
 
+## hide cursor
+seat seat0 hide_cursor 3000
+
 ## turn off screen after ten minutes
-exec swayidle \
-    timeout 600 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-    &
+# exec swayidle \
+#     timeout 600 'swaymsg "output * dpms off"' \
+#     resume 'swaymsg "output * dpms on"' \
+#     &
 
 ## turn off screen with key binding
 bindsym $mod+z exec sleep 0.5 && killall -USR1 swayidle
@@ -74,8 +77,8 @@ input "1739:31251:DLL07BE:01_06CB:7A13_Touchpad" {
 }
 
 ## brightness buttons
-bindsym XF86MonBrightnessUp exec sudo brightnessctl set +10%
-bindsym XF86MonBrightnessDown exec sudo brightnessctl set 10%-
+bindsym XF86MonBrightnessUp exec sudo brightnessctl set 100%
+bindsym XF86MonBrightnessDown exec sudo brightnessctl set 1%
 
 ## sound buttons
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_SINK@ 5%+
