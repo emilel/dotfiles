@@ -12,7 +12,8 @@
     "wireplumber",
     "memory",
     "battery",
-    "clock"
+    "clock",
+    "tray"
   ],
   "battery": {
     "states": {
