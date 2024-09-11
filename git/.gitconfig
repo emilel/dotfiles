@@ -6,3 +6,5 @@
     insteadOf = https://github.com/
 [pull]
 	rebase = true
+[push]
+	autoSetupRemote = true
