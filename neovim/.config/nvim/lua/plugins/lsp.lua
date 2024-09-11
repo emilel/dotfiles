@@ -3,22 +3,36 @@ return {
   dependencies = {
     "williamboman/mason.nvim",
     "neovim/nvim-lspconfig",
-    {
-      'stevearc/conform.nvim',
-      opts = {
-        formatters_by_ft = {
-          python = { 'black' },
-        }
-      },
-    },
+    'stevearc/conform.nvim',
+    'mfussenegger/nvim-lint'
   },
   config = function()
     require("mason").setup()
     require("mason-lspconfig").setup()
 
+    require('lspconfig').clangd.setup({
+      cmd = { "/home/emil-eliasson/.config/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/18.1.3/clangd_18.1.3/bin/clangd" },
+    })
+
+    require('lint').linters_by_ft = {
+      python = { 'mypy', 'pylint' }
+    }
+
+    vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+      callback = function()
+        require("lint").try_lint()
+      end,
+    })
+
+    require('conform').setup({
+      formatters_by_ft = {
+        python = { 'black', 'isort' },
+      }
+    })
+
     require("mason-lspconfig").setup_handlers({
       function(server_name)
-        require("lspconfig")[server_name].setup {}
+        require("lspconfig")[server_name].setup({})
       end,
 
       ['lua_ls'] = function()
@@ -45,7 +59,7 @@ return {
             Lua = {}
           }
         })
-      end
+      end,
     })
 
     vim.api.nvim_create_autocmd('LspAttach', {
