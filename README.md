@@ -68,4 +68,11 @@
     sudo ln -s /usr/bin/fdfind /usr/local/bin/fd
     ```
 
+  * to install `fzf`:
+
+    ```
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+    ```
+
 * store computer specific zsh files in ~/.setup which will be sourced on startup
