@@ -10,8 +10,8 @@
   stow neovim zsh nnn scripts
   ```
 
-* start `nvim` and install language servers using `:Mason` and tree sitter
-  language support with `:TSInstall <language>`
+* start `nvim` and install language servers using `:Mason`, tree sitter language
+  support with `:TSInstall <language>` and github copilot with `:Copilot`
 
 * set up git
 
