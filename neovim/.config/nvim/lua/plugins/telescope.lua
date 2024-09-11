@@ -107,7 +107,7 @@ return {
         },
         buffers = {
           sort_lastused = true,
-          ignore_current_buffer = true,
+          ignore_current_buffer = false,
           file_ignore_patterns = { "^fugitive://" }
         }
       },
