@@ -3,7 +3,7 @@
 if [ $# -eq 1 ]; then
     name=$1
 else
-    read "name?rename: "
+    read "name?rename:  "
 fi
 
 number=$(swaymsg --pretty --type get_workspaces | grep -Po "Workspace \K(\d*)(?=.* \(focused\))")
