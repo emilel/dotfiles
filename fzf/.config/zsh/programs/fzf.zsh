@@ -1,11 +1,7 @@
-#!/bin/bash
+# #!/bin/bash
 
-file="/usr/share/doc/fzf/examples/key-bindings.zsh"
-if [[ ! -f "$file" ]]; then
-    return
-fi
-
-source $file
+export PATH="$PATH:$HOME/.install/fzf/bin"
+source <(fzf --zsh)
 
 # use tmux by default
 export FZF_TMUX=1
