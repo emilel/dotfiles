@@ -25,6 +25,22 @@ set $term foot
 ## application launcher
 set $menu bemenu-run
 
+## prompt
+set $prompt foot \
+    --override=locked-title=yes \
+    --title prompt \
+    --override=colors.background=000000 \
+    --override=colors.alpha=0.4  \
+    --override=pad=600x300 \
+    --override=font='Source Code Pro':size=40
+
+for_window [ title="prompt" ] \
+    floating enable, \
+    resize set 100 ppt 100 ppt, \
+    move position center, \
+    border none, \
+    focus
+
 # MONITORS
 # help: swaymsg -t get_outputs
 
@@ -36,13 +52,16 @@ output DP-1 pos 0 0
 seat seat0 hide_cursor 3000
 
 ## turn off screen after ten minutes
-# exec swayidle \
-#     timeout 600 'swaymsg "output * dpms off"' \
-#     resume 'swaymsg "output * dpms on"' \
-#     &
+exec swayidle \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    &
 
 ## turn off screen with key binding
 bindsym $mod+z exec sleep 0.5 && killall -USR1 swayidle
+
+## turn off screen and lock
+bindsym $mod+shift+z exec sleep 0.5 && killall -USR1 swayidle && swaylock -c 000000
 
 ## assign workspaces
 workspace 1 output DP-1
@@ -60,6 +79,9 @@ bindsym $mod+Shift+Control+h move workspace to output left
 bindsym $mod+Shift+Control+j move workspace to output down
 bindsym $mod+Shift+Control+k move workspace to output up
 bindsym $mod+Shift+Control+l move workspace to output right
+
+## rename workspace
+bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/rename_workspace.zsh"; exit'; focus
 
 # INPUT
 
@@ -98,6 +120,9 @@ exec blueman-applet
 ## network
 exec nm-applet
 
+## notifications
+exec mako
+
 # DESKTOP
 
 ## reload configuration file
@@ -117,11 +142,20 @@ bindsym $mod+Shift+b exec sudo reboot
 ## terminal
 bindsym $mod+backspace exec $term
 
+## prompt
+bindsym $mod+delete exec $prompt
+
 ## start application launcher
 bindsym $mod+d exec $menu
 
 ## firefox
 bindsym ctrl+$mod+m exec firefox
+
+## take screenshot of selection
+bindsym $mod+p exec grim -g "$(slurp)" - | wl-copy
+
+## take screen of focused monitor
+bindsym $mod+shift+p exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy
 
 # CONTAINERS
 
