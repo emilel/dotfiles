@@ -61,7 +61,8 @@ exec swayidle \
 bindsym $mod+z exec sleep 0.5 && killall -USR1 swayidle
 
 ## turn off screen and lock
-bindsym $mod+shift+z exec sleep 0.5 && killall -USR1 swayidle && swaylock -c 000000
+bindsym $mod+shift+z exec "$HOME/.scripts/lock.sh"
+bindsym $mod+y exec "$HOME/.scripts/lock.sh"
 
 ## assign workspaces
 workspace 1 output DP-1
