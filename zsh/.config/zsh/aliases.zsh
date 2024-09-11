@@ -21,6 +21,12 @@ alias reload='source ~/.config/zsh/.zshrc'
 # add to local gitignore
 alias lgi="$EDITOR .git/info/exclude"
 
+# get ip
+alias whatsmyip='curl icanhazip.com'
+
+# python
+alias py='python3'
+
 # go to the output of the last command
 cdlast() {
   cd -P -- "$(!!)"
