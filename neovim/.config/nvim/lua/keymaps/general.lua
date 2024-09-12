@@ -82,3 +82,14 @@ vim.keymap.set('x', 'y', 'ygv<esc>', { desc = 'Keep cursor when copying visual s
 
 -- L to go to end of line
 vim.keymap.set('x', 'L', '$h', { desc = 'Go to end of line' })
+
+vim.keymap.set('n', '<space>b', function()
+  local filename = vim.fn.system("mktemp")
+  vim.api.nvim_command('edit ' .. vim.fn.trim(filename))
+  vim.keymap.set('n', '<cr><cr>', function()
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    local content = table.concat(lines, '\n')
+    vim.fn.setreg('+', content)
+    vim.cmd('bdelete!')
+  end, { buffer = true, desc = 'Copy content and close buffer' })
+end, { desc = 'Open temporary buffer' })
