@@ -28,6 +28,10 @@ source_repo zsh-syntax-highlighting
 ensure_cloned kutsan zsh-system-clipboard
 source_repo zsh-system-clipboard
 
+# suggest commands
+ensure_cloned zsh-users zsh-autosuggestions
+source_repo zsh-autosuggestions
+
 # theme
 ensure_cloned sindresorhus pure
 fpath+=($HOME/.zsh/pure)
