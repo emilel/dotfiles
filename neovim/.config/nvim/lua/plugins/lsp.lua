@@ -3,28 +3,10 @@ return {
   dependencies = {
     "williamboman/mason.nvim",
     "neovim/nvim-lspconfig",
-    'stevearc/conform.nvim',
-    'mfussenegger/nvim-lint'
   },
   config = function()
     require("mason").setup()
     require("mason-lspconfig").setup()
-
-    require('lint').linters_by_ft = {
-      python = { 'mypy', 'pylint' }
-    }
-
-    vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
-      callback = function()
-        require("lint").try_lint()
-      end,
-    })
-
-    require('conform').setup({
-      formatters_by_ft = {
-        python = { 'black', 'isort' },
-      }
-    })
 
     require("mason-lspconfig").setup_handlers({
       function(server_name)
@@ -34,11 +16,6 @@ return {
       ['lua_ls'] = function()
         require('lspconfig').lua_ls.setup({
           on_init = function(client)
-            local path = client.workspace_folders[1].name
-            if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-              return
-            end
-
             client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
               runtime = {
                 version = 'LuaJIT'
