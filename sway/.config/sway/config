@@ -153,10 +153,10 @@ bindsym $mod+d exec $menu
 bindsym ctrl+$mod+m exec firefox
 
 ## take screenshot of selection
-bindsym $mod+p exec grim -g "$(slurp)" - | wl-copy
+bindsym ctrl+$mod+p exec grim -g "$(slurp)" - | wl-copy
 
 ## take screen of focused monitor
-bindsym $mod+shift+p exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy
+bindsym ctrl+$mod+shift+p exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy
 
 # CONTAINERS
 
@@ -195,6 +195,9 @@ bindsym $mod+0 workspace number 10
 ## previous and next
 bindsym $mod+control+h workspace prev
 bindsym $mod+control+l workspace next
+
+## go to last workspace
+bindsym $mod+p workspace back_and_forth
 
 ## move window/container to workspace
 bindsym $mod+Shift+1 move container to workspace number 1
