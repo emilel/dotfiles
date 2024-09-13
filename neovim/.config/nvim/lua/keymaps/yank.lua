@@ -154,17 +154,15 @@ end, { desc = 'Append to copy register' })
 
 -- open yank buffer
 vim.keymap.set('n', '<space>+', function()
+  -- Create a temporary file and edit it
   local filetype = vim.bo.filetype
   local filename = vim.fn.system("mktemp")
   vim.api.nvim_command('edit ' .. vim.fn.trim(filename))
   vim.api.nvim_buf_set_option(0, 'filetype', filetype)
-  local yanked_content = vim.fn.getreg('"', true)
-  yanked_content = vim.fn.trim(yanked_content, '\n')
-  vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(yanked_content, '\n'))
+  vim.api.nvim_feedkeys("p", "n", false)
+
   vim.keymap.set('n', '<cr><cr>', function()
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local content = table.concat(lines, '\n')
-    vim.fn.setreg('+', content)
+    vim.cmd('normal! ggVGy') -- yank all lines
     vim.cmd('bdelete!')
   end, { buffer = true, desc = 'Copy content and close buffer' })
 end, { desc = 'Open yank buffer' })
