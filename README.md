@@ -1,16 +1,23 @@
 * copy private and public ssh keys to ~/.ssh
 
-* install `git`, `stow`, `neovim`, `zsh`, `nnn` and `gcc`
+* install `git`, `stow`, `nnn` and `gcc`
 
 * set up configuration folders
 
   ```
   git clone https://github.com/emilel/dotfiles ~/dotfiles
   cd ~/dotfiles
-  stow neovim zsh nnn scripts
+  stow zsh nnn neovim scripts
   ```
 
-* start `nvim` and install language servers using `:Mason`, tree sitter language
+* install `neovim`
+
+  ```
+  sudo add-apt-repository ppa:neovim-ppa/unstable
+  sudo apt update
+  ```
+
+  start `nvim` and install language servers using `:Mason`, tree sitter language
   support with `:TSInstall <language>` and github copilot with `:Copilot`
 
 * set up git
@@ -20,7 +27,9 @@
   stow git
   ```
 
-* change shell to `zsh`:
+* install `zsh`
+
+  change shell to `zsh`:
 
   ```
   chsh -s $(which zsh)
@@ -71,8 +80,9 @@
   * to install `fzf`:
 
     ```
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install
+    mkdir ~/.install
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.install/fzf
+    ~/.install/fzf/install
     ```
 
 * store computer specific zsh files in ~/.setup which will be sourced on startup
