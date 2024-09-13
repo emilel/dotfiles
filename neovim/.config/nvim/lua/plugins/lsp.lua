@@ -78,8 +78,6 @@ return {
             require('conform').format({ lsp_fallback = true })
           end,
           { desc = 'Format buffer' })
-        vim.keymap.set('n', '<space>s', require('telescope.builtin').lsp_document_symbols,
-          { desc = 'LSP document symbols' })
       end
     })
   end,
