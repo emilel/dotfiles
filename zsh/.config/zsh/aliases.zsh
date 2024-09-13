@@ -9,6 +9,9 @@ alias ls='ls --color=auto'
 # neovim in read only mode
 alias view='nvim -R'
 
+# temporary neovim buffer
+alias temp='nvim +Temp'
+
 # go up a directory
 alias up='cd ..'
 

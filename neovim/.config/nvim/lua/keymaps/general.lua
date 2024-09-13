@@ -1,4 +1,5 @@
 local yank = require('functions.yank')
+local strings = require('functions.strings')
 
 -- save file
 vim.keymap.set('n', '<c-space>', '<cmd>write<cr>', { desc = 'Save file' })
@@ -55,7 +56,7 @@ end, { desc = "Don't jump when pressing star" })
 vim.keymap.set('x', '*', function()
   vim.cmd('normal! "yy')
   local search_term = vim.fn.getreg('y')
-  search_term = vim.fn.escape(search_term, '\\.^$*+?[]{}|/')
+  search_term = strings.escape_vim(search_term)
   vim.o.hlsearch = true
   vim.fn.setreg('/', search_term)
 end, { desc = "Don't jump when pressing star" })
@@ -86,7 +87,10 @@ vim.keymap.set('x', 'y', 'ygv<esc>', { desc = 'Keep cursor when copying visual s
 vim.keymap.set('x', 'L', '$h', { desc = 'Go to end of line' })
 
 -- open temporary buffer
-vim.keymap.set('n', '<space>b', yank.open_buffer, { desc = 'Open temporary buffer' })
+vim.keymap.set('n', '<space>b', function()
+  yank.open_buffer()
+  yank.set_exit_keymap('bdelete!')
+end, { desc = 'Open temporary buffer' })
 
 -- print current path
 vim.api.nvim_set_keymap('n', '<C-t>', '<C-g>', { noremap = true, silent = true })

@@ -1,3 +1,5 @@
+local strings = require('functions.strings')
+
 -- move lines
 vim.keymap.set('v', '<c-j>', ':m \'>+1<cr>gv=gv', { desc = 'Move line down' })
 vim.keymap.set('v', '<c-k>', ':m \'<-2<cr>gv=gv', { desc = 'Move line up' })
@@ -24,3 +26,9 @@ vim.keymap.set('x', '<space>:', ':%norm ', { desc = 'Execute normal mode command
 vim.keymap.set('x', 'r',
     '"hymu:s/<C-R>=escape(@h,\'/\\\')<CR>//g | :noh | :normal `u<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>',
     { desc = 'Replace selection on current line' })
+
+vim.keymap.set('x', 'R', function()
+    vim.cmd('normal! "yy')
+    local to_replace = strings.escape_vim(vim.fn.getreg('y'))
+    vim.api.nvim_feedkeys(':%s/' .. to_replace .. '//gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true), 'n', true)
+end, { desc = 'Replace selection in file' })

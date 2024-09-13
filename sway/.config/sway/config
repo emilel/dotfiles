@@ -140,8 +140,11 @@ bindsym $mod+Shift+b exec sudo reboot
 
 # LAUNCH
 
+## tmux terminal
+bindsym $mod+backspace exec $term ~/.scripts/create_tmux_session.zsh
+
 ## terminal
-bindsym $mod+backspace exec $term
+bindsym $mod+shift+backspace exec $term
 
 ## prompt
 bindsym $mod+delete exec $prompt
