@@ -73,6 +73,16 @@ return {
       go_to_directory,
       desc = 'Go to directory'
     },
+    {
+      '<space>s',
+      require('telescope.builtin').lsp_document_symbols,
+      desc = 'LSP document symbols'
+    },
+    {
+      '<space>S',
+      require('telescope.builtin').lsp_workspace_symbols(),
+      desc = 'Search for workspace symbols'
+    }
   },
   config = function()
     require('telescope').setup({
