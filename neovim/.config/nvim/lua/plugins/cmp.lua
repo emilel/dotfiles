@@ -39,10 +39,13 @@ return {
                 ['<c-k>'] = cmp.mapping.select_prev_item(),
                 ['<c-l>'] = cmp.mapping(function()
                     if cmp.visible() then
+                        print('confirm')
                         cmp.confirm()
                     elseif vim.snippet.active({ direction = 1 }) then
+                        print('jump')
                         vim.snippet.jump(1)
                     else
+                        print('complete')
                         cmp.complete()
                     end
                 end),
