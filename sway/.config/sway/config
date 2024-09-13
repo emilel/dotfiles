@@ -1,6 +1,15 @@
-# FONT
+# SETUP
 
-font pango:SourceCodePro Regular 10
+## set monitor names. help: swaymsg -t get_outputs
+set $monitor_1 DP-1
+set $monitor_2 eDP-1
+
+## keyboard layout
+set $keyboard_layout se
+
+## monitor placement
+output $monitor_1 pos 2560 0
+output $monitor_2 pos 0 0
 
 # VARIABELS
 
@@ -41,48 +50,13 @@ for_window [ title="prompt" ] \
     border none, \
     focus
 
-# MONITORS
-# help: swaymsg -t get_outputs
-
-## placement
-output eDP-1 pos 2560 0
-output DP-1 pos 0 0
-
-## hide cursor
-seat seat0 hide_cursor 3000
-
 ## turn off screen after ten minutes
 exec swayidle \
     timeout 600 'swaymsg "output * dpms off"' \
     resume 'swaymsg "output * dpms on"' \
     &
 
-## turn off screen with key binding
-bindsym $mod+z exec sleep 0.5 && killall -USR1 swayidle
-
-## turn off screen and lock
-bindsym $mod+shift+z exec "$HOME/.scripts/lock.sh"
-bindsym $mod+y exec "$HOME/.scripts/lock.sh"
-
-## assign workspaces
-workspace 1 output DP-1
-workspace 2 output DP-1
-workspace 3 output DP-1
-workspace 4 output DP-1
-workspace 5 output DP-1
-workspace 6 output DP-1
-workspace 7 output eDP-1
-workspace 8 output eDP-1
-workspace 9 output eDP-1
-
-## move workspace to other monitor
-bindsym $mod+Shift+Control+h move workspace to output left
-bindsym $mod+Shift+Control+j move workspace to output down
-bindsym $mod+Shift+Control+k move workspace to output up
-bindsym $mod+Shift+Control+l move workspace to output right
-
-## rename workspace
-bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/rename_workspace.zsh"; exit'; focus
+set $touchpad "1739:31251:DLL07BE:01_06CB:7A13_Touchpad"
 
 # INPUT
 
@@ -90,12 +64,12 @@ bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/rename_workspace.zsh"; exi
 input type:keyboard {
     repeat_rate 40
     repeat_delay 260
-    xkb_layout se
+    xkb_layout $keyboard_layout
     xkb_options caps:swapescape
 }
 
 # one, two and three finger tap
-input "1739:31251:DLL07BE:01_06CB:7A13_Touchpad" {
+input $touchpad {
     tap enabled
 }
 
@@ -108,10 +82,46 @@ bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_SINK@ 5%+
 bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_SINK@ 5%-
 bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_SINK@ toggle
 
+# MONITORS
+
+## assign workspaces
+workspace 1 output $monitor_1
+workspace 2 output $monitor_1
+workspace 3 output $monitor_1
+workspace 4 output $monitor_1
+workspace 5 output $monitor_1
+workspace 6 output $monitor_1
+workspace 7 output $monitor_2
+workspace 8 output $monitor_2
+workspace 9 output $monitor_2
+
+## hide cursor
+seat seat0 hide_cursor 3000
+
+## turn off screen with key binding
+bindsym $mod+z exec sleep 0.5 && killall -USR1 swayidle
+
+## lock screen
+bindsym $mod+shift+z exec "$HOME/.scripts/lock.sh"
+bindsym $mod+y exec "$HOME/.scripts/lock.sh"
+
+## move workspace to other monitor
+bindsym $mod+Shift+Control+h move workspace to output left
+bindsym $mod+Shift+Control+j move workspace to output down
+bindsym $mod+Shift+Control+k move workspace to output up
+bindsym $mod+Shift+Control+l move workspace to output right
+
+## rename workspace
+bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/rename_workspace.zsh"; exit'; focus
+
 # WALLPAPER
 
-output eDP-1 bg ~/wallpapers/forest_1.jpg fill
-output DP-1 bg ~/wallpapers/forest_2.jpg fill
+output $monitor_1 bg ~/wallpapers/wallpaper_1.jpg fill
+output $monitor_2 bg ~/wallpapers/wallpaper_2.jpg fill
+
+# FONT
+
+font pango:SourceCodePro Regular 10
 
 # APPLETS
 
