@@ -30,6 +30,9 @@ alias whatsmyip='curl icanhazip.com'
 # python
 alias py='python3'
 
+# open notes
+alias notes='pushd ~/notes && nvim && popd'
+
 # go to the output of the last command
 cdlast() {
   cd -P -- "$(!!)"

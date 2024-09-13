@@ -16,6 +16,9 @@ vim.keymap.set({ 'n', 'x' }, '<space>d', '"_d', { desc = 'Delete without copying
 vim.keymap.set({ 'n', 'x' }, '<space>c', '"_c', { desc = 'Change without copying' })
 vim.keymap.set({ 'n', 'x' }, 'x', '"_x', { desc = 'Delete without copying' })
 
+-- copy selection and delete line
+vim.keymap.set('x', 'D', 'd"_dd', { desc = 'Copy selection and delete line' })
+
 -- don't copy when starting insert mode on a character
 vim.keymap.set('n', 's', '"_s', { desc = 'Don\'t copy letter when pressing `s`' })
 
