@@ -50,7 +50,7 @@ return {
       function()
         vim.cmd('normal! "yy')
         local search_term = vim.fn.getreg('y')
-        search_term = vim.fn.escape(search_term, '\\\\')
+        search_term = vim.fn.escape(search_term, '\\.^$*+?[]{}|/')
         require('telescope.builtin').grep_string({ search = search_term })
       end,
       desc = 'Search for selected string in current working directory',
@@ -80,7 +80,7 @@ return {
     },
     {
       '<space>S',
-      require('telescope.builtin').lsp_workspace_symbols(),
+      require('telescope.builtin').lsp_workspace_symbols,
       desc = 'Search for workspace symbols'
     }
   },

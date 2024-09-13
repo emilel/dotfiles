@@ -1,3 +1,5 @@
+local yank = require('functions.yank')
+
 local function get_git_branch()
   return vim.fn.systemlist('git rev-parse --abbrev-ref HEAD')[1]
 end
@@ -150,19 +152,11 @@ vim.keymap.set('x', 'Y', function()
   local current_clipboard = vim.fn.getreg('+')
   local new_clipboard_content = current_clipboard .. '\n' .. selected_text
   vim.fn.setreg('+', new_clipboard_content)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('gv<esc>', true, true, true), 'n', true)
 end, { desc = 'Append to copy register' })
 
 -- open yank buffer
 vim.keymap.set('n', '<space>+', function()
-  -- Create a temporary file and edit it
-  local filetype = vim.bo.filetype
-  local filename = vim.fn.system("mktemp")
-  vim.api.nvim_command('edit ' .. vim.fn.trim(filename))
-  vim.api.nvim_buf_set_option(0, 'filetype', filetype)
-  vim.api.nvim_feedkeys("p", "n", false)
-
-  vim.keymap.set('n', '<cr><cr>', function()
-    vim.cmd('normal! ggVGy') -- yank all lines
-    vim.cmd('bdelete!')
-  end, { buffer = true, desc = 'Copy content and close buffer' })
+  yank.open_buffer()
+  vim.api.nvim_feedkeys('PG"_dd', "n", false)
 end, { desc = 'Open yank buffer' })

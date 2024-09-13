@@ -10,10 +10,6 @@ return {
     require("mason").setup()
     require("mason-lspconfig").setup()
 
-    require('lspconfig').clangd.setup({
-      cmd = { "/home/emil-eliasson/.config/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/18.1.3/clangd_18.1.3/bin/clangd" },
-    })
-
     require('lint').linters_by_ft = {
       python = { 'mypy', 'pylint' }
     }
@@ -60,6 +56,12 @@ return {
           }
         })
       end,
+
+      ['clangd'] = function()
+        require("lspconfig").clangd.setup({
+          cmd = { "clangd", "--background-index" },
+        })
+      end,
     })
 
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -78,6 +80,8 @@ return {
             require('conform').format({ lsp_fallback = true })
           end,
           { desc = 'Format buffer' })
+        vim.keymap.set({ 'n', 'x' }, '\\l', '<cmd>LspRestart<cr>',
+          { desc = 'Restart LSP server' })
       end
     })
   end,
