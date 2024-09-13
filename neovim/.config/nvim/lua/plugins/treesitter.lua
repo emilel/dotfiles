@@ -31,16 +31,14 @@ return {
             ['il'] = '@class.inner',
           },
         },
-      },
-      swap = {
-        enable = true,
-        swap_next = {
-          [',>'] =
-          '@parameter.outer',
-        },
-        swap_previous = {
-          [',<'] =
-          '@parameter.inner',
+        swap = {
+          enable = true,
+          swap_next = {
+            [',>'] = '@parameter.outer',
+          },
+          swap_previous = {
+            [',<'] = '@parameter.inner',
+          },
         },
       },
     })
