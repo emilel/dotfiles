@@ -158,5 +158,5 @@ end, { desc = 'Append to copy register' })
 -- open yank buffer
 vim.keymap.set('n', '<space>+', function()
   yank.open_buffer()
-  vim.api.nvim_feedkeys('PG"_dd', "n", false)
+  vim.api.nvim_feedkeys('P', "n", false)
 end, { desc = 'Open yank buffer' })
