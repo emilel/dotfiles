@@ -83,6 +83,7 @@
     mkdir ~/.install
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.install/fzf
     ~/.install/fzf/install
+    sudo ln -s ~/.install/fzf/bin/fzf /usr/local/bin
     ```
 
 * store computer specific zsh files in ~/.setup which will be sourced on startup

@@ -1,6 +1,5 @@
 # #!/bin/bash
 
-export PATH="$PATH:$HOME/.install/fzf/bin"
 source <(fzf --zsh)
 
 # use tmux by default
