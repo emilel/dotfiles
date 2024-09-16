@@ -114,6 +114,9 @@ bindsym $mod+Shift+Control+l move workspace to output right
 ## rename workspace
 bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/rename_workspace.zsh"; exit'; focus
 
+## attach tmux session
+bindsym $mod+t exec $prompt -e sh -c "$HOME/.scripts/attach_tmux_session.zsh"
+
 # WALLPAPER
 
 output $monitor_1 bg ~/wallpapers/wallpaper_1.jpg fill
