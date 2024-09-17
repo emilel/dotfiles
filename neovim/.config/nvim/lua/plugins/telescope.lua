@@ -29,11 +29,13 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
     "nvim-telescope/telescope-live-grep-args.nvim",
+    "danielfalk/smart-open.nvim",
+    "kkharji/sqlite.lua",
   },
   keys = {
     {
       '<space>f',
-      function() require('telescope.builtin').find_files() end,
+      function() require('telescope').extensions.smart_open.smart_open() end,
       desc = 'Find files'
     },
     {
@@ -137,13 +139,19 @@ return {
           mappings = {
             i = {
               ["<C-'>"] = lga_actions.quote_prompt(),
+              ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
             }
           }
+        },
+        smart_open = {
+          hidden = true,
+          file_ignore_patterns = { "^%.git/", "%.pt$" }
         }
       }
     })
 
     telescope.load_extension("live_grep_args")
+    telescope.load_extension("smart_open")
   end,
   lazy = true
 }
