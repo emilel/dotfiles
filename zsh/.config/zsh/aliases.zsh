@@ -1,8 +1,5 @@
 #!/bin/zsh
 
-# configure dotfiles
-alias conf='cd ~/dotfiles && nvim && cd -'
-
 # add colors to ls
 alias ls='ls --color=auto'
 
@@ -29,9 +26,7 @@ alias whatsmyip='curl icanhazip.com'
 
 # python
 alias py='python3'
-
-# open notes
-alias notes='pushd ~/notes && nvim && popd'
+alias python='python3'
 
 # go to the output of the last command
 cdlast() {

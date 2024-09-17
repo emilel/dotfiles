@@ -8,4 +8,3 @@ for output in $(swaymsg -t get_outputs | jq -r '.[].name'); do
 done
 
 swaylock $(for output in $(swaymsg -t get_outputs | jq -r '.[].name'); do echo -i "$output:$TMP_DIR/screen_$output.png"; done)
-rm -rf "$TMP_DIR"
