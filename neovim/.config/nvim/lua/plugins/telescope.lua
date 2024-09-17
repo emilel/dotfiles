@@ -26,7 +26,10 @@ end
 
 return {
   'nvim-telescope/telescope.nvim',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    "nvim-telescope/telescope-live-grep-args.nvim",
+  },
   keys = {
     {
       '<space>f',
@@ -35,7 +38,7 @@ return {
     },
     {
       '<space>/',
-      function() require('telescope.builtin').live_grep() end,
+      function() require('telescope').extensions.live_grep_args.live_grep_args() end,
       desc = 'Grep all files'
     },
     {
@@ -75,7 +78,7 @@ return {
     },
     {
       '<space>s',
-      function() require('telescope.builtin').lsp_document_symbols({symbol_width = 50}) end,
+      function() require('telescope.builtin').lsp_document_symbols({ symbol_width = 50 }) end,
       desc = 'LSP document symbols'
     },
     {
@@ -85,7 +88,10 @@ return {
     }
   },
   config = function()
-    require('telescope').setup({
+    local telescope = require('telescope')
+    local lga_actions = require("telescope-live-grep-args.actions")
+
+    telescope.setup({
       defaults = {
         layout_strategy = 'vertical',
         mappings = {
@@ -102,7 +108,7 @@ return {
       pickers = {
         find_files = {
           hidden = true,
-          file_ignore_patterns = { "^%.git/" }
+          file_ignore_patterns = { "^%.git/", "%.pt$" }
         },
         live_grep = {
           additional_args = function(_)
@@ -118,10 +124,26 @@ return {
         buffers = {
           sort_lastused = true,
           ignore_current_buffer = false,
-          file_ignore_patterns = { "^fugitive://" }
+          file_ignore_patterns = { "^fugitive://" },
+          sort_mru = true
         }
       },
+      extensions = {
+        live_grep_args = {
+          additional_args = function(_)
+            return { "--hidden" }
+          end,
+          file_ignore_patterns = { "^%.git/" },
+          mappings = {
+            i = {
+              ["<C-'>"] = lga_actions.quote_prompt(),
+            }
+          }
+        }
+      }
     })
+
+    telescope.load_extension("live_grep_args")
   end,
   lazy = true
 }
