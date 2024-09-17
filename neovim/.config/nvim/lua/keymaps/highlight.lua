@@ -2,7 +2,6 @@ local highlight_positions = {}
 local highlights = {}
 
 local colors = {
-    '#fb4934',
     '#b8bb26',
     '#83a598',
     '#d3869b',

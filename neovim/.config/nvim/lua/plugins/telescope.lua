@@ -75,7 +75,7 @@ return {
     },
     {
       '<space>s',
-      require('telescope.builtin').lsp_document_symbols,
+      function() require('telescope.builtin').lsp_document_symbols({symbol_width = 50}) end,
       desc = 'LSP document symbols'
     },
     {
