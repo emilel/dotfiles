@@ -31,6 +31,7 @@ return {
     "nvim-telescope/telescope-live-grep-args.nvim",
     "danielfalk/smart-open.nvim",
     "kkharji/sqlite.lua",
+    "nvim-telescope/telescope-fzy-native.nvim"
   },
   keys = {
     {
@@ -55,7 +56,6 @@ return {
       function()
         vim.cmd('normal! "yy')
         local search_term = vim.fn.getreg('y')
-        search_term = require('functions.strings').escape_regex(search_term)
         require('telescope.builtin').grep_string({ search = search_term })
       end,
       desc = 'Search for selected string in current working directory',
@@ -145,7 +145,8 @@ return {
         },
         smart_open = {
           hidden = true,
-          file_ignore_patterns = { "^%.git/", "%.pt$" }
+          file_ignore_patterns = { "^%.git/", "%.pt$" },
+          cwd_only = true,
         }
       }
     })

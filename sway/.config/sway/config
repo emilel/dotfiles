@@ -99,7 +99,7 @@ workspace 9 output $monitor_2
 seat seat0 hide_cursor 3000
 
 ## turn off screen with key binding
-bindsym $mod+z exec sleep 0.5 && killall -USR1 swayidle
+bindsym $mod+z exec "$HOME/.scripts/turn_off_screen.sh"
 
 ## lock screen
 bindsym $mod+shift+z exec "$HOME/.scripts/lock.sh"
