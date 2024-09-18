@@ -60,17 +60,7 @@ M.open_buffer = function()
 end
 
 M.escape_vim = function(string)
-  string = string.gsub(string, "%+", "++")
-  string = string.gsub(string, "%?", "??")
   local escaped_string = vim.fn.escape(string, '\\.^$*[]/')
-
-  return escaped_string
-end
-
-M.escape_regex = function(string)
-  string = string.gsub(string, "%+", "++")
-  string = string.gsub(string, "%?", "??")
-  local escaped_string = vim.fn.escape(string, '\\^$*[]/')
 
   return escaped_string
 end
