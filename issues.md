@@ -16,3 +16,10 @@ sudo update-initramfs -u
 ```
 systemctl --user status xdg-desktop-portal
 ```
+
+### git shit
+
+```
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+```

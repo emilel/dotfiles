@@ -35,6 +35,7 @@ return {
                         vim.snippet.jump(-1)
                     end
                 end),
+                ['<tab>'] = cmp.mapping.complete(),
                 ['<c-j>'] = cmp.mapping.select_next_item(),
                 ['<c-k>'] = cmp.mapping.select_prev_item(),
                 ['<c-l>'] = cmp.mapping(function()
@@ -42,8 +43,6 @@ return {
                         cmp.confirm()
                     elseif vim.snippet.active({ direction = 1 }) then
                         vim.snippet.jump(1)
-                    else
-                        cmp.complete()
                     end
                 end),
             },
@@ -51,5 +50,11 @@ return {
                 autocomplete = false
             }
         })
-    end
+    end,
+    lazy = false,
+    keys = {
+        {
+            '<tab>', function() require('cmp').complete() end, mode = 'i', desc = 'Autocomplete'
+        }
+    }
 }

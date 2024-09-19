@@ -72,7 +72,7 @@ vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll to the left' })
 vim.keymap.set('n', 'L', 'zL', { desc = 'Scroll to the right' })
 
 -- make full screen
-vim.keymap.set('n', '<c-q>', '<cmd>only<cr>', { desc = 'Make full screen' })
+vim.keymap.set('n', '<c-f>', '<cmd>only<cr>', { desc = 'Make full screen' })
 
 -- toggle fold
 vim.keymap.set('n', '<cr>', 'za', { desc = 'Toggle fold' })
