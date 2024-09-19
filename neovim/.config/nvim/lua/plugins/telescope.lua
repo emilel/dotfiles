@@ -133,7 +133,7 @@ return {
       extensions = {
         live_grep_args = {
           additional_args = function(_)
-            return { "--hidden" }
+            return { "--hidden", "--smart-case" }
           end,
           file_ignore_patterns = { "^%.git/" },
           mappings = {

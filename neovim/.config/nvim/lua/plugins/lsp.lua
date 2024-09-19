@@ -57,7 +57,7 @@ return {
             require('conform').format({ lsp_fallback = true })
           end,
           { desc = 'Format buffer' })
-        vim.keymap.set({ 'n', 'x' }, '\\l', '<cmd>LspRestart<cr>',
+        vim.keymap.set({ 'n', 'x' }, '\\r', '<cmd>LspRestart<cr>',
           { desc = 'Restart LSP server' })
       end
     })
