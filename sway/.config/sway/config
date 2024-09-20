@@ -211,6 +211,8 @@ bindsym $mod+0 workspace number 10
 ## previous and next
 bindsym $mod+control+h workspace prev
 bindsym $mod+control+l workspace next
+bindsym $mod+control+h workspace prev_on_output
+bindsym $mod+control+l workspace next_on_output
 
 ## go to last workspace
 bindsym $mod+p workspace back_and_forth
