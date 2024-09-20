@@ -255,7 +255,7 @@ mode "resize" {
 
 # DESIGN
 
-client.focused $light_gray $light_gray $black
+client.focused $light_gray $light_gray $black $light_gray
 client.unfocused $black $black $white
 
 titlebar_border_thickness 1
