@@ -60,12 +60,17 @@ return {
     {
       '<space>*',
       function()
-        vim.cmd('normal! "yy')
-        local search_term = vim.fn.getreg('y')
-        require('telescope.builtin').grep_string({ search = search_term })
+        require("telescope-live-grep-args.shortcuts").grep_visual_selection()
       end,
       desc = 'Search for selected string in current working directory',
       mode = 'x'
+    },
+    {
+      '<space>*',
+      function()
+        require("telescope-live-grep-args.shortcuts").grep_word_under_cursor()
+      end,
+      desc = 'Search for current word in current working directory',
     },
     {
       '<space>t',
