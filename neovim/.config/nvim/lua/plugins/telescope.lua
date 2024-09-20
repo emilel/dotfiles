@@ -4,11 +4,17 @@ local function go_to_directory()
   local pickers = require('telescope.pickers')
   local finders = require('telescope.finders')
   local conf = require('telescope.config').values
+  local previewers = require('telescope.previewers')
 
   pickers.new({}, {
     prompt_title = "Find Folders",
     finder = finders.new_oneshot_job({ "fd", "--type", "d", "--hidden", "--exclude", ".git" }, {}),
     sorter = conf.generic_sorter({}),
+    previewer = previewers.new_termopen_previewer({
+      get_command = function(entry)
+        return { 'tree', '-L', '1', entry[1] }
+      end
+    }),
     attach_mappings = function(prompt_bufnr)
       actions.select_default:replace(function()
         local selection = action_state.get_selected_entry()

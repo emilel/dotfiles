@@ -61,9 +61,9 @@ end, { desc = 'Copy repository name' })
 
 -- copy relative path and line number
 vim.keymap.set('n', '<space>yl', function()
-  local path = strings.get_relative_path()
+  local name = strings.get_file_name()
   local line_number = strings.get_line()
-  local file_info = string.format('%s:%d', path, line_number)
+  local file_info = string.format('%s:%d', name, line_number)
   vim.fn.setreg('+', file_info)
   print('Copied: ' .. file_info)
 end, { desc = 'Copy file and line number' })
