@@ -24,7 +24,7 @@ set $right l
 
 ## colors
 set $black #000000
-set $dark_gray #111111
+set $dark_gray #444444
 set $light_gray #aaaaaa
 set $white #ffffff
 
@@ -260,6 +260,7 @@ mode "resize" {
 
 client.focused $light_gray $light_gray $black $light_gray
 client.unfocused $black $black $white
+client.focused_inactive $dark_gray $dark_gray $white
 
 titlebar_border_thickness 1
 titlebar_padding 5 1
