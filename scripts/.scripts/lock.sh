@@ -1,10 +1,7 @@
 #!/bin/sh
 
-TMP_DIR=$(mktemp -d)
+OUTPUT_IMAGE="/tmp/screen_lock.png"
 
-for output in $(swaymsg -t get_outputs | jq -r '.[].name'); do
-    grim -o "$output" "$TMP_DIR/screen_$output.png"
-    convert "$TMP_DIR/screen_$output.png" -scale 10% -scale 1000% -fill black -colorize 75% "$TMP_DIR/screen_$output.png"
-done
-
-swaylock $(for output in $(swaymsg -t get_outputs | jq -r '.[].name'); do echo -i "$output:$TMP_DIR/screen_$output.png"; done)
+grim "$OUTPUT_IMAGE"
+convert "$OUTPUT_IMAGE" -scale 10% -scale 1000% -fill black -colorize 75% "$OUTPUT_IMAGE"
+swaylock -i "$OUTPUT_IMAGE"
