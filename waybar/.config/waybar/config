@@ -37,7 +37,11 @@
   },
   "memory": {
     "format": "RAM {avail} GiB",
-    "interval": 5
+    "interval": 5,
+    "states": {
+      "warning": 3,
+      "critical": 0.5
+    }
   },
   "wireplumber": {
     "format": "VOL {volume} %",

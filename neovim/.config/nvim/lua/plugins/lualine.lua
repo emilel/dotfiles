@@ -9,18 +9,20 @@ return {
     },
     sections = {
       lualine_a = { 'mode' },
-      lualine_b = { { 'filename' } },
-      lualine_c = {
+      lualine_b = {
         function()
-          local last
-          for token in os.getenv("PWD"):gmatch("/[^/]*") do
-            last = token:sub(2)
-          end
+          local filepath = vim.fn.expand('%:p')
+          local filename = vim.fn.expand('%:t')
+          local parent = vim.fn.fnamemodify(filepath, ':h:t')
 
-          return last
+          if parent and parent ~= '.' then
+            return parent .. '/' .. filename
+          else
+            return filename
+          end
         end,
-        'branch'
       },
+      lualine_c = { 'branch' },
     }
   },
 }

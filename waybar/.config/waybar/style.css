@@ -77,8 +77,9 @@ button:hover {
   color: #8ec07c;
 }
 
-/* animation when critical battery */
-#battery.critical:not(.charging) {
+/* animation when critical battery or memory */
+#battery.critical:not(.charging),
+#memory.critical {
     background-color: #f53c3c;
     color: #ffffff;
     animation-name: blink;
@@ -88,8 +89,9 @@ button:hover {
     animation-direction: alternate;
 }
 
-/* low battery */
-#battery.warning:not(.charging) {
+/* low battery or memory */
+#battery.warning:not(.charging),
+#memory.warning {
     color: #e0b076;
 }
 
