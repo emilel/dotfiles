@@ -160,7 +160,7 @@ bindsym $mod+backspace exec $term ~/.scripts/create_tmux_session.zsh
 bindsym $mod+shift+backspace exec $term
 
 ## prompt
-bindsym $mod+delete exec $prompt
+# bindsym $mod+delete exec $prompt
 
 ## start application launcher
 bindsym $mod+d exec $menu
@@ -193,6 +193,9 @@ bindsym $mod+Shift+$right move right
 
 ## toggle floating
 bindsym $mod+Space floating toggle
+
+## toggle floating or tiled focus
+bindsym $mod+delete focus mode_toggle
 
 # WORKSPACES
 
