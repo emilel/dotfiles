@@ -53,7 +53,7 @@
   "bluetooth": {
     "format-disabled": "",
     "format-off": "",
-    "format-on": "BT 0",
+    "format-on": "",
     "format-connected": "BT {num_connections}",
     "on-click": "blueman-manager"
   },

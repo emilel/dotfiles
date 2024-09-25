@@ -5,7 +5,8 @@ local strings = require('functions.strings')
 vim.keymap.set('n', '<c-space>', '<cmd>write<cr>', { desc = 'Save file' })
 
 -- close buffer
-vim.keymap.set('n', '<space>c', '<cmd>bd<cr>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<space>w', '<cmd>bd<cr>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<space>W', '<cmd>bd!<cr>', { desc = 'Force close buffer' })
 
 -- close other windows
 vim.keymap.set('n', '<space>F>', '<cmd>only<cr>', { desc = 'Close other windows' })
