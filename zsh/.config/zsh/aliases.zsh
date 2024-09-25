@@ -7,7 +7,7 @@ alias ls='ls --color=auto'
 alias view='nvim -R'
 
 # temporary neovim buffer
-alias temp='nvim +Temp'
+alias temp='nvim +TempFile'
 
 # go up a directory
 alias up='cd ..'

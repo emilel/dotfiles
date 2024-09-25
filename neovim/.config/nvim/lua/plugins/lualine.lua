@@ -14,11 +14,12 @@ return {
           local filepath = vim.fn.expand('%:p')
           local filename = vim.fn.expand('%:t')
           local parent = vim.fn.fnamemodify(filepath, ':h:t')
+          local modified = vim.bo.modified and ' [+]' or ''
 
           if parent and parent ~= '.' then
-            return parent .. '/' .. filename
+            return parent .. '/' .. filename .. modified
           else
-            return filename
+            return filename .. modified
           end
         end,
       },

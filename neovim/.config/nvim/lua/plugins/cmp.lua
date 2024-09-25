@@ -40,7 +40,7 @@ return {
                 ['<c-k>'] = cmp.mapping.select_prev_item(),
                 ['<c-l>'] = cmp.mapping(function()
                     if cmp.visible() then
-                        cmp.confirm()
+                        cmp.confirm({ select = true })
                     elseif vim.snippet.active({ direction = 1 }) then
                         vim.snippet.jump(1)
                     end
