@@ -211,6 +211,11 @@ bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
+## go to workspaces
+bindsym $mod+s exec "$HOME/.scripts/go_to_workspace.zsh slack"
+bindsym $mod+w exec "$HOME/.scripts/go_to_workspace.zsh web"
+bindsym $mod+c exec "$HOME/.scripts/go_to_workspace.zsh chatgpt"
+
 ## previous and next
 bindsym $mod+control+h workspace prev_on_output
 bindsym $mod+control+l workspace next_on_output
@@ -235,8 +240,8 @@ bindsym $mod+v splith
 bindsym $mod+b splitv
 
 ## switch layout
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+# bindsym $mod+w layout tabbed
+# bindsym $mod+e layout toggle split
 
 ## make the current focus fullscreen
 bindsym $mod+f fullscreen

@@ -16,6 +16,9 @@ vim.keymap.set({ 'n', 'x' }, '<space>d', '"_d', { desc = 'Delete without copying
 vim.keymap.set({ 'n', 'x' }, '<space>c', '"_c', { desc = 'Change without copying' })
 vim.keymap.set({ 'n', 'x' }, 'x', '"_x', { desc = 'Delete without copying' })
 
+-- but do copy on capital x
+vim.keymap.set('n', 'X', 'x', { desc = 'Delete without copying' })
+
 -- copy selection and delete line
 vim.keymap.set('x', 'D', 'd"_dd', { desc = 'Copy selection and delete line' })
 
@@ -33,5 +36,6 @@ vim.keymap.set('x', 'r',
 vim.keymap.set('x', 'R', function()
     vim.cmd('normal! "yy')
     local to_replace = strings.escape_vim(vim.fn.getreg('y'))
-    vim.api.nvim_feedkeys(':%s/' .. to_replace .. '//gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true), 'n', true)
-end, { desc = 'Replace selection in file' })
+    vim.api.nvim_feedkeys(
+    ':.,$s/' .. to_replace .. '//gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true), 'n', true)
+end, { desc = 'Replace selection from current line to end of file' })
