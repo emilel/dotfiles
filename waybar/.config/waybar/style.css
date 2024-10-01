@@ -26,19 +26,21 @@ button:hover {
     color: #000000;
 }
 
+/* focused workspace on inactive monitor */
+#workspaces button.visible:not(.focused) {
+    color: #ffffff;
+    background-color: #444444;
+}
+
 /* urgent workspace */
 #workspaces button.urgent {
     background-color: #eb4d4b;
 }
 
-/* no border on first workspace */
-#workspaces button:first-child {
-    border-left: none;
-}
-
 /* little padding for mode */
 #mode {
   padding: 0 10px;
+  background-color: #ff0000;
 }
 
 /* padding and spacing between modules */

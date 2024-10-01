@@ -33,12 +33,6 @@ return {
           }
         })
       end,
-
-      ['clangd'] = function()
-        require("lspconfig").clangd.setup({
-          cmd = { "clangd", "--background-index" },
-        })
-      end,
     })
 
     vim.api.nvim_create_autocmd('LspAttach', {

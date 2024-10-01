@@ -88,3 +88,22 @@
     ```
 
 * store computer specific zsh files in ~/.setup which will be sourced on startup
+
+* sample precommit hook:
+
+
+  ```sh
+  #!/bin/sh
+
+  if git diff --cached --name-only | xargs grep -n 'TMP'; then
+      echo "Error: Commit contains TMP comment"
+      exit 1
+  fi
+
+  for file in $(git diff --cached --name-only -- '*.c' '*.h'); do
+      clang-format -i "$file"
+      git add "$file"
+  done
+
+  exit 0
+  ```
