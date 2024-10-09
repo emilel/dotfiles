@@ -26,6 +26,7 @@ alias whatsmyip='curl icanhazip.com'
 
 # python
 alias py='python3'
+alias ipython='python3 -m IPython'
 alias ipy='ipython'
 
 # diff
