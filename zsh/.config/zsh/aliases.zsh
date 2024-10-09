@@ -26,7 +26,16 @@ alias whatsmyip='curl icanhazip.com'
 
 # python
 alias py='python3'
-alias python='python3'
+alias ipy='ipython'
+
+# diff
+alias diffc='diff --color'
+
+# git worktrees
+cdb() {
+  directory=$(git worktree list | grep -v '\.bare' | awk '{print $1}' | fzf)
+  cd $directory
+}
 
 # go to the output of the last command
 cdlast() {

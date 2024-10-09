@@ -1,2 +1,1 @@
-vim.keymap.set('n', '\\st', 'o__import__("pdb").set_trace()<esc>', { buffer = true, desc = 'Set trace' })
-
+vim.keymap.set('n', '\\st', 'o__import__("ipdb").set_trace()<esc>', { buffer = true, desc = 'Set trace' })

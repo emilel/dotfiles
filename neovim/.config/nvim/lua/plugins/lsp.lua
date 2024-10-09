@@ -33,6 +33,12 @@ return {
           }
         })
       end,
+
+      ['clangd'] = function()
+        require("lspconfig").clangd.setup({
+          cmd = { "clangd", "--clang-tidy" },
+        })
+      end,
     })
 
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -51,8 +57,10 @@ return {
             require('conform').format({ lsp_fallback = true })
           end,
           { desc = 'Format buffer' })
-        vim.keymap.set({ 'n', 'x' }, '\\r', '<cmd>LspRestart<cr>',
+        vim.keymap.set('n', '\\r', '<cmd>LspRestart<cr>',
           { desc = 'Restart LSP server' })
+        vim.keymap.set('n', '\\x', '<cmd>LspStop<cr>',
+          { desc = 'Stop LSP server' })
       end
     })
   end,
