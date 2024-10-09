@@ -58,6 +58,7 @@ vim.keymap.set('x', '*', function()
   vim.cmd('normal! "yy')
   local search_term = vim.fn.getreg('y')
   search_term = strings.escape_vim(search_term)
+  search_term = search_term:gsub("\n", "\\n")
   vim.o.hlsearch = true
   vim.fn.setreg('/', search_term)
 end, { desc = "Don't jump when pressing star" })

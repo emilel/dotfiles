@@ -22,10 +22,9 @@ copy() {
 copyc() {
   local command="$1"
   shift
-  local args="$@"
-  local output=$($command $args 2>&1 | perl -pe 'chomp if eof')
-  printf "> $command $args\n\n$output" | copyr
-  printf "$output"
+  local output=$("$command" "$@" 2>&1 | perl -pe 'chomp if eof')
+  printf "> %s %s\n\n%s" "$command" "$*" "$output" | copyr
+  printf "%s\n" "$output"
 }
 
 # enable vi mode
