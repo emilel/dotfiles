@@ -37,6 +37,8 @@ cdb() {
   directory=$(git worktree list | grep -v '\.bare' | awk '{print $1}' | fzf)
   cd $directory
 }
+alias gwl='git worktree list'
+alias gwp='git worktree prune'
 
 # go to the output of the last command
 cdlast() {
