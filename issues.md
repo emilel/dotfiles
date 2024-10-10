@@ -23,3 +23,8 @@ systemctl --user status xdg-desktop-portal
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
 ```
+
+### work over ssh
+
+* disable mouse in neovim: `:set mouse=`
+* disable mouse in tmux: `:set -g mouse off`

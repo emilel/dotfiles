@@ -19,9 +19,6 @@ vim.opt.ignorecase = true
 -- but do care about capital letters
 vim.opt.smartcase = true
 
--- don't interfere with mouse selection over ssh
-vim.opt.mouse = ''
-
 -- have some lines of padding
 vim.opt.scrolloff = 8
 
