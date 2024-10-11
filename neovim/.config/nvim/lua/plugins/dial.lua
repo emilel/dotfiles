@@ -41,9 +41,10 @@ return {
                 augend.constant.alias.bool,
                 augend.constant.new({ elements = { "Debug", "Release" }, }),
                 augend.constant.new({ elements = { "on", "off" }, }),
+                augend.constant.new({ elements = { "ON", "OFF" }, }),
                 augend.constant.new({ elements = { "True", "False" }, }),
                 augend.constant.new({ elements = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" }, }),
-                augend.constant.new({ elements = { "x86_64-linux-gnu", "xtensa-amd-phoenix" }, }),
+                augend.constant.new({ elements = { "x86_64-linux-gnu", "xtensa-intel-lunarlake", "xtensa-amd-phoenix"  }, }),
                 augend.constant.new({ elements = { "Lodur_Griffin2_IntelDSP", "CEngineTests" }, }),
             },
         }
