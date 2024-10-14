@@ -3,7 +3,7 @@ local highlights = require('my_highlighter.highlights')
 local config = require('my_highlighter.config')
 
 -- Load existing highlights
-highlights.load_highlights()
+-- highlights.load_highlights()
 
 -- Set up key mapping for visual mode
 vim.api.nvim_set_keymap('v', "'", ':<C-U>lua require("my_highlighter.highlights").add_highlight()<CR>', { noremap = true, silent = true })
