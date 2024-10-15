@@ -19,7 +19,7 @@ M.jump_to_hl_mark = function(all_mark_infos, opts)
     separator = " ",
     items = {
       {},
-      { remaining = true, hl="Function" },
+      { remaining = true, hl = "Function" },
     },
   })
 
@@ -45,9 +45,12 @@ M.jump_to_hl_mark = function(all_mark_infos, opts)
         local selection = action_state.get_selected_entry().value
         actions.close(prompt_bufnr)
 
+        local window_id = vim.api.nvim_get_current_win()
+        vim.api.nvim_win_set_buf(window_id, selection.buffer)
+
         local row = selection.selection.start.row
         local col = selection.selection.start.col
-        vim.api.nvim_win_set_cursor(0, { row, col })
+        vim.api.nvim_win_set_cursor(window_id, { row, col })
       end)
       return true
     end,

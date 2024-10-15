@@ -49,6 +49,7 @@ M.get_buffer_mark_info = function(buffer, mark_id)
     row_text = row_text,
     highlighted_text = highlighted_text,
     path = relative_buffer_path,
+    buffer = buffer
   }
 
   return mark_info
