@@ -9,7 +9,7 @@ M.save_buffer_marks = function(cwd_path, buffer, buffer_path, mark_ids)
 
   local mark_infos = {}
   for _, mark_id in ipairs(mark_ids) do
-    local mark = marks.get_info(buffer, mark_id)
+    local mark = marks.get_mark_info(buffer, mark_id)
     mark_infos[mark_id] = mark
   end
 
@@ -34,6 +34,7 @@ M.load_buffer_marks = function(cwd_path, buffer, buffer_path)
     return
   end
 
+  print("Loading marks from " .. file_path)
   local json_data = file:read("*a")
   file:close()
 
@@ -41,6 +42,8 @@ M.load_buffer_marks = function(cwd_path, buffer, buffer_path)
   if not mark_infos then
     return
   end
+
+  print("Loaded " .. #mark_infos .. " marks: " .. vim.inspect(mark_infos))
 
   for _, mark_info in pairs(mark_infos) do
     marks.set(buffer, mark_info.selection.start, mark_info.selection.finish)
