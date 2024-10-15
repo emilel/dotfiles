@@ -23,10 +23,10 @@ M.get_visual_selection = function()
   return position
 end
 
-M.get_cursor_position = function()
+M.get_position = function()
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
 
-  return { row = row, col = col }
+  return { row = row, col = col + 1 }
 end
 
 return M
