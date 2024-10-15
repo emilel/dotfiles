@@ -51,13 +51,6 @@ return {
       desc = 'Grep all files'
     },
     {
-      '<space>a',
-      function()
-        require('telescope.builtin').buffers()
-      end,
-      desc = 'Go to buffer'
-    },
-    {
       '<space>*',
       function()
         require("telescope-live-grep-args.shortcuts").grep_visual_selection()
