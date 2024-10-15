@@ -1,8 +1,8 @@
 # SETUP
 
 ## set monitor names. help: swaymsg -t get_outputs
-set $monitor_1 DP-1
-set $monitor_2 eDP-1
+set $monitor_1 eDP-1
+set $monitor_2 DP-1
 
 ## keyboard layout
 set $keyboard_layout se
