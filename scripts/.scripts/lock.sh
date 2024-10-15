@@ -7,5 +7,5 @@ for output in $(swaymsg -t get_outputs | jq -r '.[].name'); do
     convert "$TMP_DIR/screen_$output.png" -scale 10% -scale 1000% -fill black -colorize 75% "$TMP_DIR/screen_$output.png"
 done
 
-swaylock --color 000000 $(for output in $(swaymsg -t get_outputs | jq -r '.[].name'); do echo -i "$output:$TMP_DIR/screen_$output.png"; done)
+swaylock --color 242424 $(for output in $(swaymsg -t get_outputs | jq -r '.[].name'); do echo -i "$output:$TMP_DIR/screen_$output.png"; done)
 rm -rf "$TMP_DIR"
