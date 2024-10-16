@@ -12,6 +12,8 @@ local M = {}
 
 M.store_buffer_marks = function(cwd_directory, buffer_path, mark_infos)
   local buffer_data_path = get_buffer_data_path(cwd_directory, buffer_path)
+  local parent_directory = utils.get_parent(buffer_data_path)
+  vim.fn.mkdir(parent_directory, "p")
 
   local file = io.open(buffer_data_path, "w")
   if file then
