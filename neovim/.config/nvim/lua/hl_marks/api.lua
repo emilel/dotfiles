@@ -6,9 +6,8 @@ local storage = require('hl_marks.storage')
 local telescope_extension = require("hl_marks.telescope_extension")
 
 local function set(buffer, start, finish)
-  local buffer_path = vim.api.nvim_buf_get_name(buffer)
   local mark_id = marks.set(buffer, start, finish)
-  memory.save_buffer_mark_id(buffer_path, mark_id)
+  memory.save_buffer_mark_id(buffer, mark_id)
 end
 
 local function load_buffer_marks(buffer, buffer_path)
@@ -43,7 +42,7 @@ M.save_buffer_marks = function()
   local buffer = vim.api.nvim_get_current_buf()
   local buffer_path = vim.api.nvim_buf_get_name(buffer)
   local cwd_directory = vim.fn.getcwd()
-  local mark_ids = memory.get_buffer_mark_ids(buffer_path)
+  local mark_ids = memory.get_buffer_mark_ids(buffer)
   local mark_infos = marks.get_buffer_mark_infos(buffer, mark_ids)
 
   storage.store_buffer_marks(cwd_directory, buffer_path, mark_infos)
@@ -51,9 +50,8 @@ end
 
 M.remove_normal = function()
   local buffer = vim.api.nvim_get_current_buf()
-  local buffer_path = vim.api.nvim_buf_get_name(buffer)
   local cursor_position = cursor.get_position()
-  local mark_ids = memory.get_buffer_mark_ids(buffer_path)
+  local mark_ids = memory.get_buffer_mark_ids(buffer)
   for _, mark_id in ipairs(mark_ids) do
     local mark_info = marks.get_buffer_mark_info(buffer, mark_id)
     if mark_info.selection.start.row <= cursor_position.row and
@@ -62,7 +60,7 @@ M.remove_normal = function()
         cursor_position.col <= mark_info.selection.finish.col
     then
       marks.remove(buffer, mark_id)
-      memory.remove_buffer_mark_id(buffer_path, mark_id)
+      memory.remove_buffer_mark_id(buffer, mark_id)
     end
   end
 end

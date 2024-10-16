@@ -10,4 +10,8 @@ M.get_relative_path = function(cwd_directory, buffer_path)
   return relative_path
 end
 
+M.get_parent = function(path)
+  return vim.fn.fnamemodify(path, ":h")
+end
+
 return M
