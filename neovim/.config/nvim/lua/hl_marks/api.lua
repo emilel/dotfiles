@@ -3,7 +3,7 @@ local marks = require('hl_marks.marks')
 local utils = require('hl_marks.utils')
 local cursor = require('hl_marks.cursor')
 local storage = require('hl_marks.storage')
-local telescope_extension = require("hl_marks.telescope_extension")
+local pickers = require("hl_marks.pickers")
 
 local function set(buffer, start, finish)
   local mark_id = marks.set(buffer, start, finish)
@@ -68,7 +68,7 @@ end
 M.find_hl_marks = function()
   local all_mark_ids = memory.get_all_mark_ids()
   local all_mark_infos = marks.get_all_mark_infos(all_mark_ids)
-  telescope_extension.jump_to_hl_mark(all_mark_infos)
+  pickers.jump_to_hl_mark(all_mark_infos)
 end
 
 
