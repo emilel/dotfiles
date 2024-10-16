@@ -35,7 +35,7 @@ M.jump_to_hl_mark = function(all_mark_infos, opts)
             { entry.path },
           })
           ,
-          ordinal = entry.row_text,
+          ordinal = entry.row_text .. " " .. entry.path,
         }
       end
     }),
