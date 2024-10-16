@@ -52,7 +52,7 @@ for_window [ title="prompt" ] \
 
 ## turn off screen after ten minutes
 exec swayidle \
-    timeout 600 'swaymsg "output * dpms off"' \
+    timeout 6000 'swaymsg "output * dpms off"' \
     resume 'swaymsg "output * dpms on"' \
     &
 
