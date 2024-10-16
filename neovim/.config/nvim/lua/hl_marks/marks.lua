@@ -2,7 +2,7 @@ local utils = require('hl_marks.utils')
 
 local namespace = vim.api.nvim_create_namespace('hl_marks')
 local highlights = {
-  HLMark0 = { bg = '#4c4846', default = true },
+  HLMark0 = { bg = '#6b4537' },
 }
 
 local M = {}
