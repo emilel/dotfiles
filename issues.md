@@ -24,6 +24,10 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
 ```
 
+### azure password expires
+
+* create new personal access token in azure, set it in ap alias
+
 ### work over ssh
 
 * disable mouse in neovim: `:set mouse=`

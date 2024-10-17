@@ -39,7 +39,7 @@ return {
                 augend.integer.alias.decimal_int,
                 augend.integer.alias.hex,
                 augend.constant.alias.bool,
-                augend.constant.new({ elements = { "Debug", "Release", "ReleaseWithDebugInfo" }, }),
+                augend.constant.new({ elements = { "Debug", "Release", "RelWithDebInfo" }, }),
                 augend.constant.new({ elements = { "on", "off" }, }),
                 augend.constant.new({ elements = { "ON", "OFF" }, }),
                 augend.constant.new({ elements = { "True", "False" }, }),
