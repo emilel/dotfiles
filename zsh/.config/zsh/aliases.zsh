@@ -40,7 +40,15 @@ cdb() {
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 
-# go to the output of the last command
-cdlast() {
-  cd -P -- "$(!!)"
+# print directory content
+catdir() {
+  dir=$1
+  pattern=${2:-*}
+  find "$dir" -type f -name "$pattern" | while read -r file; do
+      echo "$file:"
+      echo "\`\`\`"
+      cat "$file"
+      echo "\`\`\`"
+      echo
+  done
 }
