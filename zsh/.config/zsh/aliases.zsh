@@ -33,12 +33,13 @@ alias ipy='ipython'
 alias diffc='diff --color'
 
 # git worktrees
-cdb() {
+gwb() {
   directory=$(git worktree list | grep -v '\.bare' | awk '{print $1}' | fzf)
   cd $directory
 }
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
+alias gwa='git worktree add'
 
 # print directory content
 catdir() {

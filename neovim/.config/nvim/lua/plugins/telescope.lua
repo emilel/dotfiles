@@ -100,6 +100,11 @@ return {
     telescope.setup({
       defaults = {
         layout_strategy = 'vertical',
+        layout_config = {
+          vertical = {
+            preview_cutoff = 30,
+          }
+        },
         mappings = {
           i = {
             ['<esc>'] = require('telescope.actions').close,
