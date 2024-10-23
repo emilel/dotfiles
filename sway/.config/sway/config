@@ -22,6 +22,15 @@ workspace 7 output $monitor_3
 workspace 8 output $monitor_3
 workspace 9 output $monitor_3
 
+## turn off screen
+exec swayidle \
+    timeout 6000 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    &
+
+## touchpad
+set $touchpad "1739:31251:DLL07BE:01_06CB:7A13_Touchpad"
+
 # VARIABELS
 
 ## modifier key
@@ -61,14 +70,6 @@ for_window [ title="prompt" ] \
     border none, \
     focus
 
-## turn off screen after ten minutes
-exec swayidle \
-    timeout 6000 'swaymsg "output * dpms off"' \
-    resume 'swaymsg "output * dpms on"' \
-    &
-
-set $touchpad "1739:31251:DLL07BE:01_06CB:7A13_Touchpad"
-
 # INPUT
 
 ## keyboard settings
@@ -99,7 +100,7 @@ bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_SINK@ toggle
 seat seat0 hide_cursor 3000
 
 ## turn off screen with key binding
-bindsym $mod+z exec "$HOME/.scripts/turn_off_screen.sh"
+bindsym $mod+u exec "$HOME/.scripts/turn_off_screen.sh"
 
 ## lock screen
 bindsym $mod+shift+z exec "$HOME/.scripts/lock.sh"
@@ -213,7 +214,8 @@ bindsym $mod+0 workspace number 10
 
 ## go to workspaces
 bindsym $mod+s exec "$HOME/.scripts/go_to_workspace.zsh slack"
-# bindsym $mod+w exec "$HOME/.scripts/go_to_workspace.zsh web"
+bindsym $mod+z exec "$HOME/.scripts/go_to_workspace.zsh azure"
+bindsym $mod+w exec "$HOME/.scripts/go_to_workspace.zsh web"
 bindsym $mod+c exec "$HOME/.scripts/go_to_workspace.zsh chatgpt"
 
 ## previous and next
@@ -240,8 +242,8 @@ bindsym $mod+v splith
 bindsym $mod+b splitv
 
 ## switch layout
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+i layout tabbed
+bindsym $mod+o layout toggle split
 
 ## make the current focus fullscreen
 bindsym $mod+f fullscreen
