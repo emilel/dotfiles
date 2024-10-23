@@ -40,6 +40,7 @@ gwb() {
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 alias gwa='git worktree add'
+alias gwr='git worktree remove'
 
 # print directory content
 catdir() {

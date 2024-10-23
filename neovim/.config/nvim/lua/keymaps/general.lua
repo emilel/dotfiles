@@ -99,3 +99,6 @@ vim.api.nvim_set_keymap('n', '<C-t>', '<C-g>', { noremap = true, silent = true }
 
 -- disable mouse
 vim.keymap.set('n', '<space>M', '<cmd>set mouse=<cr>', { desc = 'Disable mouse' })
+
+-- cycle buffers
+vim.keymap.set('n', '<tab>', '<cmd>bnext<cr>', { desc = 'Cycle buffers' })
