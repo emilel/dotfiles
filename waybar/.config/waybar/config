@@ -60,6 +60,7 @@
   "network": {
     "format-wifi": "{essid} ({signaldBm} dBm)",
     "format-ethernet": "ETH",
+    "format-disconnected": "OFFL",
     "tooltip": false,
     "on-click": "nm-connection-editor"
   },
