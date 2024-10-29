@@ -32,18 +32,25 @@ alias ipy='ipython'
 # diff
 alias diffc='diff --color'
 
-# git worktrees
-gwb() {
+# git
+go_to_git_worktree() {
   directory=$(git worktree list | grep -v '\.bare' | awk '{print $1}' | fzf)
   cd $directory
 }
+zle -N go_to_git_worktree
+bindkey '^T' go_to_git_worktree
+
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 alias gwr='git worktree remove'
+alias gl5='git log --oneline -5'
+alias gcm='git checkout master --'
+alias gcb="git branch --contains | grep -v 'detached' | head -n 1 | sed 's/* //' | xargs"
 
 gwa() {
   local branch="$1"
-  git worktree add $1 $1
+  shift
+  git worktree add "$branch" "$branch" "$@"
 }
 
 # print directory content

@@ -45,7 +45,10 @@ return {
                 augend.constant.new({ elements = { "True", "False" }, }),
                 augend.constant.new({ elements = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" }, }),
                 augend.constant.new({ elements = { "x86_64-linux-gnu", "xtensa-intel-lunarlake" }, }),
-                augend.constant.new({ elements = { "Lodur_Griffin2_IntelDSP", "CEngineTests" }, }),
+                augend.constant.new({ elements = { "Lodur_Griffin2_IntelDSP", "CEngineTests", "TorchSourceTopos" }, }),
+                augend.constant.new({ elements = { "==", "!=" }, }),
+                augend.constant.new({ elements = { "<", "<=", ">", ">=" }, }),
+                augend.constant.new({ elements = { "&&", "||" }, }),
             },
         }
     end
