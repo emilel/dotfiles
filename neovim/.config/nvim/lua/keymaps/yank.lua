@@ -1,4 +1,5 @@
 local strings = require('functions.strings')
+local yank = require('functions.yank')
 
 -- copy line content
 vim.keymap.set('n', '<space>yy', 'my^y$`y', { desc = 'Copy line content' })
@@ -110,6 +111,6 @@ end, { desc = 'Append to copy register' })
 
 -- open strings buffer
 vim.keymap.set('n', '<space>+', function()
-  strings.open_buffer()
+  yank.open_buffer()
   vim.api.nvim_feedkeys('P', "n", false)
 end, { desc = 'Open strings buffer' })

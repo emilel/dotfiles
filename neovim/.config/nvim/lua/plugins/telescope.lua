@@ -19,10 +19,7 @@ local function go_to_directory()
       actions.select_default:replace(function()
         local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-        vim.cmd('NnnPicker ' .. vim.fn.fnameescape(selection[1]))
-        vim.defer_fn(function()
-          vim.cmd('startinsert')
-        end, 100)
+        vim.cmd('Oil ' .. vim.fn.fnameescape(selection[1]))
       end)
       return true
     end,
@@ -40,6 +37,11 @@ return {
     "nvim-telescope/telescope-fzy-native.nvim"
   },
   keys = {
+    {
+      '<space>a',
+      function() require('telescope.builtin').buffers() end,
+      desc = 'Find files'
+    },
     {
       '<space>f',
       function() require('telescope').extensions.smart_open.smart_open() end,
@@ -99,6 +101,24 @@ return {
 
     telescope.setup({
       defaults = {
+        path_display = function(_, path)
+          local tail = require("telescope.utils").path_tail(path)
+          local formatted_path = string.format("%s %s", tail, path)
+
+          local path_start = #tail + 1
+
+          local highlights = {
+            {
+              {
+                path_start,
+                #formatted_path,
+              },
+              "Function",
+            },
+          }
+
+          return formatted_path, highlights
+        end,
         layout_strategy = 'vertical',
         layout_config = {
           vertical = {
@@ -133,7 +153,6 @@ return {
           end,
         },
         buffers = {
-          sort_lastused = true,
           ignore_current_buffer = false,
           file_ignore_patterns = { "^fugitive://" },
           sort_mru = true

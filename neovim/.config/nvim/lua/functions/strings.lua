@@ -47,22 +47,16 @@ M.get_file_name = function()
   return file_name
 end
 
-M.open_buffer = function()
-  local filename = vim.fn.system("mktemp")
-  vim.api.nvim_command('edit ' .. vim.fn.trim(filename))
-
-  vim.keymap.set('n', '<cr><cr>', function()
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local content = table.concat(lines, '\n')
-    vim.fn.setreg('+', content)
-    vim.cmd('bdelete!')
-  end, { buffer = true, desc = 'Copy content and close buffer' })
-end
-
 M.escape_vim = function(string)
   local escaped_string = vim.fn.escape(string, '\\.^$*[]/')
 
   return escaped_string
+end
+
+M.escape_pcre = function(string)
+    local pcre_specials = "([%.%^%$%*%+%?%(%)%[%]%{%}%|%\\])"
+
+    return string:gsub(pcre_specials, "\\%1")
 end
 
 return M
