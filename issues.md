@@ -32,3 +32,9 @@ ssh-add ~/.ssh/id_rsa
 
 * disable mouse in neovim: `:set mouse=`
 * disable mouse in tmux: `:set -g mouse off`
+
+### micromamba
+
+```sh
+eval "$(micromamba shell hook --shell zsh)"
+```

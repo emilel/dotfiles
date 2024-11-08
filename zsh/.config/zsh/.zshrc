@@ -15,7 +15,7 @@ ZSH_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 
 source_directory "$ZSH_DIR/programs"
 source_directory "$ZSH_DIR/settings"
+source_directory "$ZSH_DIR/commands"
 source_directory "$HOME/.setup"
 
-source "$ZSH_DIR/aliases.zsh"
 source "$ZSH_DIR/plugins.zsh"

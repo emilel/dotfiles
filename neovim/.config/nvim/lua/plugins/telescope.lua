@@ -26,6 +26,65 @@ local function go_to_directory()
   }):find()
 end
 
+local function paste_text(new_line)
+  local actions = require('telescope.actions')
+  local action_state = require('telescope.actions.state')
+  local pickers = require('telescope.pickers')
+  local finders = require('telescope.finders')
+  local conf = require('telescope.config').values
+  local previewers = require('telescope.previewers')
+
+  local paste_dir = vim.fn.expand('~/.setup/paste/')
+  local files = vim.fn.readdir(paste_dir)
+
+  pickers.new({}, {
+    prompt_title = "Paste Text",
+    finder = finders.new_table({
+      results = files,
+    }),
+    sorter = conf.generic_sorter({}),
+    previewer = previewers.new_buffer_previewer({
+      define_preview = function(self, entry)
+        local filepath = paste_dir .. entry.value
+        local lines = vim.fn.readfile(filepath)
+        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
+      end,
+    }),
+    attach_mappings = function(prompt_bufnr, _)
+      local function multi_select_paste()
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        local selections = picker:get_multi_selection()
+        if vim.tbl_isempty(selections) then
+          table.insert(selections, action_state.get_selected_entry())
+        end
+        actions.close(prompt_bufnr)
+
+        local combined_lines = {}
+        for _, selection in ipairs(selections) do
+          local filepath = paste_dir .. selection.value
+          local lines = vim.fn.readfile(filepath)
+          table.insert(combined_lines, table.concat(lines, "\n"))
+        end
+
+        local content
+        if new_line then
+          content = table.concat(combined_lines, "\n")
+        else
+          content = table.concat(combined_lines, " ")
+        end
+
+        local regtype = new_line and 'l' or 'v'
+        vim.fn.setreg('"', content, regtype)
+
+        vim.cmd('normal! ""p')
+      end
+
+      actions.select_default:replace(multi_select_paste)
+
+      return true
+    end,
+  }):find()
+end
 
 return {
   'nvim-telescope/telescope.nvim',
@@ -93,7 +152,27 @@ return {
       '<space>S',
       require('telescope.builtin').lsp_workspace_symbols,
       desc = 'Search for workspace symbols'
-    }
+    },
+    {
+      '<space>f',
+      function()
+        vim.cmd('normal! "yy')
+        local selected_text = vim.fn.getreg('y')
+        require('telescope').extensions.smart_open.smart_open({ default_text = selected_text })
+      end,
+      desc = 'Find file',
+      mode = 'x'
+    },
+    {
+      '<space>p',
+      function() paste_text(false) end,
+      desc = 'Paste text',
+    },
+    {
+      '<space>P',
+      function() paste_text(true) end,
+      desc = 'Paste text on new line',
+    },
   },
   config = function()
     local telescope = require('telescope')
@@ -103,10 +182,9 @@ return {
       defaults = {
         path_display = function(_, path)
           local tail = require("telescope.utils").path_tail(path)
-          local formatted_path = string.format("%s %s", tail, path)
-
+          local directory = path:match("(.*/)") or "./"
+          local formatted_path = string.format("%s %s", tail, directory)
           local path_start = #tail + 1
-
           local highlights = {
             {
               {
