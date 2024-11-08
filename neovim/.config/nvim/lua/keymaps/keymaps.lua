@@ -8,9 +8,6 @@ vim.keymap.set('n', '<c-space>', '<cmd>write<cr>', { desc = 'Save file' })
 vim.keymap.set('n', '<space>w', '<cmd>bd<cr>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<space>W', '<cmd>bd!<cr>', { desc = 'Force close buffer' })
 
--- close other windows
-vim.keymap.set('n', '<space>F>', '<cmd>only<cr>', { desc = 'Close other windows' })
-
 -- focus window
 vim.keymap.set('n', '<space>h', '<cmd>wincmd h<cr>', { desc = 'Focus window to the left' })
 vim.keymap.set('n', '<space>j', '<cmd>wincmd j<cr>', { desc = 'Focus window below' })
@@ -97,11 +94,15 @@ end, { desc = 'Open temporary buffer' })
 -- print current path
 vim.api.nvim_set_keymap('n', '<C-t>', '<C-g>', { noremap = true, silent = true })
 
+-- print time of last modification
+vim.api.nvim_set_keymap("n", "<space><C-t>", ":lua print('Last modified: ' .. os.date('%Y-%m-%d %H:%M:%S', vim.fn.getftime(vim.fn.expand('%'))))<CR>", { noremap = true, silent = true })
+
 -- disable mouse
 vim.keymap.set('n', '<space>M', '<cmd>set mouse=<cr>', { desc = 'Disable mouse' })
 
 -- cycle buffers
 vim.keymap.set('n', '<tab>', '<cmd>bnext<cr>', { desc = 'Cycle buffers' })
+vim.keymap.set('n', '<s-tab>', '<cmd>bprev<cr>', { desc = 'Cycle buffers' })
 
 -- move lines
 vim.keymap.set('v', '<c-j>', ':m \'>+1<cr>gv=gv', { desc = 'Move line down' })
@@ -140,5 +141,5 @@ vim.keymap.set('x', 'R', function()
     vim.cmd('normal! "yy')
     local to_replace = strings.escape_vim(vim.fn.getreg('y'))
     vim.api.nvim_feedkeys(
-    ':.,$s/' .. to_replace .. '//gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true), 'n', true)
+    ':.,$s/' .. to_replace .. '/' .. to_replace ..'/gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true), 'n', true)
 end, { desc = 'Replace selection from current line to end of file' })
