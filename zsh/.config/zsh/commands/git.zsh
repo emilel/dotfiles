@@ -21,8 +21,24 @@ go_to_git_worktree() {
     zle reset-prompt
   fi
 }
-zle -N go_to_git_worktree
-bindkey '^T' go_to_git_worktree
+
+get_branch() {
+  local branch
+  branch=$(git worktree list | awk '{print $3}' | rg -o '\[(.*?)\]' -r '$1' | fzf) || return
+
+  if [ -z "$LBUFFER" ]; then
+    local branch_path
+    branch_path=$(git worktree list | awk -v b="$branch" '$3 ~ b {print $1}')
+    if [ -n "$branch_path" ]; then
+      cd "$branch_path" || return
+      zle reset-prompt
+    fi
+  else
+    LBUFFER+="$branch"
+  fi
+}
+zle -N get_branch
+bindkey '^T' get_branch
 
 # add git branch
 gwa() {
@@ -36,16 +52,30 @@ gwa() {
 gwn() {
   local new_branch="$1"
   local old_branch="${2:-master}"
-  git worktree add -b "$new_branch" "$new_branch" "$old_branch"
+  git branch "$new_branch" "$old_branch"
+  git worktree add "$new_branch" "$new_branch"
   cd "$new_branch"
 }
 
-alias root='cd $(find_git_root)'
+# log one line
+gl() {
+  n="${1:-10}"
+  git log --oneline -"${n}"
+}
+
+# soft reset commits
+grs() {
+  num="${1:-1}"
+  git reset --soft HEAD~"${num}"
+}
+
+alias ro='cd $(find_git_root)'
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 alias gwr='git worktree remove --force'
-alias gl5='git log --oneline -5'
-alias gcm='git checkout master --'
-alias gcb="git branch --contains | grep -v 'detached' | head -n 1 | sed 's/* //' | xargs"
+alias gc='git checkout'
+alias gcm='git checkout master'
+alias gb="git branch --contains | grep -v 'detached' | head -n 1 | sed 's/* //' | xargs"
 alias gsl='git stash list'
-alias gpm='cd ~/work/Elliptic.Engine/master && git pull && cd -'
+alias gsu='git submodule update --init'
+alias gf='fd . | fzf'
