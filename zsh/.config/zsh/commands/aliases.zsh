@@ -9,6 +9,9 @@ alias view='nvim -R'
 # temporary neovim buffer
 alias temp='nvim +TempFile'
 
+# edit clipboard
+alias clip='nvim +Clip'
+
 # go up a directory
 alias up='cd ..'
 
@@ -28,3 +31,34 @@ alias ipy='ipython'
 
 # diff
 alias diffc='diff --color'
+
+# go to tmp directory
+alias tmp='cd ~/tmp'
+
+# open without output
+open() {
+    command open "$@" >/dev/null 2>&1 &disown
+}
+
+# get nth column
+getcol() {
+    local n="$1"
+    shift
+    awk "{print \$$n}" "$@"
+}
+
+# get nth row
+getrow() {
+    local start="$1"
+    shift
+    local end
+    if [ "$#" -ge 1 ] && [[ "$1" =~ ^[0-9]+$ ]]; then
+        end="$1"
+        shift
+    else
+        end="$start"
+    fi
+
+    sed -n "${start},${end}p" "$@"
+}
+

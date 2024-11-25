@@ -217,6 +217,7 @@ bindsym $mod+s exec "$HOME/.scripts/go_to_workspace.zsh slack"
 bindsym $mod+z exec "$HOME/.scripts/go_to_workspace.zsh azure"
 bindsym $mod+w exec "$HOME/.scripts/go_to_workspace.zsh web"
 bindsym $mod+c exec "$HOME/.scripts/go_to_workspace.zsh chatgpt"
+bindsym $mod+e exec "$HOME/.scripts/go_to_workspace.zsh services"
 
 ## previous and next
 bindsym $mod+control+h workspace prev_on_output

@@ -112,5 +112,6 @@ end, { desc = 'Append to copy register' })
 -- open strings buffer
 vim.keymap.set('n', '<space>+', function()
   yank.open_buffer()
+  yank.set_exit_keymap('bd!')
   vim.api.nvim_feedkeys('P', "n", false)
 end, { desc = 'Open strings buffer' })
