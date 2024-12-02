@@ -42,9 +42,20 @@ open() {
 
 # get nth column
 getcol() {
-    local n="$1"
+    local start="$1"
     shift
-    awk "{print \$$n}" "$@"
+    if [ "$#" -ge 1 ] && [[ "$1" =~ ^[0-9]+$ ]]; then
+        end="$1"
+        shift
+    else
+        end="$start"
+    fi
+    awk -v start="$start" -v end="$end" '
+    {
+        for (i = start; i <= end; i++) {
+            printf "%s%s", $i, (i < end ? OFS : ORS)
+        }
+    }' "$@"
 }
 
 # get nth row

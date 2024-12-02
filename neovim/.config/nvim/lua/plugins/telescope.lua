@@ -1,3 +1,5 @@
+local strings = require('functions.strings')
+
 local function go_to_directory()
   local actions = require('telescope.actions')
   local action_state = require('telescope.actions.state')
@@ -112,9 +114,48 @@ return {
       desc = 'Grep all files'
     },
     {
+      '<c-g>/',
+      function()
+        local git_diff_files = vim.fn.systemlist("git diff --name-only")
+        require('telescope.builtin').live_grep {
+          search_dirs = git_diff_files,
+          prompt_title = "Grep in Git Diff Files"
+        }
+      end,
+      desc = 'Grep in git diff files'
+    },
+    {
+      '<c-g>a',
+      function()
+        local git_diff_files = vim.fn.systemlist(
+          "git diff --name-only && git diff --name-only --cached && git ls-files --others --exclude-standard"
+        )
+
+        local file_set = {}
+        for _, file in ipairs(git_diff_files) do
+          file_set[file] = true
+        end
+        local unique_files = vim.tbl_keys(file_set)
+
+        if vim.tbl_isempty(unique_files) then
+          print("No changes to search!")
+          return
+        end
+
+        require('telescope.builtin').find_files {
+          prompt_title = "Git Diff Files",
+          search_dirs = unique_files,
+        }
+      end,
+      desc = 'Find files in git diff',
+    },
+    {
       '<space>*',
       function()
-        require("telescope-live-grep-args.shortcuts").grep_visual_selection()
+        vim.cmd('normal! "yy')
+        local search_term = vim.fn.getreg('y')
+        local esaped_search_term = strings.escape_pcre(search_term)
+        require('telescope').extensions.live_grep_args.live_grep_args({ default_text = esaped_search_term })
       end,
       desc = 'Search for selected string in current working directory',
       mode = 'x'
@@ -122,7 +163,8 @@ return {
     {
       '<space>*',
       function()
-        require("telescope-live-grep-args.shortcuts").grep_word_under_cursor()
+        local search_term = vim.fn.expand('<cword>')
+        require('telescope').extensions.live_grep_args.live_grep_args({ default_text = search_term })
       end,
       desc = 'Search for current word in current working directory',
     },
