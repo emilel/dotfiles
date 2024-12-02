@@ -87,6 +87,14 @@
     sudo ln -s ~/.install/fzf/bin/fzf-tmux /usr/local/bin
     ```
 
+* install `git jump`:
+
+  ```bash
+  wget -O git-jump https://raw.githubusercontent.com/git/git/master/contrib/git-jump/git-jump
+  chmod +x git-jump
+  sudo mv git-jump /usr/local/bin/
+  ```
+
 * store computer specific zsh files in ~/.setup which will be sourced on startup
 
 * sample precommit hook:

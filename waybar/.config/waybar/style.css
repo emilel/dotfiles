@@ -4,6 +4,11 @@ window#waybar {
   font-family: "Source Code Pro";
 }
 
+/* no transitions */
+button {
+  transition: none;
+}
+
 /* workspaces */
 #workspaces button {
     padding: 0 10px;

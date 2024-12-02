@@ -73,6 +73,7 @@ alias ro='cd $(find_git_root)'
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 alias gwr='git worktree remove --force'
+alias gwr.='git worktree remove --force $(find_git_root)'
 alias gc='git checkout'
 alias gcm='git checkout master'
 alias gb="git branch --contains | grep -v 'detached' | head -n 1 | sed 's/* //' | xargs"

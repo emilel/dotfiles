@@ -5,6 +5,10 @@ catdir() {
   dir=$1
   pattern=${2:-*}
   find "$dir" -type f -name "$pattern" | while read -r file; do
+      mime_type=$(file --mime-type -b "$file")
+      if [[ "$mime_type" == application/* ]]; then
+          continue
+      fi
       echo "$file:"
       echo "\`\`\`"
       cat "$file"
