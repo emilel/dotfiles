@@ -206,6 +206,14 @@ return {
       mode = 'x'
     },
     {
+      '<space>n/',
+      function()
+        local file_name = strings.get_file_name()
+        require('telescope').extensions.live_grep_args.live_grep_args({ default_text = file_name })
+      end,
+      desc = 'Find references to file',
+    },
+    {
       '<space>p',
       function() paste_text(false) end,
       desc = 'Paste text',

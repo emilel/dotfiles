@@ -13,15 +13,7 @@ find_git_root() {
   echo "$dir"
 }
 
-# go to git worktree
-go_to_git_worktree() {
-  local directory=$(git worktree list | grep -v '\.bare' | awk '{print $1}' | fzf)
-  if [[ -n $directory ]]; then
-    cd $directory
-    zle reset-prompt
-  fi
-}
-
+# get branch name checked out worktrees
 get_branch() {
   local branch
   branch=$(git worktree list | awk '{print $3}' | rg -o '\[(.*?)\]' -r '$1' | fzf) || return
@@ -76,7 +68,12 @@ alias gwr='git worktree remove --force'
 alias gwr.='git worktree remove --force $(find_git_root)'
 alias gc='git checkout'
 alias gcm='git checkout master'
-alias gb="git branch --contains | grep -v 'detached' | head -n 1 | sed 's/* //' | xargs"
 alias gsl='git stash list'
 alias gsu='git submodule update --init'
 alias gf='fd . | fzf'
+alias grho='git reset --hard origin/$(gb)'
+alias gpus='git push'
+alias gpusf='git push --force'
+alias gb='git rev-parse --abbrev-ref HEAD'
+alias trn="gb | awk -F'/' '{print \$NF}' | xargs tmux rename-session && tmux rename-window code"
+alias gfa='git fetch --all'
