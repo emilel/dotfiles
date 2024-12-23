@@ -11,11 +11,47 @@ vim.keymap.set('n', '<space>yf', function()
   vim.fn.winrestview(scroll_pos)
 end, { desc = 'Copy entire file' })
 
+-- copy file name and content
+vim.keymap.set('n', '<space>yN', function()
+  local file_name = strings.get_file_name()
+  local filetype = vim.bo.filetype
+  local scroll_pos = vim.fn.winsaveview()
+  vim.cmd('normal! gg0yG', 'n', true)
+  vim.fn.winrestview(scroll_pos)
+  local file_content = vim.fn.getreg('"')
+  local formatted_content = string.format(
+    "%s:\n\n```%s\n%s\n```",
+    file_name,
+    filetype,
+    file_content
+  )
+  vim.fn.setreg('+', formatted_content)
+  print('Copied file name and content')
+end, { desc = 'Copy file name and content' })
+
 -- copy relative path
 vim.keymap.set('n', '<space>yp', function()
   local relative_path = strings.get_relative_path()
   vim.fn.setreg('+', relative_path)
   print('Copied: ' .. relative_path)
+end, { desc = 'Copy relative path' })
+
+-- copy relative path and file content
+vim.keymap.set('n', '<space>yF', function()
+  local relative_path = strings.get_relative_path()
+  local filetype = vim.bo.filetype
+  local scroll_pos = vim.fn.winsaveview()
+  vim.cmd('normal! gg0yG', 'n', true)
+  vim.fn.winrestview(scroll_pos)
+  local file_content = vim.fn.getreg('"')
+  local formatted_content = string.format(
+    "%s:\n\n```%s\n%s\n```",
+    relative_path,
+    filetype,
+    file_content
+  )
+  vim.fn.setreg('+', formatted_content)
+  print('Copied relative path and content')
 end, { desc = 'Copy relative path' })
 
 -- copy full path

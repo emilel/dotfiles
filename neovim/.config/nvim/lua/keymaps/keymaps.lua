@@ -55,13 +55,20 @@ vim.keymap.set('x', '*', function()
   vim.cmd('normal! "yy')
   local search_term = vim.fn.getreg('y')
   search_term = strings.escape_vim(search_term)
-  search_term = search_term:gsub("\n", "\\n")
+  search_term = search_term:gsub("^%s*", "")
+  search_term = "\\s*" .. search_term:gsub("\n%s*", "\\n\\s*")
   vim.o.hlsearch = true
   vim.fn.setreg('/', search_term)
 end, { desc = "Don't jump when pressing star" })
 
+vim.keymap.set("n", "?", function()
+    local input = vim.fn.input("?")
+      vim.fn.setreg("/", input)
+        -- vim.cmd("nohlsearch")
+end, { desc = "Set search without jumping" })
+
 -- edit search register
-vim.keymap.set('n', '?', function()
+vim.keymap.set('n', '<space>?', function()
   local search_term = vim.fn.getreg('/')
   vim.api.nvim_feedkeys('/' .. search_term, 'n', false)
 end, { desc = 'Edit search' })
@@ -141,6 +148,7 @@ vim.keymap.set('x', 'r',
   '"hymu:s/<C-R>=escape(@h,\'/\\\')<CR>//g | :noh | :normal `u<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>',
   { desc = 'Replace selection on current line' })
 
+-- replace selection until end of file
 vim.keymap.set('x', 'R', function()
   vim.cmd('normal! "yy')
   local to_replace = strings.escape_vim(vim.fn.getreg('y'))
@@ -149,3 +157,6 @@ vim.keymap.set('x', 'R', function()
     to_replace .. '/' .. to_replace .. '/gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true),
     'n', true)
 end, { desc = 'Replace selection from current line to end of file' })
+
+-- merge with the next line without space in between
+vim.keymap.set('n', '<space>J', 'J"_diW', { desc = 'Merge with the next line' })

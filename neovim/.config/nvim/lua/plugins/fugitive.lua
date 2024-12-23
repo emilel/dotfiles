@@ -8,6 +8,7 @@ return {
         { '<c-g>K', '<cmd>Git push --force<cr>', { desc = 'Git push --force' } },
         { '<c-g>S', '<cmd>Git stash<cr>' , { desc = 'Git stash' } },
         { '<c-g>P', '<cmd>Git stash pop<cr>' , { desc = 'Git stash pop' } },
-        { '<c-g>f', ':Git ', { desc = 'Run git command' } }
+        { '<c-g>f', ':Git ', { desc = 'Run git command' } },
+        { '<c-g>c', '<cmd>Git commit<cr>', { desc = 'Commit' } }
     }
 }

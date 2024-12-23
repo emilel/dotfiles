@@ -16,7 +16,7 @@ vim.api.nvim_create_user_command('Pipe', function(opts)
 
     if vim.loop.fs_stat(path) then
         vim.cmd('edit ' .. vim.fn.fnameescape(path))
-        vim.keymap.set('n', '<cr><cr>', '<cmd>wq<cr>', { buffer = true, desc = 'Write to stdout' })
+        yank.set_exit_keymap('wq!')
     else
         print('Error: Path does not exist: ' .. path)
     end

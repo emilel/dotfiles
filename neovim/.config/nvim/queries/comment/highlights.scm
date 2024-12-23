@@ -26,10 +26,10 @@
     (user) @constant
     ")" @punctuation.bracket)?
   ":" @punctuation.delimiter)
-  (#any-of? @comment.warning "HACK" "WARNING" "WARN" "FIX" "Q"))
+  (#any-of? @comment.warning "HACK" "WARNING" "WARN" "FIX"))
 
 ("text" @comment.warning @nospell
-  (#any-of? @comment.warning "HACK" "WARNING" "WARN" "FIX" "Q"))
+  (#any-of? @comment.warning "HACK" "WARNING" "WARN" "FIX"))
 
 ((tag
   (name) @comment.error @nospell

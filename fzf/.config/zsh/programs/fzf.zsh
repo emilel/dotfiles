@@ -6,7 +6,7 @@ source <(fzf --zsh)
 export FZF_TMUX=1
 
 # use hidden files by default
-export FZF_DEFAULT_COMMAND='fd --hidden'
+export FZF_DEFAULT_COMMAND='fd --hidden --cycle'
 
 # unbind default key bindings
 bindkey -rM emacs '\ec'

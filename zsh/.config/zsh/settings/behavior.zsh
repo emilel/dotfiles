@@ -14,8 +14,8 @@ fi
 # print what's copied
 copy() {
     text=$(perl -pe 'chomp if eof' </dev/stdin)
-    printf "$text\n"
-    printf "$text" | copyr
+    printf "%s\n" "$text"
+    printf "%s" "$text" | copyr
 }
 
 # copy command and output

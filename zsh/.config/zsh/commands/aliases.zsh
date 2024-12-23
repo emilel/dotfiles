@@ -39,37 +39,3 @@ alias tmp='cd ~/tmp'
 open() {
     command open "$@" >/dev/null 2>&1 &disown
 }
-
-# get nth column
-getcol() {
-    local start="$1"
-    shift
-    if [ "$#" -ge 1 ] && [[ "$1" =~ ^[0-9]+$ ]]; then
-        end="$1"
-        shift
-    else
-        end="$start"
-    fi
-    awk -v start="$start" -v end="$end" '
-    {
-        for (i = start; i <= end; i++) {
-            printf "%s%s", $i, (i < end ? OFS : ORS)
-        }
-    }' "$@"
-}
-
-# get nth row
-getrow() {
-    local start="$1"
-    shift
-    local end
-    if [ "$#" -ge 1 ] && [[ "$1" =~ ^[0-9]+$ ]]; then
-        end="$1"
-        shift
-    else
-        end="$start"
-    fi
-
-    sed -n "${start},${end}p" "$@"
-}
-
