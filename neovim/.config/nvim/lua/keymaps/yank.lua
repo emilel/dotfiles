@@ -105,6 +105,15 @@ vim.keymap.set('n', '<space>yl', function()
   print('Copied: ' .. file_info)
 end, { desc = 'Copy file and line number' })
 
+-- copy gdb command to set breakpoint
+vim.keymap.set('n', '<space>yg', function()
+  local name = strings.get_file_name()
+  local line_number = strings.get_line()
+  local command = string.format('break %s:%d', name, line_number)
+  vim.fn.setreg('+', command)
+  print('Copied: ' .. command)
+end, { desc = 'Copy file and line number' })
+
 -- copy path in repository and line number
 vim.keymap.set('n', '<space>yL', function()
   local file_path = strings.get_relative_to_repo_path()
