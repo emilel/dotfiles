@@ -153,8 +153,8 @@ vim.keymap.set('x', 'R', function()
   vim.cmd('normal! "yy')
   local to_replace = strings.escape_vim(vim.fn.getreg('y'))
   vim.api.nvim_feedkeys(
-    ':.,$s/' ..
-    to_replace .. '/' .. to_replace .. '/gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true),
+    ':.,$s/\\<' ..
+    to_replace .. '\\>/' .. to_replace .. '/gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true),
     'n', true)
 end, { desc = 'Replace selection from current line to end of file' })
 
