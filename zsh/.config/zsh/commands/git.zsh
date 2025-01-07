@@ -77,3 +77,4 @@ alias gpusf='git push --force'
 alias gb='git rev-parse --abbrev-ref HEAD'
 alias trn="gb | awk -F'/' '{print \$NF}' | xargs tmux rename-session && tmux rename-window code"
 alias gfa='git fetch --all'
+alias gp='git pull'
