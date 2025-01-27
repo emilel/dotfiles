@@ -61,7 +61,8 @@ grs() {
   git reset --soft HEAD~"${num}"
 }
 
-alias ro='cd $(find_git_root)'
+alias toro='cd $(find_git_root)'
+alias ro='find_git_root'
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 alias gwr='git worktree remove --force'
