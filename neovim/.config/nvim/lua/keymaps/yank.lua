@@ -144,15 +144,27 @@ vim.keymap.set('n', '<space>yE', function()
   print('Copied: ' .. repo_info)
 end, { desc = 'Copy repository, branch, file and line number' })
 
--- append to copy register
 vim.keymap.set('x', 'Y', function()
+  local mode = vim.fn.mode()
+
   vim.cmd('normal! "yy')
   local selected_text = vim.fn.getreg('y')
   local current_clipboard = vim.fn.getreg('+')
-  local new_clipboard_content = current_clipboard .. '\n' .. selected_text
+
+  print('selected_text', selected_text)
+  print('current_clipboard', current_clipboard)
+
+  local new_clipboard_content
+  if mode:sub(1, 1) == 'v' then
+    vim.cmd('normal! "y')
+    new_clipboard_content = current_clipboard .. '\n' .. selected_text
+  else
+    vim.cmd('normal! "yy')
+    new_clipboard_content = current_clipboard .. selected_text
+  end
   vim.fn.setreg('+', new_clipboard_content)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('gv<esc>', true, true, true), 'n', true)
-end, { desc = 'Append to copy register' })
+end, { desc = 'Append to copy register based on mode' })
 
 -- open strings buffer
 vim.keymap.set('n', '<space>+', function()

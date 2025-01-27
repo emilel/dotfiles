@@ -56,15 +56,18 @@ vim.keymap.set('x', '*', function()
   local search_term = vim.fn.getreg('y')
   search_term = strings.escape_vim(search_term)
   search_term = search_term:gsub("^%s*", "")
-  search_term = "\\s*" .. search_term:gsub("\n%s*", "\\n\\s*")
+  if search_term:find("\n") then
+    search_term = search_term:gsub("^%s*", "")
+    search_term = "\\s*" .. search_term:gsub("\n%s*", "\\n\\s*")
+  end
   vim.o.hlsearch = true
   vim.fn.setreg('/', search_term)
 end, { desc = "Don't jump when pressing star" })
 
 vim.keymap.set("n", "?", function()
-    local input = vim.fn.input("?")
-      vim.fn.setreg("/", input)
-        -- vim.cmd("nohlsearch")
+  local input = vim.fn.input("?")
+  vim.fn.setreg("/", input)
+  -- vim.cmd("nohlsearch")
 end, { desc = "Set search without jumping" })
 
 -- edit search register
@@ -144,19 +147,47 @@ vim.keymap.set('n', 's', '"_s', { desc = 'Don\'t copy letter when pressing `s`' 
 vim.keymap.set('x', '<space>:', ':%norm ', { desc = 'Execute normal mode commands on every line' })
 
 -- replace selection on current line
-vim.keymap.set('x', 'r',
-  '"hymu:s/<C-R>=escape(@h,\'/\\\')<CR>//g | :noh | :normal `u<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>',
-  { desc = 'Replace selection on current line' })
-
--- replace selection until end of file
-vim.keymap.set('x', 'R', function()
+local function replace_selection_on_line()
   vim.cmd('normal! "yy')
   local to_replace = strings.escape_vim(vim.fn.getreg('y'))
+  vim.fn.setreg('+', to_replace)
+
   vim.api.nvim_feedkeys(
-    ':.,$s/\\<' ..
-    to_replace .. '\\>/' .. to_replace .. '/gc' .. vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true),
+    vim.api.nvim_replace_termcodes(
+      'mu:s/<C-R>=escape(@y,\'/\\\')<CR>//g | :noh | :normal `u<left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left><left>',
+      true, true, true),
     'n', true)
-end, { desc = 'Replace selection from current line to end of file' })
+end
+
+-- Map the function to 'r' in visual mode
+vim.keymap.set('x', 'r', replace_selection_on_line, {
+  desc = 'Replace selection on the current line',
+})
+
+local function replace_selection(word_boundaries)
+  vim.cmd('normal! "yy')
+  local to_replace = strings.escape_vim(vim.fn.getreg('y'))
+  local pattern = to_replace
+
+  if word_boundaries then
+    pattern = '\\<' .. to_replace .. '\\>'
+  end
+
+  vim.api.nvim_feedkeys(
+    ':.,$s/' .. pattern .. '/' .. to_replace .. '/gc' ..
+    vim.api.nvim_replace_termcodes('<left><left><left>', true, true, true),
+    'n', true)
+end
+
+-- Replace selection without word boundaries
+vim.keymap.set('x', 'R', function()
+  replace_selection(false)
+end, { desc = 'Replace selection from current line to end of file (no word boundaries)' })
+
+-- Replace selection with word boundaries
+vim.keymap.set('x', '<Space>R', function()
+  replace_selection(true)
+end, { desc = 'Replace selection from current line to end of file (with word boundaries)' })
 
 -- merge with the next line without space in between
 vim.keymap.set('n', '<space>J', 'J"_diW', { desc = 'Merge with the next line' })
