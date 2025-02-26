@@ -67,7 +67,7 @@ end, { desc = "Don't jump when pressing star" })
 vim.keymap.set("n", "?", function()
   local input = vim.fn.input("?")
   vim.fn.setreg("/", input)
-  -- vim.cmd("nohlsearch")
+  vim.cmd("set hlsearch")
 end, { desc = "Set search without jumping" })
 
 -- edit search register
@@ -75,6 +75,16 @@ vim.keymap.set('n', '<space>?', function()
   local search_term = vim.fn.getreg('/')
   vim.api.nvim_feedkeys('/' .. search_term, 'n', false)
 end, { desc = 'Edit search' })
+
+-- append to search
+vim.keymap.set('x', '<space>/', function ()
+  vim.api.nvim_feedkeys('"yy', 'x', false)
+  local previous_search = vim.fn.getreg('/')
+  local search_term = vim.fn.getreg('y')
+  search_term = strings.escape_vim(search_term)
+  local new_search = previous_search .. '\\|' .. search_term
+  vim.fn.setreg('/', new_search)
+end, { desc = 'Append to search' })
 
 -- horizontal scroll
 vim.keymap.set('n', 'H', 'zH', { desc = 'Scroll to the left' })
@@ -191,3 +201,6 @@ end, { desc = 'Replace selection from current line to end of file (with word bou
 
 -- merge with the next line without space in between
 vim.keymap.set('n', '<space>J', 'J"_diW', { desc = 'Merge with the next line' })
+
+-- search with word boundaries
+vim.keymap.set('n', '</', '/\\<\\><left><left>', { desc = 'Search with word boundaries' })

@@ -65,13 +65,6 @@ local function paste_text(new_line)
         for _, selection in ipairs(selections) do
           local filepath = paste_dir .. selection.value
           local lines = vim.fn.readfile(filepath)
-
-          -- Trim leading/trailing whitespace for each line
-          for i, line in ipairs(lines) do
-            lines[i] = vim.trim(line)
-          end
-
-          -- Concatenate the lines into one string
           table.insert(combined_lines, table.concat(lines, "\n"))
         end
 
@@ -79,20 +72,17 @@ local function paste_text(new_line)
         if new_line then
           content = table.concat(combined_lines, "\n")
         else
-          content = table.concat(combined_lines, " "):gsub("^%s+", "") -- Remove leading spaces
+          content = table.concat(combined_lines, " ")
         end
 
         local regtype = new_line and 'l' or 'v'
         vim.fn.setreg('"', content, regtype)
 
-        -- Paste after the cursor using `p`
-        vim.api.nvim_command('normal! h')
-        vim.api.nvim_command('normal! ""p')
-
-        -- Ensure no extra leading space in inline paste
+        vim.cmd('normal! ""p')
         if not new_line then
-          -- Remove leading space manually if it still exists
-          vim.cmd([[execute "normal! \<Right>"]])
+          vim.defer_fn(function()
+            vim.cmd('normal! l"')
+          end, 0)
         end
       end
 

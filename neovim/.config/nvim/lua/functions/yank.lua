@@ -2,6 +2,9 @@ local M = {}
 
 M.open_buffer = function()
   local filename = vim.fn.system("mktemp")
+  vim.cmd('LspStop')
+  vim.diagnostic.config({virtual_text=false})
+  vim.opt_local.signcolumn = 'no'
   vim.api.nvim_command('edit ' .. vim.fn.trim(filename))
 end
 

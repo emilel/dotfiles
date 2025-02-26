@@ -64,6 +64,7 @@ eval $(dircolors -b)
 
 # no case and find middle of word when autocompleting
 autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
 
 # sometimes ctrl w stopped working
