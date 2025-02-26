@@ -168,7 +168,9 @@ end, { desc = 'Append to copy register based on mode' })
 
 -- open strings buffer
 vim.keymap.set('n', '<space>+', function()
+  local filetype = vim.bo.filetype
   yank.open_buffer()
+  vim.bo.filetype = filetype
   yank.set_exit_keymap('bd!')
   vim.api.nvim_feedkeys('P', "n", false)
 end, { desc = 'Open strings buffer' })
