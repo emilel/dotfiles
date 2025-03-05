@@ -2,63 +2,72 @@
 
 # find root of git repository
 find_git_root() {
-  local dir="$PWD"
-  while [[ ! -d "$dir/.git" && ! -f "$dir/.git" ]]; do
-    dir=$(dirname "$dir")
-    if [[ "$dir" == "/" || "$dir" == "." ]]; then
-      echo "Error: Git root not found."
-      return 1
-    fi
-  done
-  echo "$dir"
+    local dir="$PWD"
+    while [[ ! -d "$dir/.git" && ! -f "$dir/.git" ]]; do
+        dir=$(/usr/bin/dirname "$dir")
+        if [[ "$dir" == "/" || "$dir" == "." ]]; then
+            echo "Error: Git root not found."
+            return 1
+        fi
+    done
+    echo "$dir"
 }
 
 # get branch name checked out worktrees
 get_branch() {
-  local branch
-  branch=$(git worktree list | awk '{print $3}' | rg -o '\[(.*?)\]' -r '$1' | fzf) || return
+    local branch
+    branch=$(git worktree list | awk '{print $3}' | rg -o '\[(.*?)\]' -r '$1' | fzf) || return
 
-  if [ -z "$LBUFFER" ]; then
-    local branch_path
-    branch_path=$(git worktree list | awk -v b="$branch" '$3 ~ b {print $1}')
-    if [ -n "$branch_path" ]; then
-      cd "$branch_path" || return
-      zle reset-prompt
+    if [ -z "$LBUFFER" ]; then
+        local branch_path
+        branch_path=$(git worktree list | awk -v b="$branch" '$3 ~ b {print $1}')
+        if [ -n "$branch_path" ]; then
+            cd "$branch_path" || return
+            zle reset-prompt
+        fi
+    else
+        LBUFFER+="$branch"
     fi
-  else
-    LBUFFER+="$branch"
-  fi
 }
 zle -N get_branch
 bindkey '^T' get_branch
 
 # add git branch
 gwa() {
-  local branch="$1"
-  shift
-  git worktree add "$branch" "$branch" "$@"
-  cd "$branch"
+    local branch="$1"
+    local dir
+
+    if [ "$#" -ge 2 ]; then
+        dir="$2"
+        shift 2
+    else
+        dir="$branch"
+        shift
+    fi
+
+    git worktree add "$dir" "$branch" "$@"
+    cd "$dir"
 }
 
 # create git branch
 gwn() {
-  local new_branch="$1"
-  local old_branch="${2:-master}"
-  git branch "$new_branch" "$old_branch"
-  git worktree add "$new_branch" "$new_branch"
-  cd "$new_branch"
+    local new_branch="$1"
+    local old_branch="${2:-master}"
+    git branch "$new_branch" "$old_branch"
+    git worktree add "$new_branch" "$new_branch"
+    cd "$new_branch"
 }
 
 # log one line
 gl() {
-  n="${1:-10}"
-  git log --oneline -"${n}"
+    n="${1:-10}"
+    git log --pretty=format:"%C(yellow)%h%Creset %Cgreen%ad%Creset %Cblue%an%Creset: %s" --date=short -"${n}"
 }
 
 # soft reset commits
 grs() {
-  num="${1:-1}"
-  git reset --soft HEAD~"${num}"
+    num="${1:-1}"
+    git reset --soft HEAD~"${num}"
 }
 
 alias toro='cd $(find_git_root)'

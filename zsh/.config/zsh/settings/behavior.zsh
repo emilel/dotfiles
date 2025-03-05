@@ -43,6 +43,9 @@ zvm_vi_yank () {
 # backspace always deletes
 bindkey "^?" backward-delete-char
 
+# don't copy when pressing x
+bindkey -M vicmd 'x' vi-delete-char
+
 # save history
 setopt appendhistory
 export HISTFILE=~/.zsh/.history
