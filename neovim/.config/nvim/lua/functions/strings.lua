@@ -54,7 +54,7 @@ M.escape_vim = function(string)
 end
 
 M.escape_pcre = function(string)
-    local pcre_specials = "([%.%^%$%*%+%?%(%)%[%]%{%}%|%\\])"
+    local pcre_specials = "([%.%^%$%*%+%?%(%)%[%]%{%}%|%\\%-])"
 
     return string:gsub(pcre_specials, "\\%1")
 end
