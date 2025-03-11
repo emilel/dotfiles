@@ -51,18 +51,39 @@ vim.keymap.set('n', '*', function()
   vim.o.hlsearch = true
   vim.fn.setreg('/', '\\<' .. search_term .. '\\>')
 end, { desc = "Don't jump when pressing star" })
+
 vim.keymap.set('x', '*', function()
   vim.cmd('normal! "yy')
   local search_term = vim.fn.getreg('y')
   search_term = strings.escape_vim(search_term)
-  search_term = search_term:gsub("^%s*", "")
-  if search_term:find("\n") then
-    search_term = search_term:gsub("^%s*", "")
-    search_term = "\\s*" .. search_term:gsub("\n%s*", "\\n\\s*")
+
+  -- Collect lines
+  local lines = {}
+  for line in (search_term .. "\n"):gmatch("(.-)\n") do
+    -- Trim only leading whitespace on each line
+    line = line:gsub("^%s*", "")
+    table.insert(lines, line)
   end
+
+  -- If we never had a trailing newline in the original text, we might end up
+  -- with an extra empty line at the end — remove it
+  if not search_term:match("\n$") and lines[#lines] == "" then
+    table.remove(lines)
+  end
+
+  -- If there's only one line, no newline was truly intended, so just use that
+  if #lines == 1 then
+    search_term = lines[1]
+  else
+    -- Otherwise, we have multiple lines, so join them with \n\s* in between
+    -- and allow optional leading whitespace on the first line
+    search_term = "\\s*" .. table.concat(lines, "\\n\\s*")
+  end
+
   vim.o.hlsearch = true
   vim.fn.setreg('/', search_term)
 end, { desc = "Don't jump when pressing star" })
+
 
 vim.keymap.set("n", "?", function()
   local input = vim.fn.input("?")
@@ -77,7 +98,7 @@ vim.keymap.set('n', '<space>?', function()
 end, { desc = 'Edit search' })
 
 -- append to search
-vim.keymap.set('x', '<space>/', function ()
+vim.keymap.set('x', '<space>/', function()
   vim.api.nvim_feedkeys('"yy', 'x', false)
   local previous_search = vim.fn.getreg('/')
   local search_term = vim.fn.getreg('y')
