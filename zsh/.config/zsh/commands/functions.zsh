@@ -84,6 +84,12 @@ get() {
     getrow $1 | getcol $col
 }
 
+tra() {
+    from=$1
+    to=$2
+    sed "s/$from/$to/g"
+}
+
 expand_alias() {
     local alias_name="$LBUFFER"
     LBUFFER=$( alias "$alias_name" | grep -Po ".*='\K.*(?=')" )
