@@ -78,6 +78,12 @@ getrow() {
     sed -n "${s},${e}p" "$tmpfile"
 }
 
+get() {
+    row=$1
+    col=$2
+    getrow $1 | getcol $col
+}
+
 expand_alias() {
     local alias_name="$LBUFFER"
     LBUFFER=$( alias "$alias_name" | grep -Po ".*='\K.*(?=')" )
