@@ -1,18 +1,5 @@
 #!/bin/zsh
 
-# find root of git repository
-find_git_root() {
-    local dir="$PWD"
-    while [[ ! -d "$dir/.git" && ! -f "$dir/.git" ]]; do
-        dir=$(/usr/bin/dirname "$dir")
-        if [[ "$dir" == "/" || "$dir" == "." ]]; then
-            echo "Error: Git root not found."
-            return 1
-        fi
-    done
-    echo "$dir"
-}
-
 # get branch name checked out worktrees
 get_branch() {
     local branch
@@ -29,8 +16,6 @@ get_branch() {
         LBUFFER+="$branch"
     fi
 }
-zle -N get_branch
-bindkey '^T' get_branch
 
 # add git branch
 gwa() {
@@ -70,6 +55,7 @@ grs() {
     git reset --soft HEAD~"${num}"
 }
 
+alias find_git_root='git rev-parse --show-toplevel'
 alias toro='cd $(find_git_root)'
 alias ro='find_git_root'
 alias gwl='git worktree list'
@@ -88,3 +74,5 @@ alias gb='git rev-parse --abbrev-ref HEAD'
 alias trn="gb | awk -F'/' '{print \$NF}' | xargs tmux rename-session && tmux rename-window code"
 alias gfa='git fetch --all'
 alias gp='git pull'
+alias gd='git diff'
+alias gm='git merge'
