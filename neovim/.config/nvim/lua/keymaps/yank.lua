@@ -151,9 +151,6 @@ vim.keymap.set('x', 'Y', function()
   local selected_text = vim.fn.getreg('y')
   local current_clipboard = vim.fn.getreg('+')
 
-  print('selected_text', selected_text)
-  print('current_clipboard', current_clipboard)
-
   local new_clipboard_content
   if mode:sub(1, 1) == 'v' then
     vim.cmd('normal! "y')

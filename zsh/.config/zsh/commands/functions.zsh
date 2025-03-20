@@ -89,18 +89,3 @@ tra() {
     to=$2
     sed "s/$from/$to/g"
 }
-
-expand_alias() {
-    local alias_name="$LBUFFER"
-    LBUFFER=$( alias "$alias_name" | grep -Po ".*='\K.*(?=')" )
-}
-zle -N expand_alias
-bindkey '^A' expand_alias
-
-save_alias() {
-    local command="$LBUFFER"
-    LBUFFER="alias ='$command'"
-    CURSOR=${#${LBUFFER%%=*}}
-}
-zle -N save_alias
-bindkey '^Y' save_alias
