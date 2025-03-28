@@ -1,10 +1,13 @@
 expand_alias() {
-    local alias_name="$LBUFFER"
-    LBUFFER=$( alias "$alias_name" | grep -Po ".*='\K.*(?=')" )
+    local expansion
+    expansion=$( alias "$LBUFFER" 2>/dev/null | sed -E "s/^$LBUFFER='(.*)'/\1/" )
+    if [[ -n "$expansion" ]]; then
+        LBUFFER=$expansion
+    fi
+    zle redisplay
 }
 zle -N expand_alias
 bindkey '^A' expand_alias
-bindkey -M vicmd '^A' expand_alias
 
 save_alias() {
     local command="$LBUFFER"
@@ -34,6 +37,41 @@ zle -N toggle_copy
 bindkey '^Y' toggle_copy
 bindkey -M vicmd '^Y' toggle_copy
 
+debug() {
+    if [[ -z $BUFFER ]]; then
+        BUFFER='!!'
+        zle expand-history
+    fi
+    LBUFFER="gdb --args $LBUFFER"
+    CURSOR=${#BUFFER}
+}
+zle -N debug
+bindkey '^B' debug
+bindkey -M vicmd '^B' debug
+
+redirect_to_stdout() {
+    if [[ $BUFFER == *" 2>&1" ]]; then
+        BUFFER=${BUFFER%" 2>&1"}
+    else
+        BUFFER+=" 2>&1"
+        CURSOR=${#BUFFER}
+    fi
+}
+zle -N redirect_to_stdout
+bindkey '^N' redirect_to_stdout
+bindkey -M vicmd '^N' redirect_to_stdout
+
+go_to_root() {
+    cd $(find_git_root)
+}
+zle -N go_to_root
+bindkey '^H' go_to_root
+bindkey -M vicmd '^H' go_to_root
+
 zle -N get_branch
-bindkey '^B' get_branch
-bindkey _M vicmd '^B' get_branch
+bindkey '^T' get_branch
+bindkey -M vicmd '^T' get_branch
+
+zle -N go_to_parent
+bindkey '^K' go_to_parent
+bindkey _M vicmd '^K' go_to_parent

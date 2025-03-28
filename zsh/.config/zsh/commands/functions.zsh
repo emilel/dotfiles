@@ -89,3 +89,30 @@ tra() {
     to=$2
     sed "s/$from/$to/g"
 }
+
+directories_above() {
+  local current=$(pwd)
+  local parent
+  local rel_path=".."
+
+  echo "/"
+
+  while [[ "$current" != "/" ]]; do
+    parent=$(dirname "$current")
+    echo "$rel_path/$(basename "$current")"
+    rel_path="../$rel_path"
+    current=$parent
+  done
+}
+
+
+go_to_parent() {
+    dest=$(directories_above | fzf) || return
+    if [[ -z $BUFFER ]]; then
+        BUFFER="cd $dest"
+        zle accept-line
+    else
+        RBUFFER+="$dest"
+        CURSOR=${#BUFFER}
+    fi
+}

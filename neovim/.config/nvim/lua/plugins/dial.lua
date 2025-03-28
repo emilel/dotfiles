@@ -51,6 +51,7 @@ return {
                 augend.constant.new({ elements = { "<", ">" }, word = false }),
                 augend.constant.new({ elements = { "<<", ">>" }, word = false }),
                 augend.constant.new({ elements = { "&&", "||" }, word = false }),
+                augend.constant.new({ elements = { "+=", "-=" }, word = false }),
             },
         }
     end

@@ -69,6 +69,3 @@ eval $(dircolors -b)
 autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-
-# sometimes ctrl w stopped working
-bindkey '^W' backward-kill-word
