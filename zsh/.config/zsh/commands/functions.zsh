@@ -90,29 +90,23 @@ tra() {
     sed "s/$from/$to/g"
 }
 
-directories_above() {
-  local current=$(pwd)
-  local parent
-  local rel_path=".."
-
-  echo "/"
-
-  while [[ "$current" != "/" ]]; do
-    parent=$(dirname "$current")
-    echo "$rel_path/$(basename "$current")"
-    rel_path="../$rel_path"
-    current=$parent
-  done
-}
-
-
 go_to_parent() {
-    dest=$(directories_above | fzf) || return
+    target=$(pwd | tr '/' '\n' | sed '1s/^$/\//' | tac | fzf) || return
+    candidate_path=$(pwd)
+    while true; do
+        directory_name=$(basename "$candidate_path")
+        if [[ "$directory_name" == "$target" ]]; then
+            target_path="$candidate_path"
+            break
+        fi
+        candidate_path=$(dirname "$candidate_path")
+    done
+
     if [[ -z $BUFFER ]]; then
-        BUFFER="cd $dest"
+        BUFFER="cd $target_path"
         zle accept-line
     else
-        RBUFFER+="$dest"
+        RBUFFER+="$target_path"
         CURSOR=${#BUFFER}
     fi
 }
