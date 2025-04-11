@@ -25,8 +25,8 @@ toggle_copy() {
         BUFFER+=" | copy"
         zle accept-line
     else
-        if [[ $BUFFER == *" | copy" ]]; then
-            BUFFER=${BUFFER%" | copy"}
+        if [[ $BUFFER == *" | copy"* ]]; then
+            BUFFER=${BUFFER//" | copy"/}
         else
             BUFFER+=" | copy"
             CURSOR=${#BUFFER}
@@ -38,8 +38,8 @@ bindkey '^Y' toggle_copy
 bindkey -M vicmd '^Y' toggle_copy
 
 redirect_to_stdout() {
-    if [[ $BUFFER == *" 2>&1" ]]; then
-        BUFFER=${BUFFER%" 2>&1"}
+    if [[ $BUFFER == *" 2>&1"* ]]; then
+        BUFFER=${BUFFER//" 2>&1"/}
     else
         BUFFER+=" 2>&1"
         CURSOR=${#BUFFER}
