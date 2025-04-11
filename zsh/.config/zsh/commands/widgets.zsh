@@ -37,18 +37,6 @@ zle -N toggle_copy
 bindkey '^Y' toggle_copy
 bindkey -M vicmd '^Y' toggle_copy
 
-debug() {
-    if [[ -z $BUFFER ]]; then
-        BUFFER='!!'
-        zle expand-history
-    fi
-    LBUFFER="gdb --args $LBUFFER"
-    CURSOR=${#BUFFER}
-}
-zle -N debug
-bindkey '^B' debug
-bindkey -M vicmd '^B' debug
-
 redirect_to_stdout() {
     if [[ $BUFFER == *" 2>&1" ]]; then
         BUFFER=${BUFFER%" 2>&1"}
@@ -60,6 +48,18 @@ redirect_to_stdout() {
 zle -N redirect_to_stdout
 bindkey '^N' redirect_to_stdout
 bindkey -M vicmd '^N' redirect_to_stdout
+
+debug() {
+    if [[ -z $BUFFER ]]; then
+        BUFFER='!!'
+        zle expand-history
+    fi
+    LBUFFER="gdb --args $LBUFFER"
+    CURSOR=${#BUFFER}
+}
+zle -N debug
+bindkey '^B' debug
+bindkey -M vicmd '^B' debug
 
 go_to_root() {
     cd $(find_git_root)
