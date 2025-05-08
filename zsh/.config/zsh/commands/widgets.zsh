@@ -63,6 +63,7 @@ bindkey -M vicmd '^B' debug
 
 go_to_root() {
     cd $(find_git_root)
+    zls reset-prompt
 }
 zle -N go_to_root
 bindkey '^H' go_to_root

@@ -55,6 +55,25 @@ grs() {
     git reset --soft HEAD~"${num}"
 }
 
+# log between dates
+glo() {
+    local start=$(git log --reverse --format=%ad --date=short | head -1)
+    local end=$(date +%F)
+    local from=${1:-$start}; [ "$from" = "-" ] && from=$start
+    local to=${2:-$end};   [ "$to"   = "-" ] && to=$end
+
+    git log \
+        --all \
+        --reverse \
+        --author="$(git config user.name)" \
+        --since="$from 00:00" --until="$to 23:59" \
+        --no-merges \
+        --pretty=fuller \
+        --author-date-order
+}
+
+
+
 alias find_git_root='git rev-parse --show-toplevel'
 alias toro='cd $(find_git_root)'
 alias ro='find_git_root'
