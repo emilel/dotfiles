@@ -30,6 +30,13 @@ alias ipython='python3 -m IPython'
 alias ipy='ipython'
 alias iipy='ipython -i'
 
+# include hidden and ignored files with ripgrep/fd-find
+alias rgh='rg --hidden --no-ignore'
+alias fdh='fd --hidden --no-ignore'
+
+# list files by date
+alias ll='fd --type f . --exec-batch ls -lt'
+
 # diff
 alias diffc='diff --color'
 

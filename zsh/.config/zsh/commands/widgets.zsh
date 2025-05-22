@@ -25,10 +25,15 @@ toggle_copy() {
         BUFFER+=" | copy"
         zle accept-line
     else
-        if [[ $BUFFER == *" | copy"* ]]; then
+        if [[ $BUFFER == *"| copy" ]]; then
             BUFFER=${BUFFER//" | copy"/}
+            BUFFER=${BUFFER//"| copy"/}
         else
-            BUFFER+=" | copy"
+            if [[ $BUFFER == *" " ]]; then
+                BUFFER+="| copy"
+            else
+                BUFFER+=" | copy"
+            fi
             CURSOR=${#BUFFER}
         fi
     fi
@@ -38,10 +43,15 @@ bindkey '^Y' toggle_copy
 bindkey -M vicmd '^Y' toggle_copy
 
 redirect_to_stdout() {
-    if [[ $BUFFER == *" 2>&1"* ]]; then
+    if [[ $BUFFER == *"2>&1" ]]; then
         BUFFER=${BUFFER//" 2>&1"/}
+        BUFFER=${BUFFER//"2>&1"/}
     else
-        BUFFER+=" 2>&1"
+        if [[ $BUFFER == *" " ]]; then
+            BUFFER+="2>&1"
+        else
+            BUFFER+=" 2>&1"
+        fi
         CURSOR=${#BUFFER}
     fi
 }
@@ -63,7 +73,7 @@ bindkey -M vicmd '^B' debug
 
 go_to_root() {
     cd $(find_git_root)
-    zls reset-prompt
+    zle reset-prompt
 }
 zle -N go_to_root
 bindkey '^H' go_to_root
