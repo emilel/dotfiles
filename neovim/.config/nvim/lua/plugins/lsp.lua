@@ -41,7 +41,7 @@ return {
       end,
     })
 
-  vim.diagnostic.config({virtual_text=true})
+    vim.diagnostic.config({ virtual_text = true })
 
     vim.api.nvim_create_autocmd('LspAttach', {
       desc = 'Language server protocol',
