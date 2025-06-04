@@ -72,11 +72,18 @@ bindkey '^B' debug
 bindkey -M vicmd '^B' debug
 
 go_to_root() {
-    cd $(find_git_root)
+    local saved_buffer=$BUFFER
+    local saved_cursor=$CURSOR
+
+    cd "$(git rev-parse --show-toplevel)" || return
+
+    BUFFER=$saved_buffer
+    CURSOR=$saved_cursor
     zle reset-prompt
 }
 zle -N go_to_root
 bindkey '^H' go_to_root
+bindkey -M viins '^H' go_to_root
 bindkey -M vicmd '^H' go_to_root
 
 zle -N get_branch
@@ -86,3 +93,16 @@ bindkey -M vicmd '^T' get_branch
 zle -N go_to_parent
 bindkey '^K' go_to_parent
 bindkey _M vicmd '^K' go_to_parent
+
+fzf_cd_magic() {
+    local saved_buffer=$BUFFER
+    local saved_cursor=$CURSOR
+    local dir=$(find . -type d 2>/dev/null | fzf) || return
+    cd "$dir" || return
+    BUFFER=$saved_buffer
+    CURSOR=$saved_cursor
+    zle reset-prompt
+}
+zle   -N fzf_cd_magic
+bindkey '^J'           fzf_cd_magic
+bindkey -M vicmd '^J'  fzf_cd_magic

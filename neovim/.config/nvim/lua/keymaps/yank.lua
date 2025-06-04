@@ -26,7 +26,7 @@ vim.keymap.set('n', '<space>yN', function()
     file_content
   )
   vim.fn.setreg('+', formatted_content)
-  print('Copied file name and content')
+  print('Copied \'' .. file_name .. '\' and ' .. #vim.fn.split(file_content, '\n') .. ' lines')
 end, { desc = 'Copy file name and content' })
 
 -- copy relative path
@@ -51,7 +51,7 @@ vim.keymap.set('n', '<space>yF', function()
     file_content
   )
   vim.fn.setreg('+', formatted_content)
-  print('Copied relative path and content')
+  print('Copied \'' .. relative_path .. '\' and ' .. #vim.fn.split(file_content, '\n') .. ' lines')
 end, { desc = 'Copy relative path' })
 
 -- copy full path
@@ -171,3 +171,14 @@ vim.keymap.set('n', '<space>+', function()
   yank.set_exit_keymap('bd!')
   vim.api.nvim_feedkeys('P', "n", false)
 end, { desc = 'Open strings buffer' })
+
+-- copy code block
+vim.keymap.set('x', '<space>y', function()
+  local ft = vim.bo.filetype
+  vim.cmd('normal! y')
+  -- remove exactly one trailing newline from the yanked text
+  local content = vim.fn.getreg('"'):gsub('\n$', '')
+  local fenced = string.format("```%s\n%s\n```", ft, content)
+  vim.fn.setreg('+', fenced)
+  print('Copied ' .. #vim.fn.split(content, '\n') .. ' fenced lines')
+end, { desc = 'Copy visually-selected text as a fenced code block' })
