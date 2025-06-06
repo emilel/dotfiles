@@ -62,6 +62,9 @@ setopt HIST_IGNORE_ALL_DUPS
 ## don't find duplicates
 setopt HIST_FIND_NO_DUPS
 
+## no error message if not finding file
+setopt NULL_GLOB
+
 # set LS_COLORS variable for ls and tree
 eval $(dircolors -b)
 

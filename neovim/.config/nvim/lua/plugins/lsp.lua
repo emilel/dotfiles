@@ -6,9 +6,7 @@ return {
   },
   config = function()
     require("mason").setup()
-    require("mason-lspconfig").setup()
-
-    require("mason-lspconfig").setup_handlers({
+    require("mason-lspconfig").setup({handlers = {
       function(server_name)
         require("lspconfig")[server_name].setup({})
       end,
@@ -39,7 +37,7 @@ return {
           cmd = { "clangd", "--clang-tidy" },
         })
       end,
-    })
+    }})
 
     vim.diagnostic.config({ virtual_text = true })
 
