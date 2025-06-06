@@ -45,8 +45,14 @@ return {
     { '<c-g>t', function() require('gitsigns').toggle_deleted() end,                                   desc = 'Toggle deleted' },
     { '<c-g>h', navigate_hunks,                                                                        desc = 'Navigate hunks' },
     { '<c-g>m', '<cmd>silent !git checkout master -- %<cr>',                                           desc = 'Revert to master' },
-    { ']h', function() require('gitsigns').nav_hunk('next') end, desc = 'Next hunk' },
-    { '[h', function() require('gitsigns').nav_hunk('prev') end, desc = 'Previous hunk' },
+    { ']h',     function() require('gitsigns').nav_hunk('next') end,                                   desc = 'Next hunk' },
+    { '[h',     function() require('gitsigns').nav_hunk('prev') end,                                   desc = 'Previous hunk' },
+    {
+      'ah',
+      function() require('gitsigns').select_hunk() end,
+      mode = { 'o', 'x' },
+      desc = 'Git hunk (around)'
+    },
   },
   lazy = false,
   opts = {
