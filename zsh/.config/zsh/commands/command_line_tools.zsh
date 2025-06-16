@@ -2,20 +2,36 @@
 
 # print directory content
 catdir() {
-  dir=$1
-  pattern=${2:-*}
-  find "$dir" -type f -name "$pattern" | while read -r file; do
-      mime_type=$(file --mime-type -b "$file")
-      if [[ "$mime_type" == application/* || "$mime_type" == image/* ]]; then
-          continue
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: catdir <directory> [exclude-pattern1] [exclude-pattern2] …"
+    return 1
+  fi
+
+  local dir="$1"
+  shift
+  local exclude_patterns=("$@")
+
+  find "$dir" -type f | while IFS= read -r file; do
+    local base="${file##*/}"
+    local skip=false
+
+    for pat in "${exclude_patterns[@]}"; do
+      if [[ "$base" == $pat ]]; then
+        skip=true
+        break
       fi
-      echo "$file:"
-      echo "\`\`\`"
-      cat "$file"
-      echo "\`\`\`"
-      echo
+    done
+
+    $skip && continue
+
+    echo "$file:"
+    echo '```'
+    cat "$file"
+    echo '```'
+    echo
   done
 }
+
 
 # edit stdin/stdout
 edit() {
