@@ -144,7 +144,7 @@ vim.keymap.set('n', '<space>yE', function()
   print('Copied: ' .. repo_info)
 end, { desc = 'Copy repository, branch, file and line number' })
 
-vim.keymap.set('x', 'Y', function()
+vim.keymap.set('x', '<space>y', function()
   local mode = vim.fn.mode()
 
   vim.cmd('normal! "yy')
@@ -173,7 +173,7 @@ vim.keymap.set('n', '<space>+', function()
 end, { desc = 'Open strings buffer' })
 
 -- copy code block
-vim.keymap.set('x', '<space>y', function()
+vim.keymap.set('x', 'Y', function()
   local ft = vim.bo.filetype
   vim.cmd('normal! y')
   -- remove exactly one trailing newline from the yanked text
