@@ -1,5 +1,5 @@
 font=Source Code Pro 16
 anchor=top-left
-default-timeout=60000
+default-timeout=10000
 on-button-left=dismiss
 on-button-right=invoke-default-action
