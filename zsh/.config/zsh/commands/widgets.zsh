@@ -73,7 +73,18 @@ bindkey -M vicmd '^B' debug
 
 go_to_root() {
     zle push-input
-    cd "$(git rev-parse --show-toplevel)" || return
+    local repo_root common_dir
+    if repo_root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        if [[ $PWD == $repo_root ]]; then
+            common_dir=$(git rev-parse --git-common-dir | xargs dirname)
+            cd "$common_dir" || return
+        else
+            cd "$repo_root" || return
+        fi
+    else
+        common_dir=$(git rev-parse --git-common-dir | xargs dirname) || return
+        cd "$common_dir" || return
+    fi
     zle get-line
     zle reset-prompt
 }
@@ -90,13 +101,13 @@ zle -N go_to_parent
 bindkey '^K' go_to_parent
 bindkey _M vicmd '^K' go_to_parent
 
-fzf_cd_magic() {
-    zle push-input
-    local dir=$(find . -type d 2>/dev/null | fzf) || return
-    cd "$dir" || return
-    zle get-line
-    zle reset-prompt
-}
-zle   -N fzf_cd_magic
-bindkey '^J'           fzf_cd_magic
-bindkey -M vicmd '^J'  fzf_cd_magic
+# fzf_cd_magic() {
+#     zle push-input
+#     local dir=$(find . -type d 2>/dev/null | fzf) || return
+#     cd "$dir" || return
+#     zle get-line
+#     zle reset-prompt
+# }
+# zle   -N fzf_cd_magic
+# bindkey '^J'           fzf_cd_magic
+# bindkey -M vicmd '^J'  fzf_cd_magic
