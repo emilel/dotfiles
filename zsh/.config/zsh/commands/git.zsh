@@ -1,22 +1,5 @@
 #!/bin/zsh
 
-# get branch name checked out worktrees
-get_branch() {
-    local branch
-    branch=$(git worktree list | awk '{print $3}' | rg -o '\[(.*?)\]' -r '$1' | fzf) || return
-
-    if [ -z "$LBUFFER" ]; then
-        local branch_path
-        branch_path=$(git worktree list | awk -v b="$branch" '$3 ~ b {print $1}')
-        if [ -n "$branch_path" ]; then
-            cd "$branch_path" || return
-            zle reset-prompt
-        fi
-    else
-        LBUFFER+="$branch"
-    fi
-}
-
 # add git branch
 gwa() {
     local branch="$1"
@@ -49,50 +32,8 @@ gl() {
     git log --pretty=format:"%C(yellow)%h%Creset %Cgreen%ad%Creset %Cblue%an%Creset: %s" --date=short -"${n}"
 }
 
-# soft reset commits
-grs() {
-    num="${1:-1}"
-    git reset --soft HEAD~"${num}"
-}
-
-# log between dates
-glo() {
-    local start=$(git log --reverse --format=%ad --date=short | head -1)
-    local end=$(date +%F)
-    local from=${1:-$start}; [ "$from" = "-" ] && from=$start
-    local to=${2:-$end};   [ "$to"   = "-" ] && to=$end
-
-    git log \
-        --all \
-        --reverse \
-        --author="$(git config user.name)" \
-        --since="$from 00:00" --until="$to 23:59" \
-        --no-merges \
-        --pretty=fuller \
-        --author-date-order
-}
-
-
-
-alias find_git_root='git rev-parse --show-toplevel'
-alias toro='cd $(find_git_root)'
-alias ro='find_git_root'
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 alias gwr='git worktree remove --force'
 alias gwr.='git worktree remove --force $(find_git_root)'
-alias gc='git checkout'
-alias gcm='git checkout master'
-alias gsl='git stash list'
-alias gsu='git submodule update --init'
-alias gf='fd . | fzf'
-alias gro='git reset --hard origin/$(gb)'
-alias gpush='git push'
-alias gpushf='git push --force'
-alias gb='git rev-parse --abbrev-ref HEAD'
 alias trn="gb | awk -F'/' '{print \$NF}' | xargs tmux rename-session && tmux rename-window code"
-alias gfa='git fetch --all'
-alias gp='git pull'
-alias gd='git diff'
-alias gm='git merge'
-alias gitpath='realpath --relative-to $(find_git_root)'

@@ -4,9 +4,9 @@
 export LC_COLLATE='C'
 
 # A - don't auto enter on unique filter search
-# R - no rollover 
+# R - no rollover
 # U - show user and group in status bar
-export NNN_OPTS='RU'
+export NNN_OPTS='ARU'
 
 # plugins
 # x: toggle executable bit

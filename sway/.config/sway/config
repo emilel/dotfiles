@@ -5,7 +5,7 @@ set $monitor_1 DP-1
 set $monitor_2 eDP-1
 
 ## keyboard layout
-set $keyboard_layout se
+set $keyboard_layout us
 
 ## monitor placement
 output $monitor_1 pos 0 0
@@ -78,6 +78,10 @@ input type:keyboard {
     repeat_delay 260
     xkb_layout $keyboard_layout
     xkb_options caps:swapescape
+}
+
+input "1:1:AT_Translated_Set_2_keyboard" {
+    xkb_layout "se"
 }
 
 # one, two and three finger tap
