@@ -1,13 +1,10 @@
 #!/bin/zsh
 
 # add colors to ls
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --group-directories-first'
 
 # neovim in read only mode
 alias view='nvim -R'
-
-# temporary neovim buffer
-alias temp='nvim +TempFile'
 
 # edit clipboard
 alias clip='nvim +Clip'
@@ -46,4 +43,9 @@ alias tmp='cd ~/tmp'
 # open without output
 open() {
     command open "$@" >/dev/null 2>&1 &disown
+}
+
+# temporary neovim buffer
+temp() {
+    nvim +"TempFile $@"
 }

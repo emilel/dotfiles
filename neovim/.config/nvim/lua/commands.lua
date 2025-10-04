@@ -1,9 +1,15 @@
 local yank = require('functions.yank')
 
-vim.api.nvim_create_user_command('TempFile', function()
+vim.api.nvim_create_user_command('TempFile', function(opts)
     yank.open_buffer()
     yank.set_exit_keymap('q!')
-end, { nargs = '*' })
+
+    if opts.args and opts.args ~= "" then
+        vim.bo.filetype = opts.args
+    else
+        vim.bo.filetype = "markdown"
+    end
+end, { nargs = '?' })
 
 vim.api.nvim_create_user_command('Clip', function()
     yank.open_buffer()

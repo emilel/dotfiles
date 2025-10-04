@@ -1,98 +1,5 @@
 local strings = require('functions.strings')
 
-local function go_to_directory()
-  local actions = require('telescope.actions')
-  local action_state = require('telescope.actions.state')
-  local pickers = require('telescope.pickers')
-  local finders = require('telescope.finders')
-  local conf = require('telescope.config').values
-  local previewers = require('telescope.previewers')
-
-  pickers.new({}, {
-    prompt_title = "Find Folders",
-    finder = finders.new_oneshot_job({ "fd", "--type", "d", "--hidden", "--exclude", ".git" }, {}),
-    sorter = conf.generic_sorter({}),
-    previewer = previewers.new_termopen_previewer({
-      get_command = function(entry)
-        return { 'tree', '-L', '1', entry[1] }
-      end
-    }),
-    attach_mappings = function(prompt_bufnr)
-      actions.select_default:replace(function()
-        local selection = action_state.get_selected_entry()
-        actions.close(prompt_bufnr)
-        vim.cmd('Oil ' .. vim.fn.fnameescape(selection[1]))
-      end)
-      return true
-    end,
-  }):find()
-end
-
-local function paste_text(new_line)
-  local actions = require('telescope.actions')
-  local action_state = require('telescope.actions.state')
-  local pickers = require('telescope.pickers')
-  local finders = require('telescope.finders')
-  local conf = require('telescope.config').values
-  local previewers = require('telescope.previewers')
-
-  local paste_dir = vim.fn.expand('~/.setup/paste/')
-  local files = vim.fn.readdir(paste_dir)
-
-  pickers.new({}, {
-    prompt_title = "Paste Text",
-    finder = finders.new_table({
-      results = files,
-    }),
-    sorter = conf.generic_sorter({}),
-    previewer = previewers.new_buffer_previewer({
-      define_preview = function(self, entry)
-        local filepath = paste_dir .. entry.value
-        local lines = vim.fn.readfile(filepath)
-        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
-      end,
-    }),
-    attach_mappings = function(prompt_bufnr, _)
-      local function multi_select_paste()
-        local picker = action_state.get_current_picker(prompt_bufnr)
-        local selections = picker:get_multi_selection()
-        if vim.tbl_isempty(selections) then
-          table.insert(selections, action_state.get_selected_entry())
-        end
-        actions.close(prompt_bufnr)
-
-        local combined_lines = {}
-        for _, selection in ipairs(selections) do
-          local filepath = paste_dir .. selection.value
-          local lines = vim.fn.readfile(filepath)
-          table.insert(combined_lines, table.concat(lines, "\n"))
-        end
-
-        local content
-        if new_line then
-          content = table.concat(combined_lines, "\n")
-        else
-          content = table.concat(combined_lines, " ")
-        end
-
-        local regtype = new_line and 'l' or 'v'
-        vim.fn.setreg('"', content, regtype)
-
-        vim.cmd('normal! ""p')
-        if not new_line then
-          vim.defer_fn(function()
-            vim.cmd('normal! l"')
-          end, 0)
-        end
-      end
-
-      actions.select_default:replace(multi_select_paste)
-
-      return true
-    end,
-  }):find()
-end
-
 return {
   'nvim-telescope/telescope.nvim',
   dependencies = {
@@ -106,7 +13,7 @@ return {
     {
       '<space>a',
       function() require('telescope.builtin').buffers() end,
-      desc = 'Find files'
+      desc = 'Find buffers'
     },
     {
       '<space>f',
@@ -117,42 +24,6 @@ return {
       '<space>/',
       function() require('telescope').extensions.live_grep_args.live_grep_args() end,
       desc = 'Grep all files'
-    },
-    {
-      '<c-g>/',
-      function()
-        local git_diff_files = vim.fn.systemlist("git diff --name-only")
-        require('telescope.builtin').live_grep {
-          search_dirs = git_diff_files,
-          prompt_title = "Grep in Git Diff Files"
-        }
-      end,
-      desc = 'Grep in git diff files'
-    },
-    {
-      '<c-g>a',
-      function()
-        local git_diff_files = vim.fn.systemlist(
-          "git diff --name-only && git diff --name-only --cached && git ls-files --others --exclude-standard"
-        )
-
-        local file_set = {}
-        for _, file in ipairs(git_diff_files) do
-          file_set[file] = true
-        end
-        local unique_files = vim.tbl_keys(file_set)
-
-        if vim.tbl_isempty(unique_files) then
-          print("No changes to search!")
-          return
-        end
-
-        require('telescope.builtin').find_files {
-          prompt_title = "Git Diff Files",
-          search_dirs = unique_files,
-        }
-      end,
-      desc = 'Find files in git diff',
     },
     {
       '<space>*',
@@ -186,11 +57,6 @@ return {
       'Show mappings'
     },
     {
-      '<space>g',
-      go_to_directory,
-      desc = 'Go to directory'
-    },
-    {
       '<space>s',
       function() require('telescope.builtin').lsp_document_symbols({ symbol_width = 50 }) end,
       desc = 'LSP document symbols'
@@ -217,16 +83,6 @@ return {
         require('telescope').extensions.live_grep_args.live_grep_args({ default_text = file_name })
       end,
       desc = 'Find references to file',
-    },
-    {
-      '<space>p',
-      function() paste_text(false) end,
-      desc = 'Paste text',
-    },
-    {
-      '<space>P',
-      function() paste_text(true) end,
-      desc = 'Paste text on new line',
     },
   },
   config = function()

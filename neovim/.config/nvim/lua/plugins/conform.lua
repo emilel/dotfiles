@@ -9,6 +9,7 @@ return {
                 zsh = { 'beautysh' },
                 sh = { 'beautysh' },
                 bash = { 'beautysh' },
+                markdown = { 'prettier' }
             }
         })
     end

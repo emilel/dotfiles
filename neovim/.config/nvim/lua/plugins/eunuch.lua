@@ -2,7 +2,7 @@ return {
     'tpope/vim-eunuch',
     keys = {
         {
-            '<space>R',
+            '<space>r',
             function()
                 local filename = vim.fn.expand('%:t')
                 local file_root, extension = filename:match('^(.*)%.(.*)$')
@@ -20,6 +20,14 @@ return {
                 end
             end,
             desc = 'Rename current file'
+        },
+        {
+            '<space>R',
+            function()
+                local filename = vim.fn.expand('%:t')
+                vim.api.nvim_feedkeys(':Rename ' .. filename, 'n', false)
+            end,
+            desc = 'Change extension'
         },
         { '<space>X', '<cmd>Delete<cr>', desc = 'Delete current file' }
     }
