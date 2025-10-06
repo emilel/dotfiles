@@ -51,6 +51,7 @@ return {
 
         sources = {
             default = { 'lsp', 'path', 'snippets', 'buffer' },
+            min_keyword_length = 3,
         },
 
         fuzzy = { implementation = "lua" }
