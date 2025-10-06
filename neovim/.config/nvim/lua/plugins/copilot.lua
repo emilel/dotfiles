@@ -5,14 +5,14 @@ return {
 	lazy = false,
 	keys = {
 		{
-			"<c-right>",
+			"<right>",
 			'copilot#Accept("\\<cr>")',
 			mode = "i",
 			expr = true,
 			replace_keycodes = false,
 			desc = "Accept suggestion",
 		},
-		{ "<s-c-right>", "<Plug>(copilot-accept-word)", mode = "i", desc = "Accept suggested word" },
+		{ "<c-right>", "<Plug>(copilot-accept-word)", mode = "i", desc = "Accept suggested word" },
 		{ "<c-down>", "<Plug>(copilot-next)", mode = "i", desc = "Cycle suggestion down" },
 		{ "<c-up>", "<Plug>(copilot-previous)", mode = "i", desc = "Cycle suggestion up" },
 	},
