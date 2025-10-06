@@ -1,7 +1,7 @@
-local utils = require('utils')
+local utils = require("utils")
 
-require('config.lazy')
-require('commands')
+require("config.lazy")
+require("commands")
 
-utils.require_directory('keymaps')
-utils.require_directory('settings')
+utils.require_directory("keymaps")
+utils.require_directory("settings")
