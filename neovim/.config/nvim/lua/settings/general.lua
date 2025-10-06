@@ -1,4 +1,4 @@
-local globals = require('globals')
+local globals = require("globals")
 
 -- use system clipboard
 vim.opt.clipboard = "unnamedplus"
