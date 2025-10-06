@@ -9,7 +9,8 @@ return {
                 zsh = { 'beautysh' },
                 sh = { 'beautysh' },
                 bash = { 'beautysh' },
-                markdown = { 'prettier' }
+                markdown = { 'prettier' },
+                lua = { 'stylua' },
             }
         })
     end

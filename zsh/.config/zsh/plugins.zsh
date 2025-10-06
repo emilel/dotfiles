@@ -32,6 +32,10 @@ source_repo zsh-system-clipboard
 ensure_cloned zsh-users zsh-autosuggestions
 source_repo zsh-autosuggestions
 
+# ctrl right to autocomplete word
+bindkey -M emacs "^[[1;5C" forward-word
+bindkey -M viins "^[[1;5C" forward-word
+
 # theme
 ensure_cloned sindresorhus pure
 fpath+=($HOME/.zsh/pure)
