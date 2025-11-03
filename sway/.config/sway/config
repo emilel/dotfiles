@@ -110,6 +110,9 @@ bindsym $mod+u exec "$HOME/.scripts/turn_off_screen.sh"
 bindsym $mod+shift+z exec "$HOME/.scripts/lock.sh"
 bindsym $mod+y exec "$HOME/.scripts/lock.sh"
 
+## turn off screen and lock
+bindsym $mod+shift+y exec swaylock --color 242424 --daemonize && ~/.scripts/turn_off_screen.sh
+
 ## move workspace to other monitor
 bindsym $mod+Shift+Control+h move workspace to output left
 bindsym $mod+Shift+Control+j move workspace to output down

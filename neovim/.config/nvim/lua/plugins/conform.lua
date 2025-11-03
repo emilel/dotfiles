@@ -12,6 +12,11 @@ return {
 				markdown = { "prettier" },
 				lua = { "stylua" },
 			},
+			formatters = {
+				prettier = {
+					append_args = { "--print-width", "80", "--prose-wrap", "always" },
+				},
+			},
 		})
 	end,
 }
