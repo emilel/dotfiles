@@ -37,3 +37,4 @@ alias gwp='git worktree prune'
 alias gwr='git worktree remove --force'
 alias gwr.='git worktree remove --force $(find_git_root)'
 alias trn="gb | awk -F'/' '{print \$NF}' | xargs tmux rename-session && tmux rename-window code"
+alias gc='git checkout'
