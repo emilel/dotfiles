@@ -1,5 +1,3 @@
-vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. ":" .. vim.env.PATH
-
 return {
 	"stevearc/conform.nvim",
 	config = function()
@@ -9,7 +7,7 @@ return {
 				zsh = { "beautysh" },
 				sh = { "beautysh" },
 				bash = { "beautysh" },
-				markdown = { "prettier" },
+				markdown = { "prettierd" },
 				lua = { "stylua" },
 			},
 			formatters = {
