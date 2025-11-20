@@ -1,4 +1,5 @@
 local strings = require("functions.strings")
+local file_ignore_patterns = { ".git/", ".venv/", ".vscode/", ".databricks" }
 
 return {
 	"nvim-telescope/telescope.nvim",
@@ -101,6 +102,7 @@ return {
 
 		telescope.setup({
 			defaults = {
+				file_ignore_patterns = file_ignore_patterns,
 				path_display = function(_, path)
 					local tail = require("telescope.utils").path_tail(path)
 					local directory = path:match("(.*/)") or "./"
@@ -138,13 +140,11 @@ return {
 			pickers = {
 				find_files = {
 					hidden = true,
-					file_ignore_patterns = { "^%.git/", "%.pt$" },
 				},
 				live_grep = {
 					additional_args = function(_)
 						return { "--hidden" }
 					end,
-					file_ignore_patterns = { "^%.git/" },
 				},
 				grep_string = {
 					additional_args = function(_)
@@ -162,7 +162,6 @@ return {
 					additional_args = function(_)
 						return { "--hidden", "--smart-case" }
 					end,
-					file_ignore_patterns = { "^%.git/" },
 					mappings = {
 						i = {
 							["<C-'>"] = lga_actions.quote_prompt(),
@@ -173,7 +172,7 @@ return {
 				},
 				smart_open = {
 					hidden = true,
-					file_ignore_patterns = { "^%.git/", "%.pt$" },
+					ignore_patterns = file_ignore_patterns,
 					cwd_only = true,
 				},
 			},
