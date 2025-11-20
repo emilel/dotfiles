@@ -14,7 +14,9 @@ elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
   }
 elif grep -qi microsoft /proc/version; then
   alias copyr='clip.exe'
-  alias open='explorer.exe'
+  open() {
+    explorer.exe $@
+  }
 else
   alias copyr='echo "No clipboard found"'
 fi
