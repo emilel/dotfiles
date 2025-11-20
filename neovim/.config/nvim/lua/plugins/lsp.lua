@@ -28,6 +28,7 @@ return {
 				sh = { "beautysh" },
 				bash = { "beautysh" },
 				markdown = { "prettierd" },
+				json = { "prettierd" },
 				lua = { "stylua" },
 			},
 			formatters = {
