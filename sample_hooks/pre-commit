@@ -1,0 +1,4 @@
+#!/bin/sh
+
+stylua --check $(fd -H ".*\.lua")
+beautysh --check $(fd -H ".*\.z?sh")
