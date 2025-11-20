@@ -2,23 +2,23 @@
 
 # copy and open depending on display server
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-  alias copyr='wl-copy'
-  open() {
-    command open "$@" >/dev/null 2>&1 &disown
-  }
+    alias copyr='wl-copy'
+    open() {
+        command open "$@" >/dev/null 2>&1 &disown
+    }
 elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
-  alias copyr='xclip -selection clipboard'
+    alias copyr='xclip -selection clipboard'
 
-  open() {
-    command open "$@" >/dev/null 2>&1 &disown
-  }
+    open() {
+        command open "$@" >/dev/null 2>&1 &disown
+    }
 elif grep -qi microsoft /proc/version; then
-  alias copyr='clip.exe'
-  open() {
-    explorer.exe $@
-  }
+    alias copyr='clip.exe'
+    open() {
+        explorer.exe $@
+    }
 else
-  alias copyr='echo "No clipboard found"'
+    alias copyr='echo "No clipboard found"'
 fi
 
 # print what's copied
@@ -30,11 +30,11 @@ copy() {
 
 # copy command and output
 copyc() {
-  local command="$1"
-  shift
-  local output=$("$command" "$@" 2>&1 | perl -pe 'chomp if eof')
-  printf "> %s %s\n\n%s" "$command" "$*" "$output" | copyr
-  printf "%s\n" "$output"
+    local command="$1"
+    shift
+    local output=$("$command" "$@" 2>&1 | perl -pe 'chomp if eof')
+    printf "> %s %s\n\n%s" "$command" "$*" "$output" | copyr
+    printf "%s\n" "$output"
 }
 
 # enable vi mode
@@ -45,9 +45,9 @@ KEYTIMEOUT=1
 
 # copy to global clipboard
 zvm_vi_yank () {
-	zvm_yank
-	printf %s "${CUTBUFFER}" | copy
-	zvm_exit_visual_mode
+    zvm_yank
+    printf %s "${CUTBUFFER}" | copy
+    zvm_exit_visual_mode
 }
 
 # backspace always deletes
