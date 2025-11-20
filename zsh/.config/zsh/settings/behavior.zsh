@@ -1,12 +1,20 @@
 #!/bin/zsh
 
-# copy depending on display server
+# copy and open depending on display server
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   alias copyr='wl-copy'
+  open() {
+    command open "$@" >/dev/null 2>&1 &disown
+  }
 elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
   alias copyr='xclip -selection clipboard'
+
+  open() {
+    command open "$@" >/dev/null 2>&1 &disown
+  }
 elif grep -qi microsoft /proc/version; then
   alias copyr='clip.exe'
+  alias open='explorer.exe'
 else
   alias copyr='echo "No clipboard found"'
 fi
