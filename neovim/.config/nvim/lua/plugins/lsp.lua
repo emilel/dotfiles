@@ -6,10 +6,15 @@ return {
 	},
 	config = function()
 		require("mason").setup()
+
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		capabilities.positionEncoding = { "utf-16" }
+
 		require("mason-lspconfig").setup({
 			handlers = {
 				function(server_name)
-					require("lspconfig")[server_name].setup({})
+					require("lspconfig")[server_name].setup({
+					capabilities=capabilities})
 				end,
 			},
 		})

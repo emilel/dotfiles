@@ -10,7 +10,7 @@ export NNN_OPTS='ARU'
 
 # plugins
 # x: toggle executable bit
-export NNN_PLUG="x:![ -x \"\$nnn\" ] && chmod -x \"\$nnn\" || chmod +x \"\$nnn\"*"
+export NNN_PLUG='x:![ -x "$nnn" ] && chmod -x "$nnn" || chmod +x "$nnn"*;n:!nvim*'
 
 # cd on quit with ctrl g
 n ()

@@ -40,11 +40,6 @@ alias diffc='diff --color'
 # go to tmp directory
 alias tmp='cd ~/tmp'
 
-# open without output
-open() {
-    command open "$@" >/dev/null 2>&1 &disown
-}
-
 # temporary neovim buffer
 temp() {
     nvim +"TempFile $@"

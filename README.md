@@ -1,6 +1,6 @@
 * copy private and public ssh keys to ~/.ssh
 
-* install `git`, `stow`, `nnn` and `gcc`
+* install `git`, `stow`, `nnn`, `gcc`, `ripgrep` and `fd`/`fd-find`.
 
 * set up configuration folders
 
