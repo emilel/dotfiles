@@ -246,3 +246,50 @@ vim.keymap.set("n", "<space>J", 'J"_diW', { desc = "Merge with the next line" })
 
 -- search with word boundaries
 vim.keymap.set("n", "</", "/\\<\\><left><left>", { desc = "Search with word boundaries" })
+
+-- Navigate to next line with same indentation level
+vim.keymap.set("n", "<space>i", function()
+	local cursor = vim.api.nvim_win_get_cursor(0)
+	local current_line = cursor[1]
+	local total_lines = vim.api.nvim_buf_line_count(0)
+
+	-- Get current line's indentation
+	local line_text = vim.api.nvim_buf_get_lines(0, current_line - 1, current_line, false)[1]
+	local current_indent = line_text:match("^%s*"):len()
+
+	-- Search for next line with same indentation
+	for i = current_line + 1, total_lines do
+		local next_line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+		if next_line and next_line:match("%S") then -- Line has non-whitespace
+			local next_indent = next_line:match("^%s*"):len()
+			if next_indent == current_indent then
+				-- Move to first non-whitespace character
+				vim.api.nvim_win_set_cursor(0, { i, current_indent })
+				return
+			end
+		end
+	end
+end, { desc = "Go to next line with same indentation" })
+
+-- Navigate to previous line with same indentation level
+vim.keymap.set("n", "<space>I", function()
+	local cursor = vim.api.nvim_win_get_cursor(0)
+	local current_line = cursor[1]
+
+	-- Get current line's indentation
+	local line_text = vim.api.nvim_buf_get_lines(0, current_line - 1, current_line, false)[1]
+	local current_indent = line_text:match("^%s*"):len()
+
+	-- Search backwards for previous line with same indentation
+	for i = current_line - 1, 1, -1 do
+		local prev_line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+		if prev_line and prev_line:match("%S") then -- Line has non-whitespace
+			local prev_indent = prev_line:match("^%s*"):len()
+			if prev_indent == current_indent then
+				-- Move to first non-whitespace character
+				vim.api.nvim_win_set_cursor(0, { i, current_indent })
+				return
+			end
+		end
+	end
+end, { desc = "Go to previous line with same indentation" })
