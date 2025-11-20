@@ -9,6 +9,18 @@ return {
 	},
 	config = function()
 		require("mason").setup()
+
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		require("mason-lspconfig").setup({
+			handlers = {
+				function(server_name)
+					require("lspconfig")[server_name].setup({
+						capabilities = capabilities,
+					})
+				end,
+			},
+		})
+
 		require("conform").setup({
 			formatters_by_ft = {
 				python = { "ruff_format", "isort" },
@@ -22,19 +34,6 @@ return {
 				prettier = {
 					append_args = { "--print-width", "80", "--prose-wrap", "always" },
 				},
-			},
-		})
-
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities.positionEncoding = { "utf-16" }
-
-		require("mason-lspconfig").setup({
-			handlers = {
-				function(server_name)
-					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
-					})
-				end,
 			},
 		})
 

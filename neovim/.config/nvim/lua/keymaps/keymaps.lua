@@ -149,6 +149,9 @@ end, { noremap = true, silent = true })
 -- run q macro
 vim.keymap.set("n", "Q", "@q", { desc = "Run q macro" })
 
+-- insert three backticks
+vim.keymap.set("n", "<space>´´", "a```<cr>```<esc>k$", { desc = "Insert codeblock" })
+
 -- disable mouse
 vim.keymap.set("n", "<space>M", "<cmd>set mouse=<cr>", { desc = "Disable mouse" })
 

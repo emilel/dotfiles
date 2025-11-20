@@ -20,6 +20,9 @@
   start `nvim` and install language servers using `:Mason`, tree sitter language
   support with `:TSInstall <language>` and github copilot with `:Copilot`
 
+  nice language servers: `beautysh`, `isort`, `lua-language-server`,
+  `mypy`, `prettierd`, `pylint`, `pyrefly`, `ruff`, `sqruff`, `stylua`.
+
 * set up git
 
   ```
@@ -35,6 +38,25 @@
   chsh -s $(which zsh)
   ```
 
+* sample configuration for `dotfiles` repo:
+```
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	sshCommand = ssh -i ~/.ssh/id_private
+[remote "origin"]
+	url = git@github.com:emilel/dotfiles.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[user]
+	email = limeliasson@gmail.com
+	name = Emil Eliasson
+```
+
 * set up passwordless sudo if you're a daredevil:
 
   ```
@@ -42,6 +64,12 @@
   ```
 
   append `<username> ALL=(ALL) NOPASSWD:ALL`
+
+* add `fd` command:
+
+  ```sh
+  ln -s /usr/bin/fdfind ~/.local/bin/fd
+  ```
 
 * for gui:
 
@@ -57,13 +85,13 @@
 
   * install adobe source code pro
 
-    ```
+    ```sh
     zsh ~/dotfiles/font/install_source_code_pro.zsh
     ```
 
   * if using nvidia:
 
-    ```
+    ```sh
     sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop
     ```
 
@@ -72,14 +100,14 @@
 
   * if ubuntu, create symlinks to `batcat` and `find`:
 
-    ```
+    ```sh
     sudo ln -s /usr/bin/batcat /usr/local/bin/bat
     sudo ln -s /usr/bin/fdfind /usr/local/bin/fd
     ```
 
   * to install `fzf`:
 
-    ```
+    ```sh
     mkdir ~/.install
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.install/fzf
     ~/.install/fzf/install
@@ -89,7 +117,7 @@
 
 * install `git jump`:
 
-  ```bash
+  ```sh
   wget -O git-jump https://raw.githubusercontent.com/git/git/master/contrib/git-jump/git-jump
   chmod +x git-jump
   sudo mv git-jump /usr/local/bin/
