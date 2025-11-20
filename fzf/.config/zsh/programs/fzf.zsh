@@ -25,7 +25,7 @@ bindkey -M vicmd '\C-g' fzf-cd-widget
 bindkey -M viins '\C-g' fzf-cd-widget
 
 # c-f to fuzzy find file
-export FZF_CTRL_T_COMMAND='fd --hidden --exclude .git --no-ignore'
+export FZF_CTRL_T_COMMAND='fd --hidden --exclude .git --exclude .venv --no-ignore'
 # export FZF_CTRL_T_OPTS='--preview-window=down --no-height --preview "bat --color=always --line-range :50 {}"'
 zle -N fzf-file-widget
 bindkey -M emacs '\C-f' fzf-file-widget
