@@ -1,11 +1,29 @@
+vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. ":" .. vim.env.PATH
+
 return {
 	"williamboman/mason-lspconfig.nvim",
 	dependencies = {
 		"williamboman/mason.nvim",
 		"neovim/nvim-lspconfig",
+		"stevearc/conform.nvim",
 	},
 	config = function()
 		require("mason").setup()
+		require("conform").setup({
+			formatters_by_ft = {
+				python = { "ruff_format", "isort" },
+				zsh = { "beautysh" },
+				sh = { "beautysh" },
+				bash = { "beautysh" },
+				markdown = { "prettierd" },
+				lua = { "stylua" },
+			},
+			formatters = {
+				prettier = {
+					append_args = { "--print-width", "80", "--prose-wrap", "always" },
+				},
+			},
+		})
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities.positionEncoding = { "utf-16" }
