@@ -1,8 +1,8 @@
-* copy private and public ssh keys to ~/.ssh
+- copy private and public ssh keys to ~/.ssh
 
-* install `git`, `stow`, `nnn`, `gcc`, `ripgrep` and `fd`/`fd-find`.
+- install `git`, `stow`, `nnn`, `gcc`, `ripgrep` and `fd`/`fd-find`.
 
-* set up configuration folders
+- set up configuration folders
 
   ```
   git clone https://github.com/emilel/dotfiles ~/dotfiles
@@ -10,7 +10,7 @@
   stow zsh nnn neovim scripts
   ```
 
-* install `neovim`
+- install `neovim`
 
   ```
   sudo add-apt-repository ppa:neovim-ppa/unstable
@@ -23,14 +23,14 @@
   nice language servers: `beautysh`, `isort`, `lua-language-server`,
   `mypy`, `prettierd`, `pylint`, `pyrefly`, `ruff`, `sqruff`, `stylua`.
 
-* set up git
+- set up git
 
   ```
   cd ~/dotfiles
   stow git
   ```
 
-* install `zsh`
+- install `zsh`
 
   change shell to `zsh`:
 
@@ -38,7 +38,8 @@
   chsh -s $(which zsh)
   ```
 
-* sample configuration for `dotfiles` repo:
+- sample configuration for `dotfiles` repo:
+
 ```
 [core]
 	repositoryformatversion = 0
@@ -57,7 +58,7 @@
 	name = Emil Eliasson
 ```
 
-* set up passwordless sudo if you're a daredevil:
+- set up passwordless sudo if you're a daredevil:
 
   ```
   sudo visudo
@@ -65,47 +66,45 @@
 
   append `<username> ALL=(ALL) NOPASSWD:ALL`
 
-* add `fd` command:
+- add `fd` command:
 
   ```sh
   ln -s /usr/bin/fdfind ~/.local/bin/fd
   ```
 
-* for gui:
-
-  * install `sway`, `foot`, `bemenu`, `wl-clipboard`, `waybar`, `blueman`,
+- for gui:
+  - install `sway`, `foot`, `bemenu`, `wl-clipboard`, `waybar`, `blueman`,
     `pavucontrol`
 
-  * set up gui configuration
+  - set up gui configuration
 
     ```
     cd ~/dotfiles
     stow sway waybar foot
     ```
 
-  * install adobe source code pro
+  - install adobe source code pro
 
     ```sh
     zsh ~/dotfiles/font/install_source_code_pro.zsh
     ```
 
-  * if using nvidia:
+  - if using nvidia:
 
     ```sh
     sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop
     ```
 
-* install other nice programs and `stow` possible configurations: `tmux`,
+- install other nice programs and `stow` possible configurations: `tmux`,
   `fd`/`fd-find`, `ripgrep`, `tree`, `bat`, `brightnessctl`
-
-  * if ubuntu, create symlinks to `batcat` and `find`:
+  - if ubuntu, create symlinks to `batcat` and `find`:
 
     ```sh
     sudo ln -s /usr/bin/batcat /usr/local/bin/bat
     sudo ln -s /usr/bin/fdfind /usr/local/bin/fd
     ```
 
-  * to install `fzf`:
+  - to install `fzf`:
 
     ```sh
     mkdir ~/.install
@@ -115,7 +114,7 @@
     sudo ln -s ~/.install/fzf/bin/fzf-tmux /usr/local/bin
     ```
 
-* install `git jump`:
+- install `git jump`:
 
   ```sh
   wget -O git-jump https://raw.githubusercontent.com/git/git/master/contrib/git-jump/git-jump
@@ -123,10 +122,9 @@
   sudo mv git-jump /usr/local/bin/
   ```
 
-* store computer specific zsh files in ~/.setup which will be sourced on startup
+- store computer specific zsh files in ~/.setup which will be sourced on startup
 
-* sample precommit hook:
-
+- sample precommit hook:
 
   ```sh
   #!/bin/sh
