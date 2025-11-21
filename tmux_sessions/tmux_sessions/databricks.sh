@@ -26,7 +26,7 @@ if ! tmux has-session -t "$SESSION" 2>/dev/null; then
     tmux select-pane -t "$SESSION":1.0 -T "nvim"
     tmux select-pane -t "$SESSION":1.1 -T "terminal"
     tmux select-pane -t "$SESSION":1.2 -T "codex"
-    tmux select-pane -t "$SESSION":1.1
+    tmux select-pane -t "$SESSION":1.0
 fi
 
 tmux attach -t "$SESSION"
