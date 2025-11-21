@@ -21,6 +21,8 @@ return {
 
 		local lint = require("lint")
 		lint.linters_by_ft = linters_by_ft
+		lint.linters.pylint.cmd = "python"
+		lint.linters.pylint.args = { "-m", "pylint", vim.api.nvim_buf_get_name(0), "-f", "json" }
 		lint.linters.pylint.env = {
 			VIRTUAL_ENV = vim.fn.getcwd() .. "/.venv",
 			PATH = vim.fn.getcwd() .. "/.venv/bin:" .. vim.env.PATH,
