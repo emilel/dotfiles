@@ -1,5 +1,6 @@
 local strings = require("functions.strings")
-local file_ignore_patterns = { ".git/", ".venv/", ".vscode/", ".databricks" }
+local file_ignore_patterns =
+	{ ".git/", ".venv/", ".vscode/", ".databricks/", ".pytest_cache/", ".mypy_cache/", "__pycache__/" }
 
 return {
 	"nvim-telescope/telescope.nvim",

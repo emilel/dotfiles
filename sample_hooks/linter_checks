@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+git diff --cached -z --name-only -- '*.lua' \
+    | xargs -0 -r stylua --check
+
+git diff --cached -z --name-only -- '*.sh' '*.zsh' \
+    | xargs -0 -r beautysh --check

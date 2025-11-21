@@ -22,6 +22,30 @@ zle -N toggle_copy
 bindkey '^Y' toggle_copy
 bindkey -M vicmd '^Y' toggle_copy
 
+toggle_view() {
+    if [[ -z $BUFFER ]]; then
+        BUFFER='!!'
+        zle expand-history
+        BUFFER+=" | view"
+        zle accept-line
+    else
+        if [[ $BUFFER == *"| view" ]]; then
+            BUFFER=${BUFFER//" | view"/}
+            BUFFER=${BUFFER//"| view"/}
+        else
+            if [[ $BUFFER == *" " ]]; then
+                BUFFER+="| view"
+            else
+                BUFFER+=" | view"
+            fi
+            CURSOR=${#BUFFER}
+        fi
+    fi
+}
+zle -N toggle_view
+bindkey '^E' toggle_view
+bindkey -M vicmd '^E' toggle_view
+
 redirect_to_stdout() {
     if [[ $BUFFER == *"2>&1" ]]; then
         BUFFER=${BUFFER//" 2>&1"/}
