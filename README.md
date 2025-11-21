@@ -56,6 +56,8 @@
 [user]
 	email = limeliasson@gmail.com
 	name = Emil Eliasson
+[pull]
+	rebase = true
 ```
 
 - set up passwordless sudo if you're a daredevil:
