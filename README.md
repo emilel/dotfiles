@@ -14,14 +14,14 @@
 
   ```
   sudo add-apt-repository ppa:neovim-ppa/unstable
-  sudo apt update
+  sudo apt update && sudo apt install neovim -y
   ```
 
-  start `nvim` and install language servers using `:Mason`, tree sitter language
+  start `nvim` and install language servers using `:Mason`, treesitter language
   support with `:TSInstall <language>` and github copilot with `:Copilot`
 
-  nice language servers: `beautysh`, `isort`, `lua-language-server`,
-  `mypy`, `prettierd`, `pylint`, `pyrefly`, `ruff`, `sqruff`, `stylua`.
+  nice language servers: `beautysh`, `lua-language-server`, `mypy`, `prettier`,
+  `pylint`, `pyrefly`, `ruff`, `basedpyright`, `sqruff`, `stylua`.
 
 - set up git
 
@@ -60,6 +60,22 @@
 	rebase = true
 ```
 
+- add `fd` command on ubuntu:
+
+  ```sh
+  ln -s /usr/bin/fdfind ~/.local/bin/fd
+  ```
+
+- to install `fzf`:
+
+  ```sh
+  mkdir ~/.install
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.install/fzf
+  ~/.install/fzf/install
+  sudo ln -s ~/.install/fzf/bin/fzf /usr/local/bin
+  sudo ln -s ~/.install/fzf/bin/fzf-tmux /usr/local/bin
+  ```
+
 - set up passwordless sudo if you're a daredevil:
 
   ```
@@ -68,11 +84,15 @@
 
   append `<username> ALL=(ALL) NOPASSWD:ALL`
 
-- add `fd` command:
+- install `git jump`:
 
   ```sh
-  ln -s /usr/bin/fdfind ~/.local/bin/fd
+  wget -O git-jump https://raw.githubusercontent.com/git/git/master/contrib/git-jump/git-jump
+  chmod +x git-jump
+  sudo mv git-jump /usr/local/bin/
   ```
+
+- store computer specific zsh files in ~/.setup which will be sourced on startup
 
 - for gui:
   - install `sway`, `foot`, `bemenu`, `wl-clipboard`, `waybar`, `blueman`,
@@ -96,50 +116,3 @@
     ```sh
     sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop
     ```
-
-- install other nice programs and `stow` possible configurations: `tmux`,
-  `fd`/`fd-find`, `ripgrep`, `tree`, `bat`, `brightnessctl`
-  - if ubuntu, create symlinks to `batcat` and `find`:
-
-    ```sh
-    sudo ln -s /usr/bin/batcat /usr/local/bin/bat
-    sudo ln -s /usr/bin/fdfind /usr/local/bin/fd
-    ```
-
-  - to install `fzf`:
-
-    ```sh
-    mkdir ~/.install
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.install/fzf
-    ~/.install/fzf/install
-    sudo ln -s ~/.install/fzf/bin/fzf /usr/local/bin
-    sudo ln -s ~/.install/fzf/bin/fzf-tmux /usr/local/bin
-    ```
-
-- install `git jump`:
-
-  ```sh
-  wget -O git-jump https://raw.githubusercontent.com/git/git/master/contrib/git-jump/git-jump
-  chmod +x git-jump
-  sudo mv git-jump /usr/local/bin/
-  ```
-
-- store computer specific zsh files in ~/.setup which will be sourced on startup
-
-- sample precommit hook:
-
-  ```sh
-  #!/bin/sh
-
-  if git diff --cached --name-only | xargs grep -n 'TMP'; then
-      echo "Error: Commit contains TMP comment"
-      exit 1
-  fi
-
-  for file in $(git diff --cached --name-only -- '*.c' '*.h'); do
-      clang-format -i "$file"
-      git add "$file"
-  done
-
-  exit 0
-  ```

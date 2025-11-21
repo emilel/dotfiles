@@ -23,12 +23,12 @@ return {
 
 		require("conform").setup({
 			formatters_by_ft = {
-				python = { "ruff_format", "isort" },
+				python = { "ruff_format", "ruff_organize_imports" },
 				zsh = { "beautysh" },
 				sh = { "beautysh" },
 				bash = { "beautysh" },
-				markdown = { "prettierd" },
-				json = { "prettierd" },
+				markdown = { "prettier" },
+				json = { "prettier" },
 				lua = { "stylua" },
 			},
 			formatters = {
