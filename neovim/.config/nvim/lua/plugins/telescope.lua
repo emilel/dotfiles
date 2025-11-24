@@ -47,7 +47,7 @@ return {
 		{
 			"<space>*",
 			function()
-				local search_term = "\\<" .. vim.fn.expand("<cword>") .. "\\>"
+				local search_term = "\\b" .. vim.fn.expand("<cword>") .. "\\b"
 				require("telescope").extensions.live_grep_args.live_grep_args({ default_text = search_term })
 			end,
 			desc = "Search for current word in current working directory",
