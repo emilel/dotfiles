@@ -25,16 +25,15 @@ return {
 		local mypy_args = vim.deepcopy(lint.linters.mypy.args) or {}
 		lint.linters.mypy.args = vim.list_extend(mypy_args, { "--disallow-untyped-defs", "--disallow-incomplete-defs" })
 
-		local venv_dir = vim.fn.getcwd() .. "/.venv"
-
-		if vim.fn.isdirectory(venv_dir) == 1 then
-			lint.linters.pylint.cmd = "python"
-			lint.linters.pylint.env = {
-				VIRTUAL_ENV = venv_dir,
-				PATH = venv_dir .. "/bin:" .. vim.env.PATH,
-			}
-			lint.linters.pylint.args = { "-m", "pylint", vim.api.nvim_buf_get_name(0), "-f", "json" }
-		end
+		-- local venv_dir = vim.fn.getcwd() .. "/.venv"
+		-- if vim.fn.isdirectory(venv_dir) == 1 then
+		-- 	lint.linters.pylint.cmd = "python"
+		-- 	lint.linters.pylint.env = {
+		-- 		VIRTUAL_ENV = venv_dir,
+		-- 		PATH = venv_dir .. "/bin:" .. vim.env.PATH,
+		-- 	}
+		-- 	lint.linters.pylint.args = { "-m", "pylint", vim.api.nvim_buf_get_name(0), "-f", "json" }
+		-- end
 
 		vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
 			callback = function()
