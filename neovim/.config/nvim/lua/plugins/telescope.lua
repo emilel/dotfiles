@@ -2,6 +2,62 @@ local strings = require("functions.strings")
 local file_ignore_patterns =
 	{ ".git/", ".venv/", ".vscode/", ".databricks/", ".pytest_cache/", ".mypy_cache/", "__pycache__/" }
 
+local function read_lines(path)
+	local f = io.open(path, "r")
+	if not f then
+		return nil, ("Could not open: %s"):format(path)
+	end
+	local out = {}
+	for line in f:lines() do
+		if line ~= "" then
+			table.insert(out, line)
+		end
+	end
+	f:close()
+	return out
+end
+
+vim.keymap.set("n", "<space>p", function()
+	local file = vim.fn.getcwd() .. "/.setup/paste" -- change if you want a different base dir
+	local lines, err = read_lines(file)
+	if not lines then
+		return vim.notify(err, vim.log.levels.WARN)
+	end
+	if #lines == 0 then
+		return vim.notify("No entries in " .. file, vim.log.levels.INFO)
+	end
+
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local conf = require("telescope.config").values
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+
+	pickers
+		.new({}, {
+			prompt_title = "Paste",
+			finder = finders.new_table({ results = lines }),
+			sorter = conf.generic_sorter({}),
+			attach_mappings = function(prompt_bufnr, _)
+				actions.select_default:replace(function()
+					actions.close(prompt_bufnr)
+					local entry = action_state.get_selected_entry()
+					local text = (entry and (entry.value or entry[1])) or nil
+					if not text then
+						return
+					end
+
+					local row, col = unpack(vim.api.nvim_win_get_cursor(0)) -- row: 1-based, col: 0-based (byte)
+					row = row - 1
+					vim.api.nvim_buf_set_text(0, row, col, row, col, { text })
+					vim.api.nvim_win_set_cursor(0, { row + 1, col + #text })
+				end)
+				return true
+			end,
+		})
+		:find()
+end, { desc = "Paste from .setup/paste (Telescope)" })
+
 return {
 	"nvim-telescope/telescope.nvim",
 	dependencies = {

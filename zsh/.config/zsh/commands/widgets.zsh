@@ -84,3 +84,14 @@ zle -N go_to_root
 bindkey '^H' go_to_root
 bindkey -M viins '^H' go_to_root
 bindkey -M vicmd '^H' go_to_root
+
+# make ctrl-w delete previous word
+bindkey -M viins '^W' backward-kill-word
+bindkey -M vicmd '^W' backward-kill-word
+
+run_tmux_setup() {
+    fd -H '\.sh$' .setup | fzf | xargs sh
+}
+zle -N run_tmux_setup
+bindkey -M viins '^U' run_tmux_setup
+bindkey -M vicmd '^U' run_tmux_setup

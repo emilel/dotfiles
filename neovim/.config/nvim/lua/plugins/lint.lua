@@ -23,9 +23,14 @@ return {
 		lint.linters_by_ft = linters_by_ft
 
 		vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
-			callback = function()
+			callback = function(args)
+				local file = vim.api.nvim_buf_get_name(args.buf)
+				if file:match("/tests/") then
+					return
+				end
 				require("lint").try_lint()
 			end,
 		})
 	end,
+	lazy = false,
 }

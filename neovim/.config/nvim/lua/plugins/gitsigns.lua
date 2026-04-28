@@ -39,14 +39,14 @@ return {
 	},
 	keys = {
 		{
-			"<c-g>s",
+			"<c-g><c-s>",
 			function()
 				require("gitsigns").stage_hunk()
 			end,
 			desc = "Stage hunk",
 		},
 		{
-			"<c-g>s",
+			"<c-g><c-s>",
 			function()
 				require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 			end,
@@ -54,21 +54,21 @@ return {
 			desc = "Stage hunk",
 		},
 		{
-			"<c-g>u",
+			"<c-g><c-u>",
 			function()
 				require("gitsigns").undo_stage_hunk()
 			end,
 			desc = "Undo hunk",
 		},
 		{
-			"<c-g>x",
+			"<c-g><c-x>",
 			function()
 				require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 			end,
 			desc = "Reset hunk",
 		},
 		{
-			"<c-g>x",
+			"<c-g><c-x>",
 			function()
 				require("gitsigns").reset_hunk()
 			end,
@@ -76,26 +76,26 @@ return {
 			desc = "Reset hunk",
 		},
 		{
-			"<c-g>p",
+			"<c-g><c-p>",
 			function()
 				require("gitsigns").preview_hunk()
 			end,
 			desc = "Preview hunk",
 		},
 		{
-			"<c-g>t",
+			"<c-g><c-t>",
 			function()
 				require("gitsigns").toggle_deleted()
 			end,
 			desc = "Toggle deleted",
 		},
 		{
-			"<c-g>h",
+			"<c-g><c-h>",
 			navigate_hunks,
 			desc = "Navigate hunks",
 		},
 		{
-			"<c-g>m",
+			"<c-g><c-m>",
 			"<cmd>silent !git checkout master -- %<cr>",
 			desc = "Revert to master",
 		},
