@@ -40,3 +40,6 @@ alias trn="gb | awk -F'/' '{print \$NF}' | xargs tmux rename-session && tmux ren
 alias gc='git checkout'
 alias gr='git reset HEAD~1'
 alias gs='git status'
+alias gd='git diff'
+alias grs='git reset --soft HEAD~1'
+alias gb='git branch'

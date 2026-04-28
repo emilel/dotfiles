@@ -1,0 +1,3 @@
+#!/bin/sh
+
+"$HOME/.scripts/tmux_apply_template.sh" "$HOME/dotfiles"

@@ -2,6 +2,13 @@ return {
 	"monaqa/dial.nvim",
 	keys = {
 		{
+			"ghh",
+			function()
+				require("dial.map").manipulate("increment", "normal")
+			end,
+			desc = "Increment",
+		},
+		{
 			"<C-a>",
 			function()
 				require("dial.map").manipulate("increment", "normal")
@@ -63,6 +70,7 @@ return {
 				augend.constant.new({ elements = { "<<", ">>" }, word = false }),
 				augend.constant.new({ elements = { "&&", "||" }, word = false }),
 				augend.constant.new({ elements = { "+=", "-=" }, word = false }),
+				augend.constant.new({ elements = { "-", "+", "*" }, word = false }),
 			},
 		})
 	end,

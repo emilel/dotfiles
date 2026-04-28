@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+"$HOME/.scripts/tmux_apply_template.sh" "$HOME/work/notes"

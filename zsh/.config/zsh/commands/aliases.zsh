@@ -40,6 +40,9 @@ alias diffc='diff --color'
 # go to tmp directory
 alias tmp='cd ~/tmp'
 
+# source aliases file
+alias sa='source .setup/aliases.zsh'
+
 # temporary neovim buffer
 temp() {
     nvim +"TempFile $@"

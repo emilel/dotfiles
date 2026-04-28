@@ -3,6 +3,7 @@ vim.opt.number = true
 
 -- show sign column
 vim.opt.signcolumn = "yes:1"
+vim.opt.relativenumber = true
 
 -- use spaces instead of tabs
 vim.opt.expandtab = true

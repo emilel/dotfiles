@@ -1,21 +1,22 @@
 return {
 	"saghen/blink.cmp",
-	dependencies = { "rafamadriz/friendly-snippets" },
+	dependencies = {
+		"rafamadriz/friendly-snippets"
+	},
 	version = "1.*",
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
 	opts = {
 		keymap = {
 			preset = "none",
-			["<tab>"] = { "show", "fallback" },
-			["<c-j>"] = { "select_next", "fallback" },
+			["<c-j>"] = { "show", "select_next", "fallback" },
 			["<c-k>"] = { "select_prev", "fallback" },
 			["<c-l>"] = { "accept", "snippet_forward", "fallback" },
 			["<c-h>"] = { "snippet_backward", "fallback" },
 			["<c-d>"] = { "show_documentation", "hide_documentation", "fallback" },
 			["<c-s>"] = { "show_signature", "hide_signature", "fallback" },
 		},
-		signature = { enabled = true, window = { show_documentation = true } },
+		signature = { enabled = false, window = { show_documentation = false } },
 		enabled = function()
 			return not vim.tbl_contains({ "markdown", "gitcommit" }, vim.bo.filetype)
 		end,
@@ -49,11 +50,15 @@ return {
 				TypeParameter = "Tp",
 			},
 		},
-		completion = { documentation = { auto_show = true } },
+		completion = {
+			documentation = { auto_show = false },
+			menu = {
+				auto_show = false,
+			},
+		},
 
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
-			min_keyword_length = 3,
 		},
 
 		fuzzy = { implementation = "lua" },
