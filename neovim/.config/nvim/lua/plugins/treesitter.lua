@@ -14,9 +14,11 @@ return {
 			incremental_selection = {
 				enable = true,
 				keymaps = {
-					node_incremental = "<backspace>",
-					node_decremental = "<delete>",
-					scope_incremental = "+",
+					-- <backspace> is reserved for toggling folds (see keymaps/navigation.lua).
+					init_selection = "+",
+					node_incremental = "+",
+					node_decremental = "-",
+					scope_incremental = false,
 				},
 			},
 			textobjects = {
@@ -42,10 +44,7 @@ return {
 			},
 		})
 
-		vim.opt.foldmethod = "expr"
-		vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-		vim.opt.foldlevelstart = 99
-		vim.opt.foldlevel = 99
+		-- Fold options live in core/options.lua (using the built-in treesitter foldexpr).
 
 		require("treesitter-context").disable()
 		vim.keymap.set("n", "\\c", function()

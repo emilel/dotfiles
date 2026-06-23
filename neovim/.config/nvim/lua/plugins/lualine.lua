@@ -16,15 +16,10 @@ return {
 					local parent = vim.fn.fnamemodify(filepath, ":h:t")
 					local modified = vim.bo.modified and " [+]" or ""
 
-					if vim.bo.filetype == "oil" then
-						local relative_path = vim.fn.fnamemodify(filepath, ":.")
-						return relative_path .. modified
+					if parent and parent ~= "." then
+						return parent .. "/" .. filename .. modified
 					else
-						if parent and parent ~= "." then
-							return parent .. "/" .. filename .. modified
-						else
-							return filename .. modified
-						end
+						return filename .. modified
 					end
 				end,
 			},
