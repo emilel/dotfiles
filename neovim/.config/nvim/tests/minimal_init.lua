@@ -7,6 +7,10 @@ local config_dir = vim.fn.fnamemodify(tests_dir, ":h")
 
 vim.opt.runtimepath:prepend(config_dir)
 
+-- Disable swap files: headless tests create many unnamed buffers and the swap
+-- file collisions between tests cause E300/E303 errors that abort test cases.
+vim.opt.swapfile = false
+
 -- Locate plenary: explicit override, the lazy install, or a local clone.
 local plenary = os.getenv("PLENARY_PATH")
 if not plenary or vim.fn.isdirectory(plenary) == 0 then
