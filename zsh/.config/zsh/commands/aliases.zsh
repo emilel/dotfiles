@@ -43,7 +43,12 @@ alias tmp='cd ~/tmp'
 # source aliases file
 alias sa='source .setup/aliases.zsh'
 
+alias conf='cd ~/dotfiles && nvim'
+
 # temporary neovim buffer
 temp() {
     nvim +"TempFile $@"
 }
+
+alias lg='lazygit'
+alias oc='opencode'

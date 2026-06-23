@@ -4,24 +4,46 @@ return {
 	config = function()
 		local lint = require("lint")
 
-		-- Only keep linters that are actually installed (e.g. present in the venv).
-		local function available(linters)
-			return vim.tbl_filter(function(l)
-				return vim.fn.executable(l) == 1
-			end, linters)
-		end
+		-- Import-aware linters must run from the project's *own* venv, or they
+		-- report false import errors against their isolated (Mason) environment.
+		-- In a monorepo with several venvs, resolve the nearest .venv to the file
+		-- and run only the linters actually installed there.
+		local function lint_buffer(buf)
+			if vim.bo[buf].filetype ~= "python" then
+				return
+			end
+			local file = vim.api.nvim_buf_get_name(buf)
+			if file == "" or file:match("/tests/") then
+				return
+			end
 
-		lint.linters_by_ft = {
-			python = available({ "mypy", "pylint" }),
-		}
+			local venv = vim.fs.find(".venv", {
+				path = vim.fs.dirname(file),
+				upward = true,
+				type = "directory",
+			})[1]
+			if not venv then
+				return
+			end
 
-		local function try_lint()
-			if not vim.api.nvim_buf_get_name(0):match("/tests/") then
-				lint.try_lint()
+			local enabled = {}
+			for _, name in ipairs({ "ruff", "mypy", "pylint" }) do
+				local bin = venv .. "/bin/" .. name
+				if vim.fn.executable(bin) == 1 then
+					lint.linters[name].cmd = bin
+					table.insert(enabled, name)
+				end
+			end
+			if #enabled > 0 then
+				lint.try_lint(enabled)
 			end
 		end
 
-		vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, { callback = try_lint })
-		try_lint() -- lint the buffer that triggered loading
+		vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+			callback = function(args)
+				lint_buffer(args.buf)
+			end,
+		})
+		lint_buffer(0) -- lint the buffer that triggered loading
 	end,
 }

@@ -7,9 +7,6 @@ vim.keymap.set("x", "\\a", '"yy<esc>oprint(f"")<esc>h"yPa: {}<esc>"yPV', { buffe
 vim.opt_local.textwidth = 120
 
 vim.keymap.set("n", "<space>N", function()
-	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-	local filetype = vim.bo.filetype
-	scratch.open_buffer()
-	vim.bo.filetype = filetype
-	vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
-end, { desc = "Open temporary python file" })
+	local content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+	scratch.scratch({ filetype = "python", content = content })
+end, { desc = "Copy buffer into a scratch python file" })
