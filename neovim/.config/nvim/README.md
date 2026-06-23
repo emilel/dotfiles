@@ -60,7 +60,8 @@ load. Wrap it in a `function()` inside `keys`/`config` instead.
 
 `lua/lib/scratch.lua` powers a few throwaway-buffer commands, each also exposed
 as a shell helper (`zsh/.config/zsh/commands/`). In all of them `<cr><cr>`
-finishes:
+finishes. Scratch buffers are saved under `/tmp/nvim-scratch/`, named by
+creation time, so you can reopen their contents later (cleared on reboot):
 
 | command / key   | shell     | what it does                                        |
 | --------------- | --------- | --------------------------------------------------- |
