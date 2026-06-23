@@ -32,6 +32,12 @@ local function fake_clipboard()
 end
 
 describe("scratch buffer", function()
+	before_each(function()
+		-- Force-discard any modified scratch buffer left by a previous test so
+		-- that scratch({}) can open a new file without hitting E37.
+		vim.cmd("enew!")
+	end)
+
 	it("copies its contents to the clipboard on <cr><cr>", function()
 		fake_clipboard()
 		require("lib.scratch").scratch({})
@@ -44,5 +50,33 @@ describe("scratch buffer", function()
 	it("prefills from opts.content", function()
 		require("lib.scratch").scratch({ content = "seed text" })
 		assert.are.equal("seed text", vim.api.nvim_buf_get_lines(0, 0, -1, false)[1])
+	end)
+
+	it("persists the buffer to a timestamped file on <cr><cr>", function()
+		fake_clipboard()
+		require("lib.scratch").scratch({})
+		local path = vim.api.nvim_buf_get_name(0)
+
+		-- file is named like /tmp/nvim-scratch/2024-01-01_12-00-00.txt
+		assert.is_truthy(path:match("^/tmp/nvim%-scratch/%d%d%d%d%-%d%d%-%d%d_%d%d%-%d%d%-%d%d%.txt$"))
+
+		vim.api.nvim_buf_set_lines(0, 0, -1, false, { "persisted" })
+		feed("<cr><cr>")
+
+		-- The file should now exist on disk and contain the buffer content.
+		local fh = io.open(path, "r")
+		assert.is_truthy(fh, "scratch file was not written to disk")
+		if fh then
+			assert.are.equal("persisted", fh:read("l"))
+			fh:close()
+			os.remove(path)
+		end
+	end)
+
+	it("uses the correct file extension for the given filetype", function()
+		require("lib.scratch").scratch({ filetype = "python" })
+		local path = vim.api.nvim_buf_get_name(0)
+		assert.is_truthy(path:match("%.py$"))
+		vim.cmd("bdelete!")
 	end)
 end)
