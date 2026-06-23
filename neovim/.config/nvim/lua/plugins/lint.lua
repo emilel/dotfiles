@@ -1,34 +1,43 @@
 return {
 	"mfussenegger/nvim-lint",
 	config = function()
-		local linters_by_ft = {
-			python = { "mypy", "pylint" },
-		}
-
-		local function filter_available_linters(linters)
-			local available_linters = {}
-			for _, linter in ipairs(linters) do
-				if vim.fn.executable(linter) == 1 then
-					table.insert(available_linters, linter)
-				end
-			end
-			return available_linters
-		end
-
-		for ft, linters in pairs(linters_by_ft) do
-			linters_by_ft[ft] = filter_available_linters(linters)
-		end
-
 		local lint = require("lint")
-		lint.linters_by_ft = linters_by_ft
 
 		vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
 			callback = function(args)
-				local file = vim.api.nvim_buf_get_name(args.buf)
-				if file:match("/tests/") then
+				if vim.bo[args.buf].filetype ~= "python" then
 					return
 				end
-				require("lint").try_lint()
+				local file = vim.api.nvim_buf_get_name(args.buf)
+				if file == "" or file:match("/tests/") then
+					return
+				end
+
+				-- Import-aware linters must run from the project's *own* venv,
+				-- or they report false import errors against their isolated
+				-- (Mason) environment. In a monorepo with several venvs, resolve
+				-- the nearest .venv to this file and enable only the linters
+				-- actually installed there.
+				local venv = vim.fs.find(".venv", {
+					path = vim.fs.dirname(file),
+					upward = true,
+					type = "directory",
+				})[1]
+				if not venv then
+					return
+				end
+
+				local enabled = {}
+				for _, name in ipairs({ "ruff", "mypy", "pylint" }) do
+					local bin = venv .. "/bin/" .. name
+					if vim.fn.executable(bin) == 1 then
+						lint.linters[name].cmd = bin
+						table.insert(enabled, name)
+					end
+				end
+				if #enabled > 0 then
+					lint.try_lint(enabled)
+				end
 			end,
 		})
 	end,
