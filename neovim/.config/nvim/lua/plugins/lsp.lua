@@ -20,6 +20,34 @@ return {
 			},
 		})
 
+		-- basedpyright resolves imports against whatever interpreter it is
+		-- launched with -- which, in a monorepo with several venvs, is the
+		-- wrong one (the shell's active $VIRTUAL_ENV shadows the project's own
+		-- .venv). Root the server at the nearest .venv to the file and point
+		-- its interpreter there, so each subproject gets its own packages.
+		vim.lsp.config("basedpyright", {
+			root_dir = function(bufnr, on_dir)
+				local fname = vim.api.nvim_buf_get_name(bufnr)
+				local venv = vim.fs.find(".venv", {
+					path = vim.fs.dirname(fname),
+					upward = true,
+					type = "directory",
+				})[1]
+				on_dir(
+					venv and vim.fs.dirname(venv)
+						or vim.fs.root(fname, { "pyproject.toml", "setup.py", ".git" })
+				)
+			end,
+			before_init = function(_, config)
+				local python = config.root_dir and (config.root_dir .. "/.venv/bin/python")
+				if python and vim.fn.executable(python) == 1 then
+					config.settings = vim.tbl_deep_extend("force", config.settings or {}, {
+						python = { pythonPath = python },
+					})
+				end
+			end,
+		})
+
 		vim.diagnostic.config({ virtual_text = true, float = { source = true } })
 
 		vim.api.nvim_create_autocmd("LspAttach", {
