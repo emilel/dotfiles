@@ -75,7 +75,9 @@ return {
 		},
 		{
 			"<space>S",
-			require("telescope.builtin").lsp_workspace_symbols,
+			function()
+				require("telescope.builtin").lsp_workspace_symbols()
+			end,
 			desc = "Search for workspace symbols",
 		},
 		{

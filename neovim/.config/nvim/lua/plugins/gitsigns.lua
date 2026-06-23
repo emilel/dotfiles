@@ -34,9 +34,8 @@ end
 
 return {
 	"lewis6991/gitsigns.nvim",
-	dependencies = {
-		"nvim-telescope/telescope.nvim",
-	},
+	-- telescope is only needed by navigate_hunks; it is require()d there so it
+	-- stays lazy instead of being pulled in with gitsigns at file-open.
 	keys = {
 		{
 			"<c-g><c-s>",
@@ -122,7 +121,7 @@ return {
 			desc = "Git hunk (around)",
 		},
 	},
-	lazy = false,
+	event = { "BufReadPre", "BufNewFile" },
 	opts = {
 		sign_priority = 11,
 	},
