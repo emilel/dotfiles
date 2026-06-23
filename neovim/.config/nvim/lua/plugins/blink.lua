@@ -11,7 +11,17 @@ return {
 			preset = "none",
 			["<c-j>"] = { "show", "select_next", "fallback" },
 			["<c-k>"] = { "select_prev", "fallback" },
-			["<c-l>"] = { "accept", "snippet_forward", "fallback" },
+			-- Accept the completion only when the blink menu is open; otherwise fall
+			-- through so copilot's <c-l> (accept-word) handles the keypress.
+			["<c-l>"] = {
+				function(cmp)
+					if cmp.is_visible() then
+						return cmp.accept()
+					end
+				end,
+				"snippet_forward",
+				"fallback",
+			},
 			["<c-h>"] = { "snippet_backward", "fallback" },
 			["<c-d>"] = { "show_documentation", "hide_documentation", "fallback" },
 			["<c-s>"] = { "show_signature", "hide_signature", "fallback" },

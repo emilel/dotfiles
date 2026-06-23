@@ -1,3 +1,5 @@
+-- Temporary "scratch" buffers backed by a mktemp file.
+-- Used by <space>b, the :TempFile/:Clip/:Temp commands and python's <space>N.
 local M = {}
 
 M.open_buffer = function()
@@ -7,6 +9,8 @@ M.open_buffer = function()
 	vim.api.nvim_command("edit " .. vim.fn.trim(filename))
 end
 
+-- Bind <cr><cr> (buffer-local) to copy the whole buffer to the system
+-- clipboard and then run `command` (e.g. "bdelete!", "q!", "wq!").
 M.set_exit_keymap = function(command)
 	vim.keymap.set("n", "<cr><cr>", function()
 		local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)

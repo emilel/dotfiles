@@ -1,28 +1,15 @@
--- show number column
-vim.opt.number = true
+-- Autocommands and one-off highlight tweaks (formerly in settings/visual.lua).
 
--- show sign column
-vim.opt.signcolumn = "yes:1"
-vim.opt.relativenumber = true
-
--- use spaces instead of tabs
-vim.opt.expandtab = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-
--- don't hide characters
-vim.opt.conceallevel = 0
-
--- highlight on yank
+-- briefly highlight yanked text
 vim.api.nvim_create_autocmd("TextYankPost", {
+	group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
+	pattern = "*",
 	callback = function()
 		vim.highlight.on_yank({ timeout = 500 })
 	end,
-	group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
-	pattern = "*",
 })
 
--- show whitespace in normal mode
+-- show whitespace (listchars) only outside of insert mode
 local whitespace_group = vim.api.nvim_create_augroup("visible_whitespace", { clear = true })
 vim.api.nvim_create_autocmd("InsertEnter", {
 	group = whitespace_group,
@@ -37,8 +24,7 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 	end,
 })
 
--- show cursor line
-vim.opt.cursorline = true
+-- cursor line: bright number, only while the window is focused
 vim.api.nvim_set_hl(0, "cursorlinenr", { fg = "yellow", bold = true })
 vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
 local cursorline = vim.api.nvim_create_augroup("cursorline", { clear = true })

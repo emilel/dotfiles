@@ -1,3 +1,5 @@
+-- Helpers that describe the current file / git context.
+-- Used by the <space>y* "copy metadata" keymaps.
 local M = {}
 
 M.get_git_branch = function()
@@ -38,8 +40,8 @@ M.get_absolute_directory = function()
 	return vim.fn.expand("%:p:h")
 end
 
-M.get_file_name = function()
-	local path = vim.api.nvim_buf_get_name(0)
+-- Tail of a path (the file name). Pure given a path string, so unit-testable.
+M.basename = function(path)
 	local file_name = ""
 	for part in path:gmatch("([^/]+)") do
 		file_name = part
@@ -47,16 +49,8 @@ M.get_file_name = function()
 	return file_name
 end
 
-M.escape_vim = function(string)
-	local escaped_string = vim.fn.escape(string, "\\.^$*[]/")
-
-	return escaped_string
-end
-
-M.escape_pcre = function(string)
-	local pcre_specials = "([%.%^%$%*%+%?%(%)%[%]%{%}%|%\\%-])"
-
-	return string:gsub(pcre_specials, "\\%1")
+M.get_file_name = function()
+	return M.basename(vim.api.nvim_buf_get_name(0))
 end
 
 return M
