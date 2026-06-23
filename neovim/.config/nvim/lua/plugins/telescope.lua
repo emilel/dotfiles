@@ -9,7 +9,6 @@ return {
 		"nvim-telescope/telescope-live-grep-args.nvim",
 		"danielfalk/smart-open.nvim",
 		"kkharji/sqlite.lua",
-		"nvim-telescope/telescope-fzy-native.nvim",
 	},
 	keys = {
 		{
@@ -76,7 +75,7 @@ return {
 		{
 			"<space>S",
 			function()
-				require("telescope.builtin").lsp_workspace_symbols()
+				require("telescope.builtin").lsp_workspace_symbols({ symbol_width = 50 })
 			end,
 			desc = "Search for workspace symbols",
 		},
