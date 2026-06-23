@@ -74,9 +74,14 @@ creation time, so you can reopen their contents later (cleared on reboot):
 ## Python virtualenvs
 
 There is no global venv switching (an active `$VIRTUAL_ENV` would shadow a
-subproject's own). Instead, both the LSP (`plugins/lsp.lua`) and the linters
-(`plugins/lint.lua`) resolve the nearest `.venv` to the *current file* and use
-it, so monorepos with several venvs just work.
+subproject's own). Instead, tools resolve the nearest `.venv` to the *current
+file*, so monorepos with several venvs just work:
+
+- **basedpyright** (types) and **ruff** (lint/format) run as LSP servers,
+  auto-installed and auto-enabled by mason — no per-tool code, venv-aware
+  (`plugins/lsp.lua`).
+- **mypy** and **pylint** run via `nvim-lint` from the file's `.venv/bin`
+  for extra coverage (`plugins/lint.lua`).
 
 ## Tests
 

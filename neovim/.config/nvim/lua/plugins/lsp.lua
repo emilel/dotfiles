@@ -45,8 +45,12 @@ return {
 			end,
 		})
 
-		-- Auto-enable every installed server (inherits the configs above).
-		require("mason-lspconfig").setup()
+		-- Auto-enable every installed server (inherits the configs above), and
+		-- make sure the two Python servers are present: basedpyright (types) and
+		-- ruff (linting/formatting). Both pick up the project venv automatically.
+		require("mason-lspconfig").setup({
+			ensure_installed = { "basedpyright", "ruff" },
+		})
 
 		vim.diagnostic.config({ virtual_text = true, float = { source = true } })
 

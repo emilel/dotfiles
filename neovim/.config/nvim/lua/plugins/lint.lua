@@ -7,7 +7,8 @@ return {
 		-- Import-aware linters must run from the project's *own* venv, or they
 		-- report false import errors against their isolated (Mason) environment.
 		-- In a monorepo with several venvs, resolve the nearest .venv to the file
-		-- and run only the linters actually installed there.
+		-- and run only the linters actually installed there. (ruff is handled by
+		-- its LSP server -- see plugins/lsp.lua -- so only mypy and pylint here.)
 		local function lint_buffer(buf)
 			if vim.bo[buf].filetype ~= "python" then
 				return
@@ -27,7 +28,7 @@ return {
 			end
 
 			local enabled = {}
-			for _, name in ipairs({ "ruff", "mypy", "pylint" }) do
+			for _, name in ipairs({ "mypy", "pylint" }) do
 				local bin = venv .. "/bin/" .. name
 				if vim.fn.executable(bin) == 1 then
 					lint.linters[name].cmd = bin
