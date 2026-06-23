@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 return {
 	"github/copilot.vim",
-	lazy = false,
+	event = "InsertEnter",
 	keys = {
 		{
 			"<right>",

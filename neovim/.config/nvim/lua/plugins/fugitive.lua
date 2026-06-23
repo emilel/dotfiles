@@ -1,6 +1,6 @@
 return {
 	"tpope/vim-fugitive",
-	lazy = false,
+	cmd = "Git",
 	keys = {
 		{ "<c-g><c-g>", "<cmd>Git<cr><cmd>only<cr>", desc = "Open git" },
 		{ "<c-g><c-c>", "<cmd>Git commit<cr>", desc = "Git commit" },

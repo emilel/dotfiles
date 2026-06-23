@@ -1,36 +1,27 @@
 return {
 	"mfussenegger/nvim-lint",
+	event = { "BufReadPost", "BufNewFile" },
 	config = function()
-		local linters_by_ft = {
-			python = { "mypy", "pylint" },
+		local lint = require("lint")
+
+		-- Only keep linters that are actually installed (e.g. present in the venv).
+		local function available(linters)
+			return vim.tbl_filter(function(l)
+				return vim.fn.executable(l) == 1
+			end, linters)
+		end
+
+		lint.linters_by_ft = {
+			python = available({ "mypy", "pylint" }),
 		}
 
-		local function filter_available_linters(linters)
-			local available_linters = {}
-			for _, linter in ipairs(linters) do
-				if vim.fn.executable(linter) == 1 then
-					table.insert(available_linters, linter)
-				end
+		local function try_lint()
+			if not vim.api.nvim_buf_get_name(0):match("/tests/") then
+				lint.try_lint()
 			end
-			return available_linters
 		end
 
-		for ft, linters in pairs(linters_by_ft) do
-			linters_by_ft[ft] = filter_available_linters(linters)
-		end
-
-		local lint = require("lint")
-		lint.linters_by_ft = linters_by_ft
-
-		vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
-			callback = function(args)
-				local file = vim.api.nvim_buf_get_name(args.buf)
-				if file:match("/tests/") then
-					return
-				end
-				require("lint").try_lint()
-			end,
-		})
+		vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, { callback = try_lint })
+		try_lint() -- lint the buffer that triggered loading
 	end,
-	lazy = false,
 }
