@@ -11,10 +11,6 @@ vim.keymap.set("n", "<space>v", "^v$h", { desc = "Select line" })
 vim.keymap.set("n", "<space>V", "gg0VG", { desc = "Select entire file" })
 vim.keymap.set("n", "gp", "`[v`]", { desc = "Select pasted text" })
 
--- move the cursor while in insert mode
-vim.keymap.set("i", "<c-j>", "<down>", { desc = "Move cursor down" })
-vim.keymap.set("i", "<c-k>", "<up>", { desc = "Move cursor up" })
-
 -- keep the cursor still after yanking a visual selection
 vim.keymap.set("x", "y", "ygv<esc>", { desc = "Keep cursor when copying selection" })
 vim.keymap.set("x", "L", "$h", { desc = "Go to end of line" })

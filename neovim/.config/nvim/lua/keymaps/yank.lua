@@ -106,14 +106,10 @@ vim.keymap.set("x", "Y", function()
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("gv<esc>", true, true, true), "n", true)
 end, { desc = "Append selection to clipboard register" })
 
--- open a scratch buffer pre-filled from the clipboard, same filetype
+-- edit the clipboard in a scratch buffer with the current filetype
 vim.keymap.set("n", "<space>+", function()
-	local filetype = vim.bo.filetype
-	scratch.open_buffer()
-	vim.bo.filetype = filetype
-	scratch.set_exit_keymap("bd!")
-	vim.api.nvim_feedkeys("P", "n", false)
-end, { desc = "Open strings buffer" })
+	scratch.scratch({ filetype = vim.bo.filetype, content = vim.fn.getreg("+") })
+end, { desc = "Edit clipboard in a scratch buffer" })
 
 -- copy the selection as a fenced code block
 vim.keymap.set("x", "<space>y", function()

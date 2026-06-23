@@ -1,33 +1,24 @@
--- User commands for spinning up scratch buffers (formerly lua/commands.lua).
+-- Scratch-buffer commands. Each one is also driven from the shell (see
+-- zsh/.config/zsh/commands): `clip`, `temp` and the `edit` stdin/stdout filter.
 local scratch = require("lib.scratch")
 
--- :TempFile [filetype] -- empty scratch buffer (defaults to markdown).
+-- :TempFile [filetype] -- scratch buffer (markdown by default). `temp` uses it;
+-- <cr><cr> copies the buffer to the clipboard and exits nvim.
 vim.api.nvim_create_user_command("TempFile", function(opts)
-	scratch.open_buffer()
-	scratch.set_exit_keymap("q!")
-	vim.bo.filetype = (opts.args and opts.args ~= "") and opts.args or "markdown"
+	scratch.scratch({ filetype = opts.args ~= "" and opts.args or "markdown", close = "quit!" })
 end, { nargs = "?" })
 
--- :Clip -- scratch buffer pre-filled with the clipboard.
+-- :Clip -- edit the system clipboard; <cr><cr> writes it back and exits nvim.
 vim.api.nvim_create_user_command("Clip", function()
-	scratch.open_buffer()
-	scratch.set_exit_keymap("q!")
-	vim.api.nvim_feedkeys("P", "n", false)
-end, { nargs = "*" })
+	scratch.scratch({ content = vim.fn.getreg("+"), close = "quit!" })
+end, {})
 
--- :Pipe <path> -- edit an existing file, copy-and-save-quit on <cr><cr>.
+-- :Pipe <path> -- edit a file; <cr><cr> saves and quits. The `edit` filter
+-- pipes stdin through a temp file and reads it back from stdout.
 vim.api.nvim_create_user_command("Pipe", function(opts)
-	local path = opts.args
-	if vim.loop.fs_stat(path) then
-		vim.cmd("edit " .. vim.fn.fnameescape(path))
-		scratch.set_exit_keymap("wq!")
+	if vim.loop.fs_stat(opts.args) then
+		scratch.pipe(opts.args)
 	else
-		print("Error: Path does not exist: " .. path)
+		print("Pipe: no such path: " .. opts.args)
 	end
 end, { nargs = 1 })
-
--- :Temp -- empty scratch buffer, copy-and-delete on <cr><cr>.
-vim.api.nvim_create_user_command("Temp", function()
-	scratch.open_buffer()
-	scratch.set_exit_keymap("bd!")
-end, { nargs = "*" })

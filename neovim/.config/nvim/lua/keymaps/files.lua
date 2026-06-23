@@ -13,11 +13,10 @@ vim.keymap.set("n", "<tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "<s-tab>", "<cmd>bprev<cr>", { desc = "Previous buffer" })
 vim.keymap.set("i", "<c-^>", "<esc><c-^>", { desc = "Previous file" })
 
--- scratch buffer
+-- scratch buffer (<cr><cr> copies it to the clipboard and closes)
 vim.keymap.set("n", "<space>b", function()
-	scratch.open_buffer()
-	scratch.set_exit_keymap("bdelete!")
-end, { desc = "Open temporary buffer" })
+	scratch.scratch({})
+end, { desc = "Open scratch buffer" })
 
 -- file info
 vim.keymap.set("n", "<C-t>", "<C-g>", { noremap = true, silent = true, desc = "Print current path" })
