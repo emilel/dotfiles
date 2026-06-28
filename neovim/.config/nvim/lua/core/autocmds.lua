@@ -24,6 +24,30 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 	end,
 })
 
+-- un-scroll after auto hard-wrap: with nowrap and the text area exactly as
+-- wide as textwidth (e.g. an 80-col file in an 80-col split), typing the
+-- character that triggers the textwidth break pushes the cursor one column
+-- past the edge, which leaves the view stuck scrolled one char right. Pin it
+-- back to column 0 whenever the line under the cursor fits in the window.
+local unscroll = vim.api.nvim_create_augroup("unscroll_on_wrap", { clear = true })
+vim.api.nvim_create_autocmd({ "TextChangedI", "InsertLeave", "TextChanged" }, {
+	group = unscroll,
+	callback = function()
+		if vim.wo.wrap then
+			return
+		end
+		local view = vim.fn.winsaveview()
+		if view.leftcol == 0 then
+			return
+		end
+		local avail = vim.fn.winwidth(0) - vim.fn.getwininfo(vim.fn.win_getid())[1].textoff
+		if vim.fn.virtcol(".") <= avail then
+			view.leftcol = 0
+			vim.fn.winrestview(view)
+		end
+	end,
+})
+
 -- cursor line: bright number, only while the window is focused
 vim.api.nvim_set_hl(0, "cursorlinenr", { fg = "yellow", bold = true })
 vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
