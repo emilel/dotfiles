@@ -17,7 +17,7 @@ return {
 			zsh = { "beautysh" },
 			sh = { "shfmt" },
 			bash = { "shfmt" },
-			markdown = { "prettier" },
+			markdown = { "dprint" },
 			yaml = { "prettier" },
 			json = { "prettier" },
 			lua = { "stylua" },
@@ -30,6 +30,10 @@ return {
 			-- match tests/lint.sh so editor-save and repo-lint never disagree
 			shfmt = {
 				prepend_args = { "-i", "4", "-ci" },
+			},
+			-- markdown at 80 cols, no node dependency (config: ~/.config/dprint)
+			dprint = {
+				prepend_args = { "--config", vim.fn.expand("~/.config/dprint/dprint.json") },
 			},
 			sqlfluff = {
 				append_args = { "--dialect", "sparksql", "--exclude-rules", "CP02" },
