@@ -6,6 +6,7 @@
     "sway/mode"
   ],
   "modules-right": [
+    "custom/display",
     "network",
     "bluetooth",
     "backlight",
@@ -48,6 +49,13 @@
     "format-muted": "VOL MUTE",
     "max-volume": 100,
     "on-click": "pavucontrol -t 3",
+    "tooltip": false
+  },
+  "custom/display": {
+    "format": "DPY {}",
+    "exec": "~/.scripts/display_toggle.sh status",
+    "on-click": "~/.scripts/display_toggle.sh",
+    "interval": 5,
     "tooltip": false
   },
   "bluetooth": {

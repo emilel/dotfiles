@@ -1,19 +1,34 @@
 #!/bin/sh
-# External on the left, laptop on the right, each at its NATIVE resolution (so
-# text stays crisp) but per-output scaled to a comfortable size. The external is
-# scaled so it "feels" $ext_logical px wide whatever its real panel is: a 4K runs
-# native + scale 1.5 (sharp), a 1440p runs native + scale 1.0 -- instead of
-# blurring a 4K down to a non-native mode. Adapts to whichever external is
-# plugged; exec_always + $mod+Shift+m re-run it.
+# External on the left, laptop on the right, per-output scaled to a comfortable
+# size ($ext_logical px wide whatever the panel is). The external mode depends on
+# the display_toggle.sh preference: "smooth" (default) picks the largest >=50Hz
+# mode so the cursor stays fluid (a 4K does 30Hz over HDMI -> laggy); "crisp"
+# picks the native max-res mode (sharper, lower refresh). Adapts to whichever
+# external is plugged; exec_always + $mod+Shift+m re-run it.
 set -eu
 
-ext_logical=2560 # external is scaled to feel this wide (scale derived from native res)
+ext_logical=2560 # external is scaled to feel this wide (scale derived from chosen mode width)
 lap_scale=1      # laptop scale (eDP 1080p)
+min_hz=50000     # "smooth": lowest acceptable refresh, in mHz
+
+pref_file=${XDG_RUNTIME_DIR:-/tmp}/sway_ext_mode
+pref=$(cat "$pref_file" 2>/dev/null) || pref=smooth
+[ "$pref" = crisp ] || pref=smooth
 
 outs=$(swaymsg -t get_outputs)
 pick() { printf '%s' "$outs" | jq -r "$1 // empty"; }
-native() { pick "(.[]|select(.name==\"$1\")|.modes|max_by(.width*.height)|\"\(.width)x\(.height)\")"; }
-native_w() { pick "(.[]|select(.name==\"$1\")|.modes|max_by(.width*.height)|.width)"; }
+# Best mode for output $1 under preference $2 ("smooth"|"crisp") -> "WxH".
+# smooth keeps only >=min_hz modes (refresh absent -> assume 60Hz); both then
+# take the largest area, tie-broken by highest refresh.
+mode() {
+    printf '%s' "$outs" | jq -r --arg n "$1" --arg p "$2" --argjson hz "$min_hz" '
+        [.[] | select(.name==$n).modes[]] as $all
+        | (if $p=="crisp" then $all
+           else [$all[] | select((.refresh // 60000) >= $hz)] end) as $f
+        | (if ($f|length) > 0 then $f else $all end)
+        | max_by(.width*.height*1000000 + (.refresh // 60000))
+        | "\(.width)x\(.height)"'
+}
 
 laptop=$(pick 'first(.[]|select(.name|test("^eDP"))|.name)')
 ext=$(pick 'first(.[]|select(.active and (.name|test("^eDP")|not))|.name)')
@@ -28,15 +43,16 @@ place() { # name mode scale x
 }
 
 if [ -n "$ext" ]; then
-    ew=$(native_w "$ext")
+    m=$(mode "$ext" "$pref")
+    ew=${m%x*}
     [ -n "$ew" ] || ew=$ext_logical
     scale=$(LC_ALL=C awk -v w="$ew" -v t="$ext_logical" 'BEGIN{s=w/t; if(s<1)s=1; printf "%g", s}')
     lap_x=$(LC_ALL=C awk -v w="$ew" -v s="$scale" 'BEGIN{printf "%d", w/s}')
-    place "$ext" "$(native "$ext")" "$scale" 0
-    place "$laptop" "$(native "$laptop")" "$lap_scale" "$lap_x"
+    place "$ext" "$m" "$scale" 0
+    place "$laptop" "$(mode "$laptop" smooth)" "$lap_scale" "$lap_x"
     left=$ext
 else
-    place "$laptop" "$(native "$laptop")" "$lap_scale" 0
+    place "$laptop" "$(mode "$laptop" smooth)" "$lap_scale" 0
     left=$laptop
 fi
 right=$laptop

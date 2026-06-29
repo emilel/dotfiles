@@ -49,6 +49,7 @@ button:hover {
 }
 
 /* padding and spacing between modules */
+#custom-display,
 #network,
 #bluetooth,
 #backlight,
@@ -58,6 +59,10 @@ button:hover {
 #clock {
   padding: 0 15px;
   border-right: 1px solid gray;
+}
+
+#custom-display {
+  color: #888888;
 }
 
 #network {
