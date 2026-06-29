@@ -55,6 +55,13 @@ for_window [ title="prompt" ] \
     border none, \
     focus
 
+## waybar popup menus (wifi/bluetooth pickers, nmtui, bluetuith)
+for_window [ title="waybar-menu" ] \
+    floating enable, \
+    resize set 60 ppt 55 ppt, \
+    move position center, \
+    focus
+
 # INPUT
 
 ## keyboard settings

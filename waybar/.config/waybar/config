@@ -55,16 +55,16 @@
     "format-off": "",
     "format-on": "BT {num_connections}",
     "format-connected": "BT {num_connections}",
-    "on-click": "foot -e ~/.scripts/bluetooth_menu.sh",
-    "on-click-right": "foot -e bluetuith"
+    "on-click": "foot --override=locked-title=yes --title waybar-menu -e ~/.scripts/bluetooth_menu.sh",
+    "on-click-right": "foot --override=locked-title=yes --title waybar-menu -e bluetuith"
   },
   "network": {
     "format-wifi": "{essid} ({signaldBm} dBm)",
     "format-ethernet": "ETH",
     "format-disconnected": "OFFL",
     "tooltip": false,
-    "on-click": "foot -e ~/.scripts/wifi_menu.sh",
-    "on-click-right": "foot -e nmtui"
+    "on-click": "foot --override=locked-title=yes --title waybar-menu -e ~/.scripts/wifi_menu.sh",
+    "on-click-right": "foot --override=locked-title=yes --title waybar-menu -e nmtui"
   },
   "style": "~/.config/waybar/style.css"
 }
