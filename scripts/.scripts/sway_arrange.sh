@@ -1,36 +1,38 @@
 #!/bin/sh
-# External monitor on the left at its native resolution, laptop on the right;
-# workspaces pinned. Adapts to whichever external is plugged (DP-1, HDMI-A-1, or
-# none on the laptop alone). sway runs `exec_always` on every reload, and
-# $mod+Shift+m re-runs it after a hotplug.
+# External monitor on the left, laptop on the right, at the resolutions you
+# actually use -- a 4K external at its native mode is unreadable. Adapts to
+# whichever external is plugged (DP-1, HDMI-A-1, or none). sway runs this on
+# every reload (exec_always) and $mod+Shift+m re-runs it after a hotplug.
 set -eu
+
+ext_res=2560x1440 # what the external runs at, if it supports that mode
+lap_res=1920x1080 # what the laptop panel runs at
 
 outs=$(swaymsg -t get_outputs)
 pick() { printf '%s' "$outs" | jq -r "$1 // empty"; }
+has_mode() { printf '%s' "$outs" | jq -e --arg n "$1" --arg r "$2" 'any(.[]|select(.name==$n).modes[]; "\(.width)x\(.height)"==$r)' >/dev/null; }
+native_w() { pick "(.[]|select(.name==\"$1\")|.modes|max_by(.width*.height)|.width)"; }
 
 laptop=$(pick 'first(.[]|select(.name|test("^eDP"))|.name)')
 ext=$(pick 'first(.[]|select(.active and (.name|test("^eDP")|not))|.name)')
 [ -n "$laptop" ] || laptop=$ext # desktop with no internal panel
 
-# Highest-resolution mode of an output ("WxH", empty if unknown) and its width.
-native() { pick "(.[]|select(.name==\"$1\")|.modes|max_by(.width*.height)|\"\(.width)x\(.height)\")"; }
-mode_w() { printf '%s' "$outs" | jq -r --arg n "$1" '(.[]|select(.name==$n)|.modes|max_by(.width*.height)|.width) // 0'; }
-
-place() { # name x
-    m=$(native "$1")
-    if [ -n "$m" ]; then
-        swaymsg output "$1" mode "$m" pos "$2" 0 >/dev/null
+# Put output $1 at resolution $2 (or its native mode if $2 isn't supported), x=$3.
+place() {
+    if has_mode "$1" "$2"; then
+        swaymsg output "$1" mode "$2" pos "$3" 0 >/dev/null
     else
-        swaymsg output "$1" pos "$2" 0 >/dev/null
+        swaymsg output "$1" pos "$3" 0 >/dev/null
     fi
 }
 
 if [ -n "$ext" ]; then
-    place "$ext" 0
-    place "$laptop" "$(mode_w "$ext")"
+    place "$ext" "$ext_res" 0
+    if has_mode "$ext" "$ext_res"; then ew=${ext_res%x*}; else ew=$(native_w "$ext"); fi
+    place "$laptop" "$lap_res" "${ew:-2560}"
     left=$ext
 else
-    place "$laptop" 0
+    place "$laptop" "$lap_res" 0
     left=$laptop
 fi
 right=$laptop
