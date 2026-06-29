@@ -4,7 +4,8 @@
 set $keyboard_layout us
 
 ## monitors + workspaces -- adaptive: external left, laptop right (also $mod+Shift+m)
-exec "$HOME/.scripts/sway_arrange.sh"
+## exec_always so it re-runs on every reload, not just at login
+exec_always "$HOME/.scripts/sway_arrange.sh"
 
 ## turn off screen
 exec swayidle \
