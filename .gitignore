@@ -1,1 +1,4 @@
-setup/*
+*.zcompdump
+*.zcompdump.zwc
+.mypy_cache/
+tests/.deps/

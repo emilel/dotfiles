@@ -1,45 +1,37 @@
 #!/bin/zsh
 
-# add git branch
-gwa() {
-    local branch="$1"
-    local dir
+# --- git worktrees -----------------------------------------------------------
+# Bare-repo + sibling-worktrees layout. The heavy lifting (fetch-first,
+# fast-forward-only, mirror branch paths to dirs) lives in git_worktree.sh,
+# which prints the worktree path; these wrappers just cd into it. Agents can
+# call git_worktree.sh directly and capture the path.
 
-    if [ "$#" -ge 2 ]; then
-        dir="$2"
-        shift 2
-    else
-        dir="$branch"
-        shift
-    fi
-
-    git worktree add "$dir" "$branch" "$@"
-    cd "$dir"
-}
-
-# create git branch
-gwn() {
-    local new_branch="$1"
-    local old_branch="${2:-master}"
-    git branch "$new_branch" "$old_branch"
-    git worktree add "$new_branch" "$new_branch"
-    cd "$new_branch"
-}
-
-# log one line
-gl() {
-    n="${1:-10}"
-    git log --pretty=format:"%C(yellow)%h%Creset %Cgreen%ad%Creset %Cblue%an%Creset: %s" --date=short -"${n}"
-}
+gct() { local d; d=$(git_worktree.sh clone "$@") && cd "$d"; } # clone a repo (bare layout)
+gwn() { local d; d=$(git_worktree.sh new "$@") && cd "$d"; }   # new branch off origin default
+gwa() { local d; d=$(git_worktree.sh add "$@") && cd "$d"; }   # add worktree for existing branch
+gws() { git_worktree.sh sync "$@"; }                           # fetch + ff-only (align w/ origin)
+gwrm() { git_worktree.sh prune-merged "$@"; }                  # remove merged worktrees
+gw() { local d; d=$(git_worktree.sh switch) && cd "$d"; }      # fzf-jump between worktrees
+gwr.() { local d; d=$(git_worktree.sh remove "$@") && cd "$d"; } # remove current worktree
 
 alias gwl='git worktree list'
 alias gwp='git worktree prune'
 alias gwr='git worktree remove --force'
-alias gwr.='git worktree remove --force $(find_git_root)'
+
+# --- git shortcuts -----------------------------------------------------------
+# one-line log; gl [n] (default 10)
+gl() {
+    local n="${1:-10}"
+    git log --pretty=format:"%C(yellow)%h%Creset %Cgreen%ad%Creset %Cblue%an%Creset: %s" \
+        --date=short -"${n}"
+}
+
+# rename the current tmux session/window after the branch's last path segment
 alias trn="gb | awk -F'/' '{print \$NF}' | xargs tmux rename-session && tmux rename-window code"
+
 alias gc='git checkout'
 alias gr='git reset HEAD~1'
+alias grs='git reset --soft HEAD~1'
 alias gs='git status'
 alias gd='git diff'
-alias grs='git reset --soft HEAD~1'
 alias gb='git branch'

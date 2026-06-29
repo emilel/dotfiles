@@ -1,0 +1,11 @@
+#!/bin/sh
+# Stub bluetoothctl: `devices` -> $BT_DEVICES, `info` -> $BT_INFO, everything
+# else (connect/disconnect) is logged to $BT_LOG.
+case "${1:-}" in
+    devices) printf '%s\n' "${BT_DEVICES:-}" ;;
+    info) printf '%s\n' "${BT_INFO:-Connected: no}" ;;
+    *)
+        [ -n "${BT_LOG:-}" ] && printf '%s\n' "$*" >>"$BT_LOG"
+        exit 0
+        ;;
+esac

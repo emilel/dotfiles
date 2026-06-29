@@ -53,16 +53,18 @@
   "bluetooth": {
     "format-disabled": "",
     "format-off": "",
-    "format-on": "",
+    "format-on": "BT {num_connections}",
     "format-connected": "BT {num_connections}",
-    "on-click": "blueman-manager"
+    "on-click": "foot -e ~/.scripts/bluetooth_menu.sh",
+    "on-click-right": "foot -e bluetuith"
   },
   "network": {
     "format-wifi": "{essid} ({signaldBm} dBm)",
     "format-ethernet": "ETH",
     "format-disconnected": "OFFL",
     "tooltip": false,
-    "on-click": "nm-connection-editor"
+    "on-click": "foot -e ~/.scripts/wifi_menu.sh",
+    "on-click-right": "foot -e nmtui"
   },
   "style": "~/.config/waybar/style.css"
 }

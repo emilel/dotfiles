@@ -1,5 +1,11 @@
-#!/bin/bash
+#!/bin/sh
+# fzf-pick a tmux template from ~/.tmux_templates and run it.
+set -eu
 
-session=$(ls "$HOME/.tmux_templates" | fzf)
-
-"$HOME/.tmux_templates/$session"
+template=$(
+    for f in "$HOME"/.tmux_templates/*; do
+        [ -e "$f" ] && basename "$f"
+    done | fzf
+) || exit 1
+[ -n "$template" ] || exit 1
+exec "$HOME/.tmux_templates/$template"

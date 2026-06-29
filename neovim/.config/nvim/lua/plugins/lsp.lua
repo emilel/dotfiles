@@ -30,10 +30,7 @@ return {
 					upward = true,
 					type = "directory",
 				})[1]
-				on_dir(
-					venv and vim.fs.dirname(venv)
-						or vim.fs.root(fname, { "pyproject.toml", "setup.py", ".git" })
-				)
+				on_dir(venv and vim.fs.dirname(venv) or vim.fs.root(fname, { "pyproject.toml", "setup.py", ".git" }))
 			end,
 			before_init = function(_, config)
 				local python = config.root_dir and (config.root_dir .. "/.venv/bin/python")

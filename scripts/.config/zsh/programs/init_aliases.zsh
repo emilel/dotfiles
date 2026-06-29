@@ -3,10 +3,14 @@
 SCRIPT_DIR="$HOME/.scripts"
 export PATH="$PATH:$SCRIPT_DIR"
 
-alias rnw="$SCRIPT_DIR/rename_workspace.zsh"
-alias gct="$SCRIPT_DIR/clone_git_worktree.zsh"
-alias lock="$SCRIPT_DIR/lock.sh"
-alias so="$SCRIPT_DIR/turn_off_screen.sh"
-alias t="$SCRIPT_DIR/create_tmux_session.zsh"
-alias ta="$SCRIPT_DIR/tmux_attach.zsh"
+# tmux helpers
+alias t="$SCRIPT_DIR/tmux_new_session.sh"
+alias ta="$SCRIPT_DIR/tmux_attach.sh"
 alias tt="$SCRIPT_DIR/tmux_run_template.sh"
+
+# sway helpers
+alias rnw="$SCRIPT_DIR/sway_rename_workspace.sh"
+alias lock="$SCRIPT_DIR/sway_lock.sh"
+alias so="$SCRIPT_DIR/sway_screen_off.sh"
+
+# NB: gct (git clone worktree) is a function in commands/git.zsh, not an alias.

@@ -1,1 +1,1 @@
-export PATH="$PATH:~/.dprint/bin"
+[ -d "$HOME/.dprint/bin" ] && export PATH="$PATH:$HOME/.dprint/bin"

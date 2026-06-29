@@ -1,0 +1,3 @@
+#!/bin/sh
+# Capture clipboard writes to $CLIP_FILE (default: discard).
+cat >"${CLIP_FILE:-/dev/null}"

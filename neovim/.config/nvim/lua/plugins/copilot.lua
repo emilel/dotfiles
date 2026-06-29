@@ -1,6 +1,6 @@
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_filetypes = {
-  ["markdown"] = false,
+	["markdown"] = false,
 }
 
 vim.api.nvim_create_autocmd("FileType", {

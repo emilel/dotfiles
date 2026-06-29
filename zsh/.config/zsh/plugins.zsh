@@ -4,7 +4,7 @@ ensure_cloned() {
     local repo_dir="$HOME/.zsh/$repo_name"
 
     if [[ ! -d "$repo_dir" ]]; then
-        git clone "http://github.com/$username/$repo_name" "$repo_dir"
+        git clone "https://github.com/$username/$repo_name" "$repo_dir"
     fi
 }
 

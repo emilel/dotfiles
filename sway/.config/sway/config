@@ -1,26 +1,10 @@
 # SETUP
 
-## set monitor names. help: swaymsg -t get_outputs
-set $monitor_1 DP-1
-set $monitor_2 eDP-1
-
 ## keyboard layout
 set $keyboard_layout us
 
-## monitor placement
-output $monitor_1 pos 0 0
-output $monitor_2 pos 2560 0
-
-## assign workspaces
-workspace 1 output $monitor_1
-workspace 2 output $monitor_1
-workspace 3 output $monitor_1
-workspace 4 output $monitor_2
-workspace 5 output $monitor_2
-workspace 6 output $monitor_2
-workspace 7 output $monitor_3
-workspace 8 output $monitor_3
-workspace 9 output $monitor_3
+## monitors + workspaces -- adaptive: external left, laptop right (also $mod+Shift+m)
+exec "$HOME/.scripts/sway_arrange.sh"
 
 ## turn off screen
 exec swayidle \
@@ -105,14 +89,14 @@ bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_SINK@ toggle
 seat seat0 hide_cursor 3000
 
 ## turn off screen with key binding
-bindsym $mod+u exec "$HOME/.scripts/turn_off_screen.sh"
+bindsym $mod+u exec "$HOME/.scripts/sway_screen_off.sh"
 
 ## lock screen
-bindsym $mod+shift+z exec "$HOME/.scripts/lock.sh"
-bindsym $mod+y exec "$HOME/.scripts/lock.sh"
+bindsym $mod+shift+z exec "$HOME/.scripts/sway_lock.sh"
+bindsym $mod+y exec "$HOME/.scripts/sway_lock.sh"
 
 ## turn off screen and lock
-bindsym $mod+shift+y exec swaylock --color 242424 --daemonize && ~/.scripts/turn_off_screen.sh
+bindsym $mod+shift+y exec swaylock --color 242424 --daemonize && ~/.scripts/sway_screen_off.sh
 
 ## move workspace to other monitor
 bindsym $mod+Shift+Control+h move workspace to output left
@@ -120,25 +104,20 @@ bindsym $mod+Shift+Control+j move workspace to output down
 bindsym $mod+Shift+Control+k move workspace to output up
 bindsym $mod+Shift+Control+l move workspace to output right
 
+## re-arrange monitors after plugging/unplugging
+bindsym $mod+Shift+m exec "$HOME/.scripts/sway_arrange.sh"
+
 ## rename workspace
-bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/rename_workspace.zsh"; exit'; focus
+bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/sway_rename_workspace.sh"; exit'; focus
 
 ## attach tmux session
-bindsym $mod+t exec $prompt -e sh -c "$HOME/.scripts/attach_tmux_session.zsh"
-
-# WALLPAPER
-
-output $monitor_1 bg ~/wallpapers/wallpaper_1.jpg fill
-output $monitor_2 bg ~/wallpapers/wallpaper_2.jpg fill
+bindsym $mod+t exec $prompt -e sh -c "$HOME/.scripts/sway_attach_session.sh"
 
 # FONT
 
 font pango:SourceCodePro Regular 10
 
 # APPLETS
-
-## bluetooth
-exec blueman-applet
 
 ## network
 exec nm-applet
@@ -163,7 +142,7 @@ bindsym $mod+Shift+b exec sudo reboot
 # LAUNCH
 
 ## tmux terminal
-bindsym $mod+backspace exec $term ~/.scripts/create_tmux_session.zsh
+bindsym $mod+backspace exec $term ~/.scripts/tmux_new_session.sh
 
 ## terminal
 bindsym $mod+shift+backspace exec $term
@@ -221,11 +200,11 @@ bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
 ## go to workspaces
-bindsym $mod+s exec "$HOME/.scripts/go_to_workspace.zsh slack"
-bindsym $mod+z exec "$HOME/.scripts/go_to_workspace.zsh azure"
-bindsym $mod+w exec "$HOME/.scripts/go_to_workspace.zsh web"
-bindsym $mod+c exec "$HOME/.scripts/go_to_workspace.zsh chatgpt"
-bindsym $mod+e exec "$HOME/.scripts/go_to_workspace.zsh services"
+bindsym $mod+s exec "$HOME/.scripts/sway_goto_workspace.sh slack"
+bindsym $mod+z exec "$HOME/.scripts/sway_goto_workspace.sh azure"
+bindsym $mod+w exec "$HOME/.scripts/sway_goto_workspace.sh web"
+bindsym $mod+c exec "$HOME/.scripts/sway_goto_workspace.sh chatgpt"
+bindsym $mod+e exec "$HOME/.scripts/sway_goto_workspace.sh services"
 
 ## previous and next
 bindsym $mod+control+h workspace prev_on_output

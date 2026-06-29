@@ -15,8 +15,8 @@ return {
 		formatters_by_ft = {
 			python = { "ruff_format", "ruff_fix", "ruff_organize_imports" },
 			zsh = { "beautysh" },
-			sh = { "beautysh" },
-			bash = { "beautysh" },
+			sh = { "shfmt" },
+			bash = { "shfmt" },
 			markdown = { "prettier" },
 			yaml = { "prettier" },
 			json = { "prettier" },
@@ -26,6 +26,10 @@ return {
 		formatters = {
 			prettier = {
 				append_args = { "--print-width", "80", "--prose-wrap", "always" },
+			},
+			-- match tests/lint.sh so editor-save and repo-lint never disagree
+			shfmt = {
+				prepend_args = { "-i", "4", "-ci" },
 			},
 			sqlfluff = {
 				append_args = { "--dialect", "sparksql", "--exclude-rules", "CP02" },

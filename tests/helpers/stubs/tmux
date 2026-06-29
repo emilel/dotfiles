@@ -1,0 +1,26 @@
+#!/bin/sh
+# Record tmux calls to $TMUX_LOG and give canned answers for the subcommands the
+# scripts inspect.
+#   has-session -t X : succeeds iff X is listed in $TMUX_SESSIONS (default: none)
+#   list-*           : prints $TMUX_LIST
+#   new-*/split-*    : prints $TMUX_NEW_PANE (default %1)
+[ -n "${TMUX_LOG:-}" ] && printf '%s\n' "$*" >>"$TMUX_LOG"
+case "${1:-}" in
+    has-session)
+        target=""
+        while [ "$#" -gt 0 ]; do
+            [ "$1" = "-t" ] && {
+                target=$2
+                break
+            }
+            shift
+        done
+        case " ${TMUX_SESSIONS:-} " in
+            *" $target "*) exit 0 ;;
+            *) exit 1 ;;
+        esac
+        ;;
+    list-sessions | list-windows | list-panes) printf '%s' "${TMUX_LIST:-}" ;;
+    new-session | new-window | split-window) printf '%s\n' "${TMUX_NEW_PANE:-%1}" ;;
+    *) exit 0 ;;
+esac

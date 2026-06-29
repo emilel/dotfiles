@@ -1,0 +1,13 @@
+#!/bin/sh
+# Minimal fzf stub. `--zsh` prints nothing (the keybinding source). Otherwise
+# behaves like `fzf --select-1`: echo the first non-empty line of stdin.
+for a in "$@"; do
+    [ "$a" = "--zsh" ] && exit 0
+done
+while IFS= read -r line; do
+    [ -n "$line" ] && {
+        printf '%s\n' "$line"
+        exit 0
+    }
+done
+exit 1

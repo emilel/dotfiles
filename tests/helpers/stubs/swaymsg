@@ -1,0 +1,11 @@
+#!/bin/sh
+# Record swaymsg calls to $SWAY_LOG; answer queries:
+#   --pretty ... get_*  -> $SWAY_PRETTY (human format)
+#   ... get_*           -> $SWAY_JSON   (default [])
+# Everything else (workspace/rename/exec ...) just succeeds.
+[ -n "${SWAY_LOG:-}" ] && printf '%s\n' "$*" >>"$SWAY_LOG"
+case "$*" in
+    *--pretty*get_*) printf '%s\n' "${SWAY_PRETTY:-}" ;;
+    *get_*) printf '%s' "${SWAY_JSON:-[]}" ;;
+    *) exit 0 ;;
+esac
