@@ -24,6 +24,21 @@ local git = function(args)
 	return out.code == 0 and out.stdout or nil
 end
 
+-- First item of each file, order preserved. Items carry either bufnr (gitsigns'
+-- setqflist) or filename (ours); a file only ever comes from one source, so the
+-- mixed keys never collide.
+M.first_per_file = function(items)
+	local seen, firsts = {}, {}
+	for _, item in ipairs(items) do
+		local key = item.filename or item.bufnr
+		if not seen[key] then
+			seen[key] = true
+			firsts[#firsts + 1] = item
+		end
+	end
+	return firsts
+end
+
 -- Quickfix items for the intent-to-add files in the cwd's repo, formatted the
 -- way gitsigns formats its own. One entry per file: an empty index blob means
 -- the whole file is a single add hunk starting at line 1.

@@ -18,4 +18,14 @@ describe("lib.githunks", function()
 		-- `AM` is worktree-modified, so gitsigns already lists it.
 		assert.are.same({}, githunks.intent_to_add({ "AM both.txt", "MM other.txt" }))
 	end)
+
+	it("keeps only the first hunk of each file", function()
+		local a1, a2, b = { bufnr = 1, lnum = 3 }, { bufnr = 1, lnum = 9 }, { bufnr = 2, lnum = 5 }
+		assert.are.same({ a1, b }, githunks.first_per_file({ a1, a2, b }))
+	end)
+
+	it("dedupes filename items independently of bufnr items", function()
+		local buf, file1, file2 = { bufnr = 1 }, { filename = "new.txt" }, { filename = "new.txt" }
+		assert.are.same({ buf, file1 }, githunks.first_per_file({ buf, file1, file2 }))
+	end)
 end)

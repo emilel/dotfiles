@@ -12,6 +12,17 @@ local hunks_to_qf = function()
 	end)
 end
 
+-- Same list collapsed to one entry per file (its first hunk), for curating by
+-- file instead of hunk by hunk.
+local files_to_qf = function()
+	require("gitsigns").setqflist("all", { open = false }, function()
+		local githunks = require("lib.githunks")
+		local items = vim.list_extend(vim.fn.getqflist(), githunks.qf_items())
+		vim.fn.setqflist(githunks.first_per_file(items), "r")
+		require("telescope.builtin").quickfix({ prompt_title = "Changed Files" })
+	end)
+end
+
 return {
 	"lewis6991/gitsigns.nvim",
 	keys = {
@@ -67,9 +78,21 @@ return {
 			desc = "Toggle deleted",
 		},
 		{
+			"<c-g><c-f>",
+			function()
+				require("gitsigns").stage_buffer()
+			end,
+			desc = "Stage file",
+		},
+		{
 			"<c-g><c-h>",
 			hunks_to_qf,
 			desc = "Hunks to quickfix",
+		},
+		{
+			"<c-g><c-j>",
+			files_to_qf,
+			desc = "Changed files to quickfix",
 		},
 		{
 			"<c-g><c-m>",
