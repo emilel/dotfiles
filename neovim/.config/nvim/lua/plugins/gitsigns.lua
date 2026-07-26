@@ -1,41 +1,19 @@
-local navigate_hunks = function()
-	local Job = require("plenary.job")
-	require("telescope.pickers")
-		.new({}, {
-			prompt_title = "Git Hunks",
-			finder = require("telescope.finders").new_table({
-				results = Job:new({ command = "git", args = { "jump", "--stdout", "diff" } }):sync(),
-				entry_maker = function(line)
-					local filename, lnum_string, rest = line:match("([^:]+):(%d+):(.*)")
-					if not filename or filename:match("^/dev/null") then
-						return nil
-					end
-
-					local lnum = tonumber(lnum_string)
-					return {
-						value = filename,
-						ordinal = line,
-						filename = filename,
-						lnum = lnum,
-						display = function(entry)
-							local formatted_line = string.format("%s:%d:%s", entry.filename, entry.lnum, rest)
-							local highlights = { { { 0, #entry.filename }, "Function" } }
-							return formatted_line, highlights
-						end,
-					}
-				end,
-			}),
-			sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
-			previewer = require("telescope.config").values.grep_previewer({}),
-			layout_strategy = "flex",
-		})
-		:find()
+-- Fill the quickfix with gitsigns' own hunks (repo-wide, same definition as the
+-- gutter signs and <c-g><c-s>), then browse them in telescope. Fuzzy-filter to
+-- the files you care about and <c-q> to send just those back to the quickfix;
+-- then <c-j>/<c-k> iterate the curated list. telescope is require()d here so it
+-- stays lazy instead of loading with gitsigns at file-open.
+-- New files need both halves: attach_to_untracked pulls in `??` files, and
+-- lib.githunks pulls in the `git add -N` ones gitsigns' own scan skips.
+local hunks_to_qf = function()
+	require("gitsigns").setqflist("all", { open = false }, function()
+		vim.fn.setqflist(require("lib.githunks").qf_items(), "a")
+		require("telescope.builtin").quickfix({ prompt_title = "Git Hunks" })
+	end)
 end
 
 return {
 	"lewis6991/gitsigns.nvim",
-	-- telescope is only needed by navigate_hunks; it is require()d there so it
-	-- stays lazy instead of being pulled in with gitsigns at file-open.
 	keys = {
 		{
 			"<c-g><c-s>",
@@ -90,8 +68,8 @@ return {
 		},
 		{
 			"<c-g><c-h>",
-			navigate_hunks,
-			desc = "Navigate hunks",
+			hunks_to_qf,
+			desc = "Hunks to quickfix",
 		},
 		{
 			"<c-g><c-m>",
@@ -124,5 +102,8 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	opts = {
 		sign_priority = 11,
+		-- Off by default upstream: without it a brand-new file has no signs, no
+		-- ]h/[h, and never shows up in <c-g><c-h>.
+		attach_to_untracked = true,
 	},
 }
