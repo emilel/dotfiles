@@ -38,16 +38,17 @@ latest_tag() { # owner/repo
 install_terminal_programs() {
     log "apt packages"
     $SUDO apt-get update -qq
-    apt_install ca-certificates curl git jq unzip tar xz-utils \
-        zsh stow tmux ripgrep fd-find nnn perl \
+    apt_install ca-certificates curl git git-lfs jq unzip tar xz-utils \
+        zsh stow tmux ripgrep fd-find nnn perl gh bat tree \
         build-essential libsqlite3-dev python3-venv python3-pip nodejs npm \
         shellcheck shfmt just
     is_wsl || apt_install wl-clipboard
 
     mkdir -p "$BIN"
 
-    # apt names it fdfind; everything here calls it fd
+    # apt names them fdfind/batcat; everything here calls them fd/bat
     command -v fd >/dev/null || ln -sf "$(command -v fdfind)" "$BIN/fd"
+    command -v bat >/dev/null || ln -sf "$(command -v batcat)" "$BIN/bat"
 
     if [ "$(uname -m)" != x86_64 ]; then
         log "WARN: not x86_64 -- install nvim/fzf/stylua/lazygit yourself"
@@ -68,8 +69,10 @@ install_terminal_programs() {
         ! ver_ge "$(fzf --version | cut -d' ' -f1)" 0.48.0; then
         log "fzf (github release)"
         tag=$(latest_tag junegunn/fzf)
+        # /usr/local/bin, not ~/.local/bin: fzf.zsh runs `fzf --zsh` before
+        # path.zsh has put ~/.local/bin on PATH
         curl -fsSL "https://github.com/junegunn/fzf/releases/download/$tag/fzf-${tag#v}-linux_amd64.tar.gz" |
-            tar xz -C "$BIN" fzf
+            $SUDO tar xz -C /usr/local/bin fzf
     fi
 
     if ! command -v stylua >/dev/null; then
@@ -93,7 +96,7 @@ install_gui_programs() {
     $SUDO apt-get update -qq
     apt_install sway swaylock swayidle foot waybar bemenu \
         grim slurp wl-clipboard brightnessctl pavucontrol zathura \
-        network-manager bluez fontconfig
+        network-manager bluez fontconfig firefox blueman imv wev xclip
     if [ ! -d "$HOME/.fonts/adobe-fonts/source-code-pro" ]; then
         log "source code pro font"
         git clone -q --depth 1 https://github.com/adobe-fonts/source-code-pro \

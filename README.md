@@ -46,3 +46,13 @@ just format      # shfmt + stylua
 - **nvidia + sway**:
   `sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop`.
 - **Sample git hooks**: `sample_hooks/`.
+- **Extras** in use on previous machines, not installed by bootstrap (vendor
+  repos / heavyweight / machine-specific):
+  - `claude`: `curl -fsSL https://claude.ai/install.sh | bash`
+  - `uv`: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - `codex`, `hunkdiff`, `mdpdf`: `npm i -g @openai/codex hunkdiff mdpdf`
+  - docker: official apt repo (docs.docker.com/engine/install/ubuntu)
+  - `google-chrome-stable` (vendor deb), `slack` (snap), `zoom` (vendor deb)
+  - `yt-dlp`, `git-filter-repo`, `mdformat` (uv/pipx)
+  - `azure-cli`, `texlive-full`, `valgrind`, `cmake`, `clang-format`, `adb`
+  - `ibus-table-cangjie3/5` (chinese input), `bluetuith` (see bootstrap output)
