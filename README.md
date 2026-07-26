@@ -15,13 +15,13 @@ cd ~/dotfiles
 
 ```sh
 ./bootstrap.sh terminal          # terminal programs + dotfiles (wsl, servers)
-./bootstrap.sh gui               # + sway/waybar/foot/mako/zathura + fonts
+./bootstrap.sh gui               # + sway/waybar/foot/zathura + fonts
 ./bootstrap.sh dotfiles [pkg..]  # stow only -- all packages, or the ones given
 ```
 
 There are no other prerequisites: it apt-installs what it can and pulls neovim,
-fzf, stylua and lazygit from github releases (apt's are too old). It's
-idempotent — re-run it any time. It makes zsh the login shell.
+fzf and stylua from github releases (apt's are too old). It's idempotent —
+re-run it any time. It makes zsh the login shell.
 
 Afterwards: the stowed gitconfig rewrites github https urls to ssh, so put your
 ssh keys in `~/.ssh`, then open `nvim` once to let lazy sync and `:Mason`

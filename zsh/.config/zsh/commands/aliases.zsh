@@ -53,5 +53,4 @@ temp() {
 # ring the terminal bell (tmux marks the window if you're elsewhere)
 alias bell="printf '\a'"
 
-alias lg='lazygit'
 alias oc='opencode'

@@ -24,7 +24,7 @@ keep the *logic* tested with stubs, and leave a manual checklist (bottom).
 | `zsh/` | `.zshenv` + `.config/zsh`. `.zshrc` sources `programs/ settings/ commands/`, then `~/.setup`, then `plugins.zsh`. `M-r` popup uses `exit/`. |
 | `scripts/` | `~/.scripts` (on PATH). POSIX `.sh`, named `<domain>_<action>.sh`. |
 | `tmux/` | `tmux.conf` + `.tmux_templates`. |
-| `sway/ waybar/ foot/ mako/ zathura/` | GUI configs — folded symlinks, so editing = live on reload. |
+| `sway/ waybar/ foot/ zathura/` | GUI configs — folded symlinks, so editing = live on reload. |
 | `neovim/` | self-managed lua config with its own `tests/`. |
 | `tests/` | bats suite + `lint.sh` for all shell. |
 | `dprint/` | `~/.config/dprint` markdown formatter config. |

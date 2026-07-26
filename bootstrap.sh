@@ -6,8 +6,8 @@
 #   ./bootstrap.sh gui                  # terminal + graphical programs + all dotfiles
 #   ./bootstrap.sh dotfiles [pkg ...]   # stow only (default: every package)
 #
-# Installs programs itself; neovim, fzf, stylua and lazygit come from github
-# releases because apt's are too old (nvim needs >= 0.11, fzf >= 0.48).
+# Installs programs itself; neovim, fzf and stylua come from github releases
+# because apt's are too old (nvim needs >= 0.11, fzf >= 0.48).
 set -eu
 
 DOTFILES=$(cd "$(dirname "$0")" && pwd)
@@ -15,7 +15,7 @@ BIN="$HOME/.local/bin"
 log() { printf '==> %s\n' "$*"; }
 
 TERMINAL_PKGS="zsh scripts tmux neovim git dprint fzf mason nnn opencode claude"
-GUI_PKGS="sway waybar foot mako zathura"
+GUI_PKGS="sway waybar foot zathura"
 
 SUDO=sudo
 [ "$(id -u)" = 0 ] && SUDO=
@@ -82,13 +82,6 @@ install_terminal_programs() {
         rm -rf "$tmp"
     fi
 
-    if ! command -v lazygit >/dev/null; then
-        log "lazygit (github release)"
-        tag=$(latest_tag jesseduffield/lazygit)
-        curl -fsSL "https://github.com/jesseduffield/lazygit/releases/download/$tag/lazygit_${tag#v}_Linux_x86_64.tar.gz" |
-            tar xz -C "$BIN" lazygit
-    fi
-
     if ! command -v dprint >/dev/null && [ ! -x "$HOME/.dprint/bin/dprint" ]; then
         log "dprint (official installer)"
         curl -fsSL https://dprint.dev/install.sh | sh -s >/dev/null 2>&1
@@ -98,7 +91,7 @@ install_terminal_programs() {
 install_gui_programs() {
     log "gui apt packages"
     $SUDO apt-get update -qq
-    apt_install sway swaylock swayidle foot waybar mako-notifier bemenu \
+    apt_install sway swaylock swayidle foot waybar bemenu \
         grim slurp wl-clipboard brightnessctl pavucontrol zathura \
         network-manager bluez fontconfig
     if [ ! -d "$HOME/.fonts/adobe-fonts/source-code-pro" ]; then

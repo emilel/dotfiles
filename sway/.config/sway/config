@@ -131,7 +131,6 @@ font pango:SourceCodePro Regular 10
 exec nm-applet
 
 ## notifications
-exec mako
 
 # DESKTOP
 
