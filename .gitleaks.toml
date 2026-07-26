@@ -1,0 +1,10 @@
+# Extends gitleaks' default rules. The 2023 leak (`export KEY=<20 hex chars>`)
+# is too low-entropy for the default generic-api-key rule, so catch hex
+# literals assigned to secret-ish variable names explicitly.
+[extend]
+useDefault = true
+
+[[rules]]
+id = "hex-assigned-secret"
+description = "hex literal assigned to a key/token/secret variable"
+regex = '''(?i)(key|token|secret|passwd|password)\s*=\s*['"]?[0-9a-f]{16,}['"]?'''

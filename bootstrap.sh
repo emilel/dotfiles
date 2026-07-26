@@ -85,6 +85,13 @@ install_terminal_programs() {
         rm -rf "$tmp"
     fi
 
+    if ! command -v gitleaks >/dev/null; then
+        log "gitleaks (github release)"
+        tag=$(latest_tag gitleaks/gitleaks)
+        curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/$tag/gitleaks_${tag#v}_linux_x64.tar.gz" |
+            tar xz -C "$BIN" gitleaks
+    fi
+
     if ! command -v dprint >/dev/null && [ ! -x "$HOME/.dprint/bin/dprint" ]; then
         log "dprint (official installer)"
         curl -fsSL https://dprint.dev/install.sh | sh -s >/dev/null 2>&1
@@ -149,6 +156,9 @@ stow_dotfiles() { # packages...
 
     log "stowing: $*"
     stow -d "$DOTFILES" -t "$HOME" -R "$@"
+
+    # never commit secret-looking strings to this repo again
+    [ -d "$DOTFILES/.git" ] && ln -sf ../../sample_hooks/secrets_staged "$DOTFILES/.git/hooks/pre-commit"
 }
 
 make_zsh_login_shell() {
