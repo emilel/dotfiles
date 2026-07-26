@@ -3,3 +3,4 @@
 *.zcompdump.zwc
 .mypy_cache/
 tests/.deps/
+.claude/
