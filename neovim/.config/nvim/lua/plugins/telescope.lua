@@ -141,6 +141,8 @@ return {
 						["<c-q>"] = require("telescope.actions").smart_send_to_qflist,
 						["<c-space>"] = require("telescope.actions").toggle_selection,
 						["<c-x>"] = require("telescope.actions").delete_buffer,
+						["<c-j>"] = require("telescope.actions").move_selection_next,
+						["<c-k>"] = require("telescope.actions").move_selection_previous,
 					},
 				},
 			},
