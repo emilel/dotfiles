@@ -1,4 +1,5 @@
 {
+  "model": "fable",
   "hooks": {
     "Notification": [
       {
@@ -25,8 +26,8 @@
         "hooks": [
           {
             "type": "command",
-            "async": true,
-            "command": "[ -n \"$TMUX_PANE\" ] || exit 0; [ \"$(tmux show -wv -t \"$TMUX_PANE\" @claude 2>/dev/null)\" = red ] && tmux set -w -t \"$TMUX_PANE\" -u @claude 2>/dev/null || true"
+            "command": "[ -n \"$TMUX_PANE\" ] || exit 0; [ \"$(tmux show -wv -t \"$TMUX_PANE\" @claude 2>/dev/null)\" = red ] && tmux set -w -t \"$TMUX_PANE\" -u @claude 2>/dev/null || true",
+            "async": true
           }
         ]
       }
@@ -52,7 +53,6 @@
       }
     ]
   },
-  "model": "fable",
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true
   },

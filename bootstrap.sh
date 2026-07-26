@@ -158,7 +158,7 @@ stow_dotfiles() { # packages...
     stow -d "$DOTFILES" -t "$HOME" -R "$@"
 
     # never commit secret-looking strings to this repo again
-    [ -d "$DOTFILES/.git" ] && ln -sf ../../sample_hooks/secrets_staged "$DOTFILES/.git/hooks/pre-commit"
+    [ -d "$DOTFILES/.git" ] && cp "$DOTFILES/hooks/secrets_staged" "$DOTFILES/.git/hooks/pre-commit"
 }
 
 make_zsh_login_shell() {

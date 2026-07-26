@@ -45,7 +45,8 @@ just format      # shfmt + stylua
 
 - **nvidia + sway**:
   `sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop`.
-- **Sample git hooks**: `sample_hooks/`.
+- **Git hooks**: `hooks/secrets_staged` (gitleaks) — bootstrap copies it into
+  this repo's pre-commit; copy it into any other repo that wants it.
 - **Extras** in use on previous machines, not installed by bootstrap (vendor
   repos / heavyweight / machine-specific):
   - `claude`: `curl -fsSL https://claude.ai/install.sh | bash`
