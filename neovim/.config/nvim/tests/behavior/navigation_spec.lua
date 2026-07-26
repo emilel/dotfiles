@@ -115,3 +115,61 @@ describe("navigation keymaps", function()
 		end)
 	end)
 end)
+
+-- <backspace> folds; the tricky case is two folds starting on the same line (a
+-- python `def` whose signature wraps opens both a function and a parameters
+-- fold on the `def` line). No treesitter in the test init, so the levels are
+-- faked with a foldexpr: the shape is what matters.
+local function fake_folds(levels)
+	_G.test_fold_levels = levels
+	function _G.test_foldexpr()
+		return _G.test_fold_levels[vim.v.lnum] or 0
+	end
+	vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.fn.map(vim.deepcopy(levels), "'line '.v:key"))
+	vim.opt_local.foldmethod = "expr"
+	vim.opt_local.foldexpr = "v:lua.test_foldexpr()"
+	vim.opt_local.foldlevel = 99
+end
+
+describe("<backspace> fold toggle", function()
+	before_each(function()
+		vim.cmd("enew!")
+	end)
+
+	it("folds the whole function, not just the wrapped signature", function()
+		-- line 1 outside; 2-4 signature (level 2, nested in the function);
+		-- 5-6 body (level 1). Both folds start on line 2.
+		fake_folds({ 0, 2, 2, 2, 1, 1 })
+		vim.api.nvim_win_set_cursor(0, { 2, 0 })
+		feed("<backspace>")
+		assert.are.equal(2, vim.fn.foldclosed(2))
+		assert.are.equal(6, vim.fn.foldclosedend(2))
+	end)
+
+	it("reopens what it closed", function()
+		fake_folds({ 0, 2, 2, 2, 1, 1 })
+		vim.api.nvim_win_set_cursor(0, { 2, 0 })
+		feed("<backspace>")
+		feed("<backspace>")
+		assert.are.equal(-1, vim.fn.foldclosed(2))
+		assert.are.equal(-1, vim.fn.foldclosed(3))
+	end)
+
+	it("closes only the innermost fold from a line inside it", function()
+		-- 2-6 outer, 4-5 inner: from line 4 only the inner fold closes.
+		fake_folds({ 0, 1, 1, 2, 2, 1 })
+		vim.api.nvim_win_set_cursor(0, { 4, 0 })
+		feed("<backspace>")
+		assert.are.equal(4, vim.fn.foldclosed(4))
+		assert.are.equal(5, vim.fn.foldclosedend(4))
+	end)
+
+	it("toggles a plain single-level fold", function()
+		fake_folds({ 0, 1, 1, 0 })
+		vim.api.nvim_win_set_cursor(0, { 2, 0 })
+		feed("<backspace>")
+		assert.are.equal(3, vim.fn.foldclosedend(2))
+		feed("<backspace>")
+		assert.are.equal(-1, vim.fn.foldclosed(2))
+	end)
+end)
