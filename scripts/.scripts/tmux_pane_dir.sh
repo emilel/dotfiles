@@ -1,7 +1,9 @@
 #!/bin/sh
-# Print the basename of $1 (default: $PWD), with a '*' suffix when it is a dirty
-# git work tree. The git check is cached for $ttl seconds so the tmux status bar,
-# which redraws every second, doesn't shell out to git on every single redraw.
+# Print the basename of $1 (default: $PWD) followed by a two-cell suffix: "* "
+# when it is a dirty git work tree, "  " otherwise. Same width either way, so the
+# status bar doesn't shift when a tree goes dirty. The git check is cached for
+# $ttl seconds so the tmux status bar, which redraws every second, doesn't shell
+# out to git on every single redraw.
 set -eu
 
 dir=${1:-$PWD}
@@ -29,4 +31,5 @@ if [ $((now - ts)) -ge "$ttl" ]; then
     printf '%s %s\n' "$now" "$flag" >"$cache"
 fi
 
-printf '%s%s' "$name" "$flag"
+[ "$flag" = "*" ] && suffix="* " || suffix="  "
+printf '%s%s' "$name" "$suffix"
