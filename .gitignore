@@ -1,3 +1,4 @@
+**/.claude/settings.local.json
 *.zcompdump
 *.zcompdump.zwc
 .mypy_cache/

@@ -4,20 +4,32 @@ zsh, tmux, neovim, sway/waybar and a set of scripts, managed with GNU Stow.
 
 ## Install
 
-Prerequisites: `git`, `stow`, `zsh`, `neovim`, `nnn`, `ripgrep`, `fd`, `fzf`,
-`jq`, and your ssh keys in `~/.ssh`.
-
 ```sh
+sudo apt-get install -y git
 git clone https://github.com/emilel/dotfiles ~/dotfiles
 cd ~/dotfiles
-./bootstrap.sh          # stow everything, clone zsh plugins, fix up the env
-chsh -s "$(which zsh)"  # make zsh the login shell
+./bootstrap.sh
 ```
 
-`bootstrap.sh` is idempotent — re-run it any time. Open `nvim` once to let lazy
-sync and `:Mason` install language servers.
+`bootstrap.sh` asks what to do, or takes the mode directly:
+
+```sh
+./bootstrap.sh terminal          # terminal programs + dotfiles (wsl, servers)
+./bootstrap.sh gui               # + sway/waybar/foot/mako/zathura + fonts
+./bootstrap.sh dotfiles [pkg..]  # stow only -- all packages, or the ones given
+```
+
+There are no other prerequisites: it apt-installs what it can and pulls neovim,
+fzf, stylua and lazygit from github releases (apt's are too old). It's
+idempotent — re-run it any time. It makes zsh the login shell.
+
+Afterwards: the stowed gitconfig rewrites github https urls to ssh, so put your
+ssh keys in `~/.ssh`, then open `nvim` once to let lazy sync and `:Mason`
+install language servers.
 
 Machine-specific zsh lives in `~/.setup/*.zsh` (gitignored, sourced at startup).
+WSL is detected automatically (skips wayland tools, stows the `clip.exe`
+clipboard shim).
 
 ## Develop
 
@@ -31,9 +43,6 @@ just format      # shfmt + stylua
 
 ## Notes
 
-- **GUI**: install `sway`, `foot`, `waybar`, `mako`, `wl-clipboard`, `bemenu`,
-  `grim`, `slurp`, then `bootstrap.sh` stows the configs. Wifi via `nmtui`,
-  bluetooth via the waybar widget (`bluetoothctl` / optional `bluetuith`).
-- **Font**: `zsh font/install_source_code_pro.zsh`.
-- **nvidia + sway**: `sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop`.
+- **nvidia + sway**:
+  `sudo sed -i '/Exec=sway/s/$/ --unsupported-gpu/' /usr/share/wayland-sessions/sway.desktop`.
 - **Sample git hooks**: `sample_hooks/`.

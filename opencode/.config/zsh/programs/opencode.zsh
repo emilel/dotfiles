@@ -1,1 +1,1 @@
-export PATH=/home/emil/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH

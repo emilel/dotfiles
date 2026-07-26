@@ -5,8 +5,9 @@ source <(fzf --zsh)
 # use tmux by default
 export FZF_TMUX=1
 
-# use hidden files by default
-export FZF_DEFAULT_COMMAND='fd --hidden --cycle'
+# use hidden files by default (--cycle is an fzf flag, fd rejects it)
+export FZF_DEFAULT_COMMAND='fd --hidden'
+export FZF_DEFAULT_OPTS='--cycle'
 
 # unbind default key bindings
 bindkey -rM emacs '\ec'
