@@ -131,6 +131,13 @@ stow_dotfiles() { # packages...
     # Machine-specific zsh -- sourced by .zshrc and on PATH.
     mkdir -p "$HOME/.setup"
 
+    # A pre-existing real ~/.gitconfig (say, from `git config --global` before
+    # this ran) blocks stowing the git package -- keep it, out of the way.
+    if [ -f "$HOME/.gitconfig" ] && [ ! -L "$HOME/.gitconfig" ]; then
+        log "moving existing ~/.gitconfig to ~/.setup/gitconfig.pre-stow"
+        mv "$HOME/.gitconfig" "$HOME/.setup/gitconfig.pre-stow"
+    fi
+
     # Must exist before stowing claude/, or stow folds all of ~/.claude
     # (runtime state, credentials) into the repo.
     mkdir -p "$HOME/.claude"
