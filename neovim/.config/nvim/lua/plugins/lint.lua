@@ -27,11 +27,18 @@ return {
 				return
 			end
 
+			-- Run the linter from the project root that owns the venv, not from
+			-- Neovim's cwd. In a monorepo the config a linter needs (pylint's
+			-- Django plugin, mypy's settings) lives in that project's
+			-- pyproject.toml; discovered from the wrong cwd it silently runs
+			-- unconfigured and reports false errors (e.g. `.objects` no-member).
+			local project_root = vim.fs.dirname(venv)
 			local enabled = {}
 			for _, name in ipairs({ "mypy", "pylint" }) do
 				local bin = venv .. "/bin/" .. name
 				if vim.fn.executable(bin) == 1 then
 					lint.linters[name].cmd = bin
+					lint.linters[name].cwd = project_root
 					table.insert(enabled, name)
 				end
 			end
