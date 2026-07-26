@@ -28,6 +28,7 @@ keep the *logic* tested with stubs, and leave a manual checklist (bottom).
 | `neovim/` | self-managed lua config with its own `tests/`. |
 | `tests/` | bats suite + `lint.sh` for all shell. |
 | `dprint/` | `~/.config/dprint` markdown formatter config. |
+| `claude/` | `~/.claude/settings.json` — Claude Code settings + hooks (tmux bell colors). |
 
 ## Where things go
 

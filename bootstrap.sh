@@ -23,6 +23,10 @@ rm -f "$HOME/.config/zsh/.zcompdump" "$HOME/.config/zsh/.zcompdump.zwc"
 # Machine-specific zsh -- sourced by .zshrc and on PATH.
 mkdir -p "$HOME/.setup"
 
+# Must exist before stowing claude/, or stow folds all of ~/.claude (runtime
+# state, credentials) into the repo.
+mkdir -p "$HOME/.claude"
+
 # zsh plugins (plugins.zsh also self-heals at runtime).
 log "cloning missing zsh plugins"
 clone() { [ -d "$HOME/.zsh/$2" ] || git clone --depth 1 "https://github.com/$1/$2" "$HOME/.zsh/$2"; }
@@ -38,7 +42,7 @@ command -v just >/dev/null || sudo apt-get install -y just || true
 # Restow: creates ~/.config/zsh/exit (fixes M-r), ~/.tmux_templates, ~/.config/dprint,
 # and refolds ~/.config/zsh/programs after the prune.
 log "stowing"
-stow -d "$DOTFILES" -t "$HOME" -R zsh scripts tmux neovim dprint fzf mason nnn opencode
+stow -d "$DOTFILES" -t "$HOME" -R zsh scripts tmux neovim dprint fzf mason nnn opencode claude
 
 # Self-test.
 log "checks:"
