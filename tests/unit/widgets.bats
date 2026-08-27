@@ -38,6 +38,19 @@ setup() { W="$REPO_ROOT/zsh/.config/zsh/commands/widgets.zsh"; }
     assert_line --index 2 --partial 'go_to_worktree'
 }
 
+@test "in a tmux popup M-r is bound to quit, in both keymaps" {
+    run zsh -c "TMUX_POPUP=1; source '$W'
+        bindkey '^[r'; bindkey -M vicmd '^[r'"
+    assert_success
+    assert_line --index 0 --partial 'popup_close'
+    assert_line --index 1 --partial 'popup_close'
+}
+
+@test "outside a popup M-r stays unbound" {
+    run zsh -c "unset TMUX_POPUP; source '$W'; bindkey '^[r'"
+    refute_output --partial 'popup_close'
+}
+
 @test "^H targets the repo root from a subdirectory" {
     mk_git_repo "$BATS_TEST_TMPDIR/repo"
     mkdir -p "$BATS_TEST_TMPDIR/repo/a/b"

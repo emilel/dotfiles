@@ -119,3 +119,14 @@ run_tmux_setup() {
 zle -N run_tmux_setup
 bindkey -M viins '^U' run_tmux_setup
 bindkey -M vicmd '^U' run_tmux_setup
+
+# M-r closes the M-r scratch popup. A tmux popup swallows every key, so only
+# this shell exiting can close it, and ^D only EOFs on an empty line — a stray
+# half-typed line would otherwise wedge the whole client. TMUX_POPUP is set by
+# the binding in tmux.conf, so this is dead weight in a normal shell.
+if [[ -n $TMUX_POPUP ]]; then
+    popup_close() { exit }
+    zle -N popup_close
+    bindkey '^[r' popup_close
+    bindkey -M vicmd '^[r' popup_close
+fi
