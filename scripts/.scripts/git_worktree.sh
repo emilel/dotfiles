@@ -172,10 +172,20 @@ cmd_prune_merged() {
         done
 }
 
+# fzf-pick a worktree and print its path. Picks on the branch, not the dir: a
+# slashed branch lands in a dir named for it only if this script made the
+# worktree (feature/x -> feature/x); worktrees made elsewhere flatten it
+# (feature-x), so the dir name is not something to read a branch off. The
+# harness's throwaway agent worktrees under .claude/worktrees/ are hidden;
+# bare entries have no branch line at all, so they drop out for free.
 cmd_switch() {
-    path=$(git worktree list | grep -v ' (bare)$' | awk '{print $1}' | fzf) || exit 1
-    [ -n "$path" ] || exit 1
-    printf '%s\n' "$path"
+    line=$(git worktree list --porcelain | awk '
+        /^worktree /  { p = substr($0, 10); skip = (p ~ /\/\.claude\/worktrees\//) }
+        /^branch /    { b = $2; sub(/^refs\/heads\//, "", b); if (!skip) print b "\t" p }
+        /^detached$/  { if (!skip) print "(detached)\t" p }
+    ' | fzf --delimiter='\t' --with-nth=1) || exit 1
+    [ -n "$line" ] || exit 1
+    printf '%s\n' "$line" | cut -f2-
 }
 
 cmd_list() {

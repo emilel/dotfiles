@@ -98,3 +98,38 @@ clone_proj() {
     assert_success
     assert_output "$PROJ/main"
 }
+
+# An fzf that records what it was offered, so the picker's menu can be asserted.
+record_fzf() {
+    cat >"$BATS_TEST_TMPDIR/bin/fzf" <<'EOF'
+#!/bin/sh
+tee "$FZF_MENU" | head -n1
+EOF
+    chmod +x "$BATS_TEST_TMPDIR/bin/fzf"
+    export FZF_MENU="$BATS_TEST_TMPDIR/menu"
+    PATH="$BATS_TEST_TMPDIR/bin:$PATH"
+}
+
+@test "switch offers branch names, keeping the path in a hidden second column" {
+    mkdir -p "$BATS_TEST_TMPDIR/bin"
+    record_fzf
+    clone_proj
+    sh "$WT" new feature/x >/dev/null 2>&1
+    run sh "$WT" switch
+    assert_success
+    run cat "$FZF_MENU"
+    assert_line "main	$PROJ/main"
+    assert_line "feature/x	$PROJ/feature/x"
+}
+
+@test "switch hides the harness's throwaway .claude/worktrees agents" {
+    mkdir -p "$BATS_TEST_TMPDIR/bin"
+    record_fzf
+    clone_proj
+    git worktree add -q -b agent-tmp "$PROJ/main/.claude/worktrees/agent-1" 2>/dev/null
+    run sh "$WT" switch
+    assert_success
+    assert_output "$PROJ/main"
+    run cat "$FZF_MENU"
+    refute_output --partial ".claude/worktrees"
+}
