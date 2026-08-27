@@ -1,6 +1,14 @@
 # #!/bin/bash
 
-source <(fzf --zsh)
+# `fzf --zsh` is a fork per shell for output that only changes when fzf itself
+# does; cache it and regenerate when the binary is newer than the cache.
+FZF_INIT="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fzf-init.zsh"
+if [[ ! -s "$FZF_INIT" || $commands[fzf] -nt "$FZF_INIT" ]]; then
+    [[ -d "${FZF_INIT:h}" ]] || mkdir -p "${FZF_INIT:h}"
+    fzf --zsh >|"$FZF_INIT"
+fi
+source "$FZF_INIT"
+unset FZF_INIT
 
 # use tmux by default
 export FZF_TMUX=1
