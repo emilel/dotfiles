@@ -15,6 +15,32 @@ setup() {
     assert [ -f "$XDG_CACHE_HOME/zsh/zcompdump" ]
 }
 
+@test ".zshenv disables the distro's compinit so ours is the only one" {
+    run --separate-stderr zsh -c "source '$REPO_ROOT/zsh/.zshenv'
+        print -r -- \$skip_global_compinit"
+    assert_success
+    assert_output "1"
+}
+
+@test "a fresh compdump takes the -C path, so compinit leaves it alone" {
+    D="$XDG_CACHE_HOME/zsh/zcompdump"
+    zsh -c "source '$B'" 2>/dev/null
+    echo '# sentinel' >>"$D"
+    run --separate-stderr zsh -c "source '$B'"
+    assert_success
+    run grep -c '# sentinel' "$D"
+    assert_output "1"
+}
+
+@test "a compdump older than a day is re-audited and its mtime refreshed" {
+    D="$XDG_CACHE_HOME/zsh/zcompdump"
+    zsh -c "source '$B'" 2>/dev/null
+    touch -d '25 hours ago' "$D"
+    run --separate-stderr zsh -c "source '$B'"
+    assert_success
+    assert [ -n "$(find "$D" -mmin -5)" ]
+}
+
 @test "behavior.zsh enables vi insert mode bindings" {
     run zsh -c "source '$B'; bindkey -lL main | grep -q viins && echo ok"
     assert_success
