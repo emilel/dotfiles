@@ -1,5 +1,20 @@
 {
-  "model": "fable",
+  "permissions": {
+    "deny": [
+      "Bash(sudo rm *)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f *)",
+      "Bash(docker compose down -v*)",
+      "Bash(docker volume rm *)",
+      "Read(**/.env)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -64,5 +79,37 @@
   "preferredNotifChannel": "terminal_bell",
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": false
+  "agentPushNotifEnabled": false,
+  "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(rm:-rf secrets/*)"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Primary use of Claude Code**: software development",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: Public — emilel/dotfiles (github.com)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured — repo has a gitignored `secrets/` pattern and test fixtures (`hooks/secrets_staged`, `tests/scripts/secrets_staged.bats`) indicating secret-staging is a known concern in this repo",
+      "**Default / protected branches**: master (default); no rulesets or protected branches listed via gh",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo (emilel/dotfiles) and its remote (ssh://github.com/emilel/dotfiles) only — no additional orgs configured",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar. Note: repo-local `secrets/` (gitignored) and `hooks/secrets_staged` / `tests/scripts/secrets_staged.bats` indicate secret-staging is actively guarded against in this repo — treat any matched content as sensitive",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: personal dotfiles management (zsh/tmux/neovim/sway config, bootstrap scripting) — routine under ~/dotfiles/",
+      "**Trusted repo**: /home/emil/dotfiles and its remote ssh://github.com/emilel/dotfiles (public) — since this repo is public, only this repo's own work is fine to push here; ported/repointed content or material first read from outside this session's repo is not; secrets and other sensitive data are never cleared into it regardless of visibility",
+      "**Org-specific CLIs**: None configured — repo uses standard system tooling (apt, dpkg, systemctl, journalctl, swaymsg, bluetoothctl, stow, just)"
+    ]
+  }
 }
