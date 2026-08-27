@@ -57,28 +57,57 @@ zle -N redirect_to_stdout
 bindkey '^N' redirect_to_stdout
 bindkey -M vicmd '^N' redirect_to_stdout
 
-# Jump to the repo root; at the root already, jump to the dir above the repo.
-go_to_root() {
-    zle push-input
-    local repo_root common_dir
-    if repo_root=$(git rev-parse --show-toplevel 2>/dev/null); then
-        if [[ $PWD == $repo_root ]]; then
-            common_dir=$(git rev-parse --git-common-dir | xargs dirname)
-            cd "$common_dir" || return
-        else
-            cd "$repo_root" || return
-        fi
-    else
-        common_dir=$(git rev-parse --git-common-dir | xargs dirname) || return
-        cd "$common_dir" || return
+# Where ^H jumps from $PWD (pure helper, echoes the dir): the repo root, or —
+# standing on it already — the dir holding the repo's common .git, i.e. the bare
+# repo a worktree hangs off. Fails, silently, outside a repo.
+_repo_jump_target() {
+    local root
+    if root=$(git rev-parse --show-toplevel 2>/dev/null) && [[ $PWD != $root ]]; then
+        print -r -- "$root"
+        return
     fi
-    zle get-line
-    zle reset-prompt
+    root=$(git rev-parse --git-common-dir 2>/dev/null) || return 1
+    print -r -- "${root:A:h}"
+}
+
+# Jump to the repo root; at the root already, jump to the dir above the repo.
+# Runs a real `cd` line instead of cd'ing inside the widget: pure fills the
+# branch in from precmd, which reset-prompt does not re-run, so an in-widget cd
+# leaves the old branch on screen. accept-line draws a fresh prompt below rather
+# than over the old one; push-input parks the half-typed line for zsh to restore
+# after the cd.
+go_to_root() {
+    local dir
+    dir=$(_repo_jump_target) || return
+    zle push-input
+    BUFFER="cd -- ${(q)dir}"
+    zle accept-line
 }
 zle -N go_to_root
 bindkey '^H' go_to_root
 bindkey -M viins '^H' go_to_root
 bindkey -M vicmd '^H' go_to_root
+
+# Jump to another worktree of this repo (same picker as `gw`). Silent outside a
+# repo — git's "not a git repository" would land mid-prompt; fzf draws on the
+# tty, so hiding stderr doesn't hide the picker. Accepts a real `cd` for the
+# reason ^H does — the branch pure shows comes from precmd — and this jump
+# changes branch by definition. A cancelled picker takes the line back instead.
+go_to_worktree() {
+    zle push-input
+    local d
+    if d=$(git_worktree.sh switch 2>/dev/null); then
+        BUFFER="cd -- ${(q)d}"
+        zle accept-line
+    else
+        zle get-line
+        zle reset-prompt
+    fi
+}
+zle -N go_to_worktree
+bindkey '^T' go_to_worktree
+bindkey -M viins '^T' go_to_worktree
+bindkey -M vicmd '^T' go_to_worktree
 
 # make ctrl-w delete the previous word
 bindkey -M viins '^W' backward-kill-word

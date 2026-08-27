@@ -9,12 +9,14 @@ setup() {
     export XDG_CACHE_HOME="$BATS_TEST_TMPDIR/cache"
     mkdir -p "$HOME"
     Z="$REPO_ROOT/zsh/.config/zsh"
-    # vi-mode first (sets the main keymap to viins), then widgets, then fzf binds.
+    # .zshrc's order: settings (vi-mode, sets the main keymap to viins), then
+    # programs/ (fzf, which unbinds ^T among others), then commands/ (widgets).
+    # widgets last is what lets ^T survive fzf's unbind.
     # NB: zsh doesn't word-split unquoted expansions, so build the -M flag as an
     # array rather than `${1:+-M $1}`.
     SRC="source '$Z/settings/behavior.zsh'
-         source '$Z/commands/widgets.zsh'
          source '$REPO_ROOT/fzf/.config/zsh/programs/fzf.zsh'
+         source '$Z/commands/widgets.zsh'
          check() {
              local map=\$1 key=\$2 want=\$3; local -a flag
              [[ -n \$map ]] && flag=(-M \$map)
@@ -33,7 +35,10 @@ setup() {
         check vicmd '^H' go_to_root
         check viins '^W' backward-kill-word
         check vicmd '^W' backward-kill-word
-        check viins '^U' run_tmux_setup"
+        check viins '^U' run_tmux_setup
+        check '' '^T' go_to_worktree
+        check viins '^T' go_to_worktree
+        check vicmd '^T' go_to_worktree"
     assert_success
 }
 
