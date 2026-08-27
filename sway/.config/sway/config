@@ -1,7 +1,7 @@
 # SETUP
 
-## keyboard layout
-set $keyboard_layout us
+## keyboard layout -- se by default, us on the programmable boards (see INPUT)
+set $keyboard_layout se
 
 ## monitors + workspaces -- adaptive: external left, laptop right (also $mod+Shift+m)
 ## exec_always so it re-runs on every reload, not just at login
@@ -72,8 +72,22 @@ input type:keyboard {
 }
 
 input "1:1:AT_Translated_Set_2_keyboard" {
-    xkb_layout "se"
     xkb_options caps:swapescape
+}
+
+## programmable boards -- their own layout lives in the firmware, so: us.
+## sway has no wildcard for identifiers, hence one block per interface;
+## identifiers for unplugged devices are kept and applied on connect.
+input "5824:10203:Go60_Keyboard" {
+    xkb_layout "us"
+}
+
+input "5824:10203:MoErgo_Go60_Left_Keyboard" {
+    xkb_layout "us"
+}
+
+input "10730:258:Kinesis_Advantage2_Keyboard" {
+    xkb_layout "us"
 }
 
 input $touchpad {
