@@ -1,0 +1,4 @@
+#!/bin/sh
+# Record notify-send calls to $NOTIFY_LOG, one line per call.
+[ -n "${NOTIFY_LOG:-}" ] && printf '%s\n' "$*" >>"$NOTIFY_LOG"
+exit 0

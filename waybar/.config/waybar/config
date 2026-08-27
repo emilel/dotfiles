@@ -52,6 +52,12 @@
     "on-click": "pavucontrol -t 3",
     "tooltip": false
   },
+  "custom/claude": {
+    "format": "TB {}",
+    "exec": "~/.scripts/tmux_claude_status.sh",
+    "interval": 2,
+    "tooltip": false
+  },
   "custom/display": {
     "format": "DPY {}",
     "exec": "~/.scripts/display_toggle.sh status",

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] || exit 0; jq -r '.message // \"\"' | grep -qi permission && tmux set -w -t \"$TMUX_PANE\" @claude red 2>/dev/null || true"
+            "command": "jq -r '.message // \"\"' | grep -qi permission && \"$HOME/.scripts/claude_notify.sh\" red || true"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] || exit 0; [ \"$(tmux show -wv -t \"$TMUX_PANE\" @claude 2>/dev/null)\" = red ] || tmux set -w -t \"$TMUX_PANE\" @claude green 2>/dev/null || true"
+            "command": "\"$HOME/.scripts/claude_notify.sh\" green || true"
           }
         ]
       }
