@@ -131,6 +131,8 @@ font pango:SourceCodePro Regular 10
 exec nm-applet
 
 ## notifications
+# mako needs no exec: it's dbus-activated (fr.emersion.mako.service) and the
+# package enables a systemd user unit. config in mako/.config/mako/config.
 
 # DESKTOP
 

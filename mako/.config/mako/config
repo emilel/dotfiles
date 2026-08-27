@@ -1,0 +1,9 @@
+# notification daemon. dbus-activated, no exec in the sway config.
+# reload after editing: makoctl reload
+# the colours are mako's own (#285577 blue on #4C7899 border) -- left alone on
+# purpose, they read better than the black-and-white the bar and sway use.
+font=Source Code Pro 10
+width=400
+padding=10
+layer=overlay
+default-timeout=10000

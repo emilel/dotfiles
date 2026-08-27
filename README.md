@@ -15,7 +15,7 @@ cd ~/dotfiles
 
 ```sh
 ./bootstrap.sh terminal          # terminal programs + dotfiles (wsl, servers)
-./bootstrap.sh gui               # + sway/waybar/foot/zathura + fonts
+./bootstrap.sh gui               # + sway/waybar/foot/zathura/mako + fonts
 ./bootstrap.sh dotfiles [pkg..]  # stow only -- all packages, or the ones given
 ```
 
