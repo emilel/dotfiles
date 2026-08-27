@@ -57,9 +57,25 @@ else
 fi
 right=$laptop
 
-for ws in 1 2 3 7 8 9; do swaymsg workspace "$ws" output "$left"; done
-for ws in 4 5 6 10; do swaymsg workspace "$ws" output "$right"; done
+for ws in 1 2 3 7 8 9; do swaymsg workspace "$ws" output "$left" >/dev/null; done
+for ws in 4 5 6 10; do swaymsg workspace "$ws" output "$right" >/dev/null; done
 
-wp() { [ -e "$2" ] && swaymsg output "$1" bg "$2" fill; }
+# `workspace N output X` only binds workspaces that don't exist yet. The ones sway
+# auto-created at login (1 on whichever output came up first, 2 on the other) stay
+# put -- that's how 2 ends up left of 1. Move the strays to where they belong.
+wss=$(swaymsg -t get_workspaces)
+focused=$(printf '%s' "$wss" | jq -r 'first(.[]|select(.focused)|.name) // empty')
+printf '%s' "$wss" | jq -r '.[]|"\(.num) \(.output) \(.name)"' | while read -r num out name; do
+    case $num in
+        4 | 5 | 6 | 10) want=$right ;;
+        *) want=$left ;;
+    esac
+    [ "$out" = "$want" ] && continue
+    swaymsg workspace "$name" >/dev/null
+    swaymsg move workspace to output "$want" >/dev/null
+done
+[ -z "$focused" ] || swaymsg workspace "$focused" >/dev/null
+
+wp() { [ -e "$2" ] && swaymsg output "$1" bg "$2" fill >/dev/null; }
 wp "$left" "$HOME/wallpapers/wallpaper_1.jpg" || true
 wp "$right" "$HOME/wallpapers/wallpaper_2.jpg" || true
