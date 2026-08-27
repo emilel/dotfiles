@@ -1,0 +1,16 @@
+#!/bin/sh
+# Fake xdg-open. Records its args in $XDG_OPEN_LOG; $XDG_OPEN_MODE picks the
+# behaviour: fail = a launcher that dies with a message, linger = one that
+# stays alive chattering like a real GUI app, anything else = launched fine.
+[ -n "${XDG_OPEN_LOG:-}" ] && printf '%s\n' "$*" >>"$XDG_OPEN_LOG"
+case "${XDG_OPEN_MODE:-ok}" in
+    fail)
+        echo "xdg-open: no method available for $*" >&2
+        exit 3
+        ;;
+    linger)
+        echo "Gtk-Message: Failed to load module"
+        sleep 6
+        ;;
+esac
+exit 0

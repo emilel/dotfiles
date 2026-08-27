@@ -1,22 +1,14 @@
 #!/bin/zsh
 
-# Pick the clipboard command (copyr = "copy raw") and the file opener based on
-# the display server.
+# Pick the clipboard command (copyr = "copy raw") based on the display server.
+# The file opener is `open` -> file_open.sh, aliased in programs/init_aliases.zsh
+# so it exists whatever the session turns out to be.
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     alias copyr='wl-copy'
-    open() {
-        command open "$@" >/dev/null 2>&1 &disown
-    }
 elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
     alias copyr='xclip -selection clipboard'
-    open() {
-        command open "$@" >/dev/null 2>&1 &disown
-    }
 elif grep -qi microsoft /proc/version 2>/dev/null; then
     alias copyr='clip.exe'
-    open() {
-        explorer.exe "$@"
-    }
 else
     alias copyr='echo "No clipboard found"'
 fi
