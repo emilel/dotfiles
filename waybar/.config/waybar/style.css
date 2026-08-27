@@ -49,8 +49,9 @@ button:hover {
 }
 
 /* padding and spacing between modules */
+#custom-claude,
 #custom-display,
-#network,
+#custom-network,
 #bluetooth,
 #backlight,
 #wireplumber,
@@ -65,7 +66,7 @@ button:hover {
   color: #888888;
 }
 
-#network {
+#custom-network {
   color: #e0d176;
 }
 

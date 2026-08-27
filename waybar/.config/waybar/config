@@ -6,8 +6,9 @@
     "sway/mode"
   ],
   "modules-right": [
+    "custom/claude",
     "custom/display",
-    "network",
+    "custom/network",
     "bluetooth",
     "backlight",
     "wireplumber",
@@ -66,10 +67,10 @@
     "on-click": "foot --override=locked-title=yes --title waybar-menu -e ~/.scripts/bluetooth_menu.sh",
     "on-click-right": "foot --override=locked-title=yes --title waybar-menu -e bluetuith"
   },
-  "network": {
-    "format-wifi": "{essid} ({signaldBm} dBm)",
-    "format-ethernet": "ETH",
-    "format-disconnected": "OFFL",
+  "custom/network": {
+    "format": "{}",
+    "exec": "~/.scripts/net_status.sh",
+    "interval": 5,
     "tooltip": false,
     "on-click": "foot --override=locked-title=yes --title waybar-menu -e ~/.scripts/wifi_menu.sh",
     "on-click-right": "foot --override=locked-title=yes --title waybar-menu -e nmtui"

@@ -1,7 +1,9 @@
 #!/bin/sh
-# Stub nmcli: `... dev wifi list ...` -> $WIFI_SSIDS; everything else logged.
+# Stub nmcli: `... dev wifi list ...` -> $WIFI_SSIDS, `... CONNECTIVITY ...` ->
+# $NM_CONNECTIVITY (default full); everything else logged.
 case "$*" in
     *"dev wifi list"*) printf '%s\n' "${WIFI_SSIDS:-}" ;;
+    *CONNECTIVITY*) printf '%s\n' "${NM_CONNECTIVITY:-full}" ;;
     *)
         [ -n "${NMCLI_LOG:-}" ] && printf '%s\n' "$*" >>"$NMCLI_LOG"
         exit 0
