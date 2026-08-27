@@ -45,3 +45,10 @@ setup() {
     run zsh -c "source '$B'; bindkey -lL main | grep -q viins && echo ok"
     assert_success
 }
+
+@test "^D deletes rather than listing choices, so it can't hang the prompt" {
+    run zsh -c "source '$B'; bindkey -M viins '^D'; bindkey -M vicmd '^D'"
+    assert_success
+    assert_output --partial "delete-char"
+    refute_output --partial "list-choices"
+}

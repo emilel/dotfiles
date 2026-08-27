@@ -7,6 +7,11 @@ KEYTIMEOUT=1
 # backspace always deletes
 bindkey "^?" backward-delete-char
 
+# vi mode binds ^D to list-choices, which hangs on "show all N possibilities?".
+# Plain delete instead — an empty line still EOFs out, like any other terminal.
+bindkey -M viins "^D" delete-char
+bindkey -M vicmd "^D" delete-char
+
 # don't yank into the clipboard when pressing x in normal mode
 bindkey -M vicmd 'x' vi-delete-char
 
