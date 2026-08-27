@@ -95,19 +95,14 @@ return {
 			desc = "Changed files to quickfix",
 		},
 		{
-			"<c-g><c-m>",
-			"<cmd>silent !git checkout master -- %<cr>",
-			desc = "Revert to master",
-		},
-		{
-			"]h",
+			"<c-g><c-n>",
 			function()
 				require("gitsigns").nav_hunk("next")
 			end,
 			desc = "Next hunk",
 		},
 		{
-			"[h",
+			"<c-g><c-m>",
 			function()
 				require("gitsigns").nav_hunk("prev")
 			end,
@@ -126,7 +121,7 @@ return {
 	opts = {
 		sign_priority = 11,
 		-- Off by default upstream: without it a brand-new file has no signs, no
-		-- ]h/[h, and never shows up in <c-g><c-h>.
+		-- <c-g><c-n>/<c-g><c-m>, and never shows up in <c-g><c-h>.
 		attach_to_untracked = true,
 	},
 }
