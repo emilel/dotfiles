@@ -4,3 +4,4 @@
 .mypy_cache/
 tests/.deps/
 .claude/
+secrets/
