@@ -21,6 +21,9 @@ set $touchpad "1739:31251:DLL07BE:01_06CB:7A13_Touchpad"
 ## modifier key
 set $mod Mod4
 
+## drag windows from anywhere: $mod+left = move, $mod+right = resize
+floating_modifier $mod normal
+
 ## directions
 set $left h
 set $down j
@@ -54,6 +57,11 @@ for_window [ title="prompt" ] \
     move position center, \
     border none, \
     focus
+
+## android emulator: device window and its side toolbar are two X windows --
+## float both so they drag freely instead of the toolbar eating a tiling slot
+for_window [ class="Emulator" ] \
+    floating enable
 
 ## waybar popup menus (wifi/bluetooth pickers, nmtui, bluetuith)
 for_window [ title="waybar-menu" ] \
@@ -181,6 +189,7 @@ bindsym ctrl+$mod+m exec firefox
 
 ## take screenshot of selection
 bindsym ctrl+$mod+p exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+g exec grim -g "$(slurp)" - | wl-copy
 
 ## take screen of focused monitor
 bindsym ctrl+$mod+shift+p exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy
@@ -207,6 +216,10 @@ bindsym $mod+Space floating toggle
 
 ## toggle floating or tiled focus
 bindsym $mod+delete focus mode_toggle
+
+## stash a window out of sight / bring it back (emulator toolbar, mostly)
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
 
 # WORKSPACES
 
