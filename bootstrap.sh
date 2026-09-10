@@ -92,6 +92,18 @@ install_terminal_programs() {
             tar xz -C "$BIN" gitleaks
     fi
 
+    # nvim-treesitter's main branch builds every parser with the tree-sitter
+    # CLI -- no CLI, no highlighting. apt's is far too old, and npm's is the
+    # wrong one (a JS reimplementation).
+    if ! command -v tree-sitter >/dev/null ||
+        ! ver_ge "$(tree-sitter --version | cut -d' ' -f2)" 0.26.1; then
+        log "tree-sitter cli (github release)"
+        tag=$(latest_tag tree-sitter/tree-sitter)
+        curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/download/$tag/tree-sitter-linux-x64.gz" |
+            gunzip >"$BIN/tree-sitter"
+        chmod +x "$BIN/tree-sitter"
+    fi
+
     if ! command -v dprint >/dev/null && [ ! -x "$HOME/.dprint/bin/dprint" ]; then
         log "dprint (official installer)"
         curl -fsSL https://dprint.dev/install.sh | sh -s >/dev/null 2>&1

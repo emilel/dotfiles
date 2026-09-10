@@ -11,6 +11,16 @@ vim.keymap.set("n", "<space>v", "^v$h", { desc = "Select line" })
 vim.keymap.set("n", "<space>V", "gg0VG", { desc = "Select entire file" })
 vim.keymap.set("n", "gp", "`[v`]", { desc = "Select pasted text" })
 
+-- Grow/shrink the selection by syntax node. Neovim 0.13 has this built in as
+-- `an` (parent node) and `in` (first child) in visual mode -- nvim-treesitter's
+-- `master` module that used to provide it is gone -- so these are remaps onto
+-- the defaults, which is why they are `remap`. `+` from normal mode opens a
+-- selection first; from there `+` widens and `-` narrows.
+-- <backspace> is reserved for toggling folds (see keymaps/navigation.lua).
+vim.keymap.set("n", "+", "van", { remap = true, desc = "Select the node under the cursor" })
+vim.keymap.set("x", "+", "an", { remap = true, desc = "Grow selection to the parent node" })
+vim.keymap.set("x", "-", "in", { remap = true, desc = "Shrink selection to the child node" })
+
 -- keep the cursor still after yanking a visual selection
 vim.keymap.set("x", "y", "ygv<esc>", { desc = "Keep cursor when copying selection" })
 vim.keymap.set("x", "L", "$h", { desc = "Go to end of line" })
