@@ -13,35 +13,42 @@ setup() {
     git -C "$ORIGIN" commit -q --allow-empty -m commit2 # main = commit2
 }
 
-# clone proj and leave the shell sitting in its default worktree
+# clone proj and leave the shell sitting in the main checkout
 clone_proj() {
     (cd "$BATS_TEST_TMPDIR" && sh "$WT" clone "$ORIGIN" proj) >/dev/null 2>&1
-    cd "$PROJ/main"
+    cd "$PROJ"
 }
 
-@test "clone builds the bare layout and lands in the default worktree" {
+@test "clone lands in the main checkout, on the default branch" {
     cd "$BATS_TEST_TMPDIR"
     run --separate-stderr sh "$WT" clone "$ORIGIN" proj # path on stdout, git chatter on stderr
     assert_success
-    assert_output "$PROJ/main"
-    assert [ -d "$PROJ/.bare" ]
-    assert [ -f "$PROJ/.git" ]
-    assert [ -d "$PROJ/main" ]
+    assert_output "$PROJ"
+    assert [ -d "$PROJ/.git" ]
+    run git -C "$PROJ" branch --show-current
+    assert_output "main"
 }
 
-@test "clone sets the default worktree to track origin" {
+@test "clone sets the main checkout to track origin" {
     clone_proj
-    run git -C "$PROJ/main" rev-parse --abbrev-ref '@{upstream}'
+    run git -C "$PROJ" rev-parse --abbrev-ref '@{upstream}'
     assert_output "origin/main"
 }
 
-@test "new creates a branch in a dir that mirrors the (slashed) branch name" {
+@test "clone keeps .worktrees/ out of git status" {
+    clone_proj
+    sh "$WT" new wip >/dev/null 2>&1
+    run git -C "$PROJ" status --porcelain
+    assert_output ""
+}
+
+@test "new puts a branch under .worktrees/, slashes flattened" {
     clone_proj
     run sh "$WT" new claude/feat
     assert_success
-    assert_output "$PROJ/claude/feat"
-    assert [ -d "$PROJ/claude/feat" ]
-    run git -C "$PROJ/claude/feat" branch --show-current
+    assert_output "$PROJ/.worktrees/claude-feat"
+    assert [ -d "$PROJ/.worktrees/claude-feat" ]
+    run git -C "$PROJ/.worktrees/claude-feat" branch --show-current
     assert_output "claude/feat"
 }
 
@@ -51,15 +58,24 @@ clone_proj() {
     run sh "$WT" new wip
     assert_success
     # the new branch must sit on origin's *current* tip, not the stale local one
-    assert_equal "$(git -C "$PROJ/wip" rev-parse HEAD)" "$(git -C "$ORIGIN" rev-parse main)"
+    assert_equal "$(git -C "$PROJ/.worktrees/wip" rev-parse HEAD)" \
+        "$(git -C "$ORIGIN" rev-parse main)"
+}
+
+@test "new from inside a worktree hangs the next one off the main checkout" {
+    clone_proj
+    cd "$(sh "$WT" new first 2>/dev/null)"
+    run sh "$WT" new second
+    assert_success
+    assert_output "$PROJ/.worktrees/second" # not nested under first/
 }
 
 @test "add attaches an existing origin branch with tracking" {
     clone_proj
     run sh "$WT" add topic
     assert_success
-    assert_output "$PROJ/topic"
-    run git -C "$PROJ/topic" rev-parse --abbrev-ref '@{upstream}'
+    assert_output "$PROJ/.worktrees/topic"
+    run git -C "$PROJ/.worktrees/topic" rev-parse --abbrev-ref '@{upstream}'
     assert_output "origin/topic"
 }
 
@@ -68,35 +84,42 @@ clone_proj() {
     git -C "$ORIGIN" commit -q --allow-empty -m commit3
     run sh "$WT" sync
     assert_success
-    assert_equal "$(git -C "$PROJ/main" rev-parse HEAD)" "$(git -C "$ORIGIN" rev-parse main)"
+    assert_equal "$(git -C "$PROJ" rev-parse HEAD)" "$(git -C "$ORIGIN" rev-parse main)"
 }
 
-@test "remove deletes the current worktree and prints the project root" {
+@test "remove deletes the current worktree and prints the main checkout" {
     clone_proj
-    sh "$WT" new wip >/dev/null 2>&1
-    cd "$PROJ/wip"
+    cd "$(sh "$WT" new wip 2>/dev/null)"
     run sh "$WT" remove
     assert_success
     assert_output "$PROJ"
-    assert [ ! -e "$PROJ/wip" ]
+    assert [ ! -e "$PROJ/.worktrees/wip" ]
 }
 
-@test "prune-merged removes merged worktrees but keeps the default" {
+@test "remove refuses the main checkout" {
+    clone_proj
+    run sh "$WT" remove
+    assert_failure
+    assert_output --partial "main checkout"
+    assert [ -d "$PROJ/.git" ]
+}
+
+@test "prune-merged removes merged worktrees but keeps the main checkout" {
     clone_proj
     sh "$WT" add merged >/dev/null 2>&1
-    assert [ -d "$PROJ/merged" ]
+    assert [ -d "$PROJ/.worktrees/merged" ]
     run sh "$WT" prune-merged
     assert_success
-    assert [ ! -e "$PROJ/merged" ]
-    assert [ -d "$PROJ/main" ]
+    assert [ ! -e "$PROJ/.worktrees/merged" ]
+    assert [ -d "$PROJ/.git" ]
 }
 
-@test "switch prints the fzf-picked worktree path (never the bare entry)" {
+@test "switch prints the fzf-picked worktree path" {
     clone_proj
     sh "$WT" new wip >/dev/null 2>&1
     run sh "$WT" switch
     assert_success
-    assert_output "$PROJ/main"
+    assert_output "$PROJ"
 }
 
 # An fzf that records what it was offered, so the picker's menu can be asserted.
@@ -110,7 +133,7 @@ EOF
     PATH="$BATS_TEST_TMPDIR/bin:$PATH"
 }
 
-@test "switch offers branch names, keeping the path in a hidden second column" {
+@test "switch offers branch names, keeping the flattened path hidden" {
     mkdir -p "$BATS_TEST_TMPDIR/bin"
     record_fzf
     clone_proj
@@ -118,18 +141,18 @@ EOF
     run sh "$WT" switch
     assert_success
     run cat "$FZF_MENU"
-    assert_line "main	$PROJ/main"
-    assert_line "feature/x	$PROJ/feature/x"
+    assert_line "main	$PROJ"
+    assert_line "feature/x	$PROJ/.worktrees/feature-x"
 }
 
 @test "switch hides the harness's throwaway .claude/worktrees agents" {
     mkdir -p "$BATS_TEST_TMPDIR/bin"
     record_fzf
     clone_proj
-    git worktree add -q -b agent-tmp "$PROJ/main/.claude/worktrees/agent-1" 2>/dev/null
+    git worktree add -q -b agent-tmp "$PROJ/.claude/worktrees/agent-1" 2>/dev/null
     run sh "$WT" switch
     assert_success
-    assert_output "$PROJ/main"
+    assert_output "$PROJ"
     run cat "$FZF_MENU"
     refute_output --partial ".claude/worktrees"
 }

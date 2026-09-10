@@ -29,6 +29,16 @@ setup() { W="$REPO_ROOT/zsh/.config/zsh/commands/widgets.zsh"; }
     assert_output '2>&1'
 }
 
+@test "_cd_command quotes a path with a space" {
+    run zsh -c "source '$W'; _cd_command '/a b/c'"
+    assert_output 'cd -- /a\ b/c'
+}
+
+@test "_cd_command keeps a dir that starts with a dash out of cd's options" {
+    run zsh -c "source '$W'; _cd_command '-x'"
+    assert_output 'cd -- -x'
+}
+
 @test "^T jumps to a worktree, in every keymap" {
     run zsh -c "source '$W'
         bindkey '^T'; bindkey -M viins '^T'; bindkey -M vicmd '^T'"
@@ -58,11 +68,17 @@ setup() { W="$REPO_ROOT/zsh/.config/zsh/commands/widgets.zsh"; }
     assert_output "$BATS_TEST_TMPDIR/repo"
 }
 
-@test "^H targets the dir holding the common .git when already at the root" {
+@test "^H targets the main checkout from the root of one of its worktrees" {
     mk_git_repo "$BATS_TEST_TMPDIR/repo"
-    git -C "$BATS_TEST_TMPDIR/repo" worktree add -q -b feat "$BATS_TEST_TMPDIR/wt"
-    run zsh -c "source '$W'; cd '$BATS_TEST_TMPDIR/wt'; _repo_jump_target"
+    git -C "$BATS_TEST_TMPDIR/repo" worktree add -q -b feat "$BATS_TEST_TMPDIR/repo/.worktrees/feat"
+    run zsh -c "source '$W'; cd '$BATS_TEST_TMPDIR/repo/.worktrees/feat'; _repo_jump_target"
     assert_output "$BATS_TEST_TMPDIR/repo"
+}
+
+@test "^H targets the dir above the repo from the main checkout's own root" {
+    mk_git_repo "$BATS_TEST_TMPDIR/repo"
+    run zsh -c "source '$W'; cd '$BATS_TEST_TMPDIR/repo'; _repo_jump_target"
+    assert_output "$BATS_TEST_TMPDIR"
 }
 
 @test "^H targets nothing, quietly, outside a repo" {

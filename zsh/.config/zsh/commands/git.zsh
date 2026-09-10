@@ -1,12 +1,13 @@
 #!/bin/zsh
 
 # --- git worktrees -----------------------------------------------------------
-# Bare-repo + sibling-worktrees layout. The heavy lifting (fetch-first,
-# fast-forward-only, mirror branch paths to dirs) lives in git_worktree.sh,
+# A normal clone with its extra branches in .worktrees/<branch-with-dashes>,
+# same layout ~/arbuscular uses. The heavy lifting (fetch-first,
+# fast-forward-only, paths off the main checkout) lives in git_worktree.sh,
 # which prints the worktree path; these wrappers just cd into it. Agents can
 # call git_worktree.sh directly and capture the path.
 
-gct() { local d; d=$(git_worktree.sh clone "$@") && cd "$d"; } # clone a repo (bare layout)
+gct() { local d; d=$(git_worktree.sh clone "$@") && cd "$d"; } # clone a repo
 gwn() { local d; d=$(git_worktree.sh new "$@") && cd "$d"; }   # new branch off origin default
 gwa() { local d; d=$(git_worktree.sh add "$@") && cd "$d"; }   # add worktree for existing branch
 gws() { git_worktree.sh sync "$@"; }                           # fetch + ff-only (align w/ origin)
@@ -35,3 +36,5 @@ alias grs='git reset --soft HEAD~1'
 alias gs='git status'
 alias gd='git diff'
 alias gb='git branch'
+alias gp='git pull'
+alias gm='git merge'

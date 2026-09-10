@@ -1,16 +1,16 @@
 #!/bin/sh
-# git worktree multitool for the bare-repo + sibling-worktrees layout:
+# git worktree multitool for the worktrees-inside-the-checkout layout:
 #
-#     project/
-#     |- .bare/            git data (bare repo)
-#     |- .git              file: "gitdir: ./.bare"
-#     |- main/             worktree -> branch main
-#     `- feature/x/        worktree -> branch feature/x  (dirs mirror branch names)
+#     project/                 normal clone, sits on the default branch
+#     |- .git/
+#     `- .worktrees/           one dir per extra branch, gitignored
+#        |- feature-x/         worktree -> branch feature/x  (slashes flattened)
+#        `- topic/             worktree -> branch topic
 #
 # Usage:
-#   git_worktree.sh clone <url> [name]     bare-clone, fetch, add the default worktree
+#   git_worktree.sh clone <url> [name]     clone, ignore .worktrees/
 #   git_worktree.sh new   <branch> [base]  branch off fresh origin/<base>, add worktree
-#   git_worktree.sh add   <branch> [dir]   add a worktree for an existing branch
+#   git_worktree.sh add   <branch>         add a worktree for an existing branch
 #   git_worktree.sh sync                   fetch + fast-forward the current worktree
 #   git_worktree.sh remove [path]          remove a worktree (default: the current one)
 #   git_worktree.sh prune-merged           remove worktrees merged into origin's default
@@ -20,6 +20,8 @@
 # Commands that create or locate a worktree print its absolute path on stdout, so
 # a shell wrapper can `cd` into it and agents can capture it. Every command
 # fetches first and only ever fast-forwards, so worktrees don't drift from origin.
+# Every command also works from inside a linked worktree: paths hang off the main
+# checkout, which is where the common git dir lives, not off $PWD.
 set -eu
 
 die() {
@@ -43,10 +45,25 @@ default_branch() {
     printf 'main\n'
 }
 
-# The directory that holds .bare (parent of the common git dir).
-project_root() {
+# The main checkout: the dir holding the common .git, reached from any worktree.
+main_checkout() {
     common=$(git rev-parse --git-common-dir)
     (CDPATH='' cd -- "$common/.." && pwd)
+}
+
+# A branch's worktree dir: the name with its slashes flattened, under .worktrees/.
+worktree_for() {
+    printf '%s/.worktrees/%s\n' "$(main_checkout)" "$(printf '%s' "$1" | tr '/' '-')"
+}
+
+# Keep .worktrees/ out of `git status`. In .git/info/exclude, not .gitignore: the
+# layout is this machine's choice, and a clone of someone else's repo is not the
+# place to commit it. Idempotent — every command that makes a worktree calls it.
+ignore_worktrees() {
+    excl=$(git -C "$1" rev-parse --git-common-dir)/info/exclude
+    grep -qxF '/.worktrees/' "$excl" 2>/dev/null && return 0
+    mkdir -p "${excl%/*}"
+    echo '/.worktrees/' >>"$excl"
 }
 
 abspath() {
@@ -60,34 +77,10 @@ cmd_clone() {
     name=${2:-${base%.git}}
     [ ! -e "$name" ] || die "path already exists: $name"
 
-    mkdir -p "$name"
-    git clone --bare "$url" "$name/.bare" 1>&2
-    echo "gitdir: ./.bare" >"$name/.git"
-    git -C "$name" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-    git -C "$name" fetch --quiet origin 1>&2
+    git clone --quiet "$url" "$name" 1>&2
     git -C "$name" remote set-head origin --auto 1>&2 || true
-
-    db=$(git -C "$name" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null || true)
-    db=${db#origin/}
-    [ -n "$db" ] || db=main
-
-    dest=$(abspath "$name")/$db # absolute, so `git -C` doesn't reinterpret it
-    if git -C "$name" show-ref --verify --quiet "refs/heads/$db"; then
-        git -C "$name" worktree add --quiet "$dest" "$db" 1>&2
-    else
-        git -C "$name" worktree add --quiet -b "$db" "$dest" "origin/$db" 1>&2
-    fi
-    git -C "$name" branch --quiet --set-upstream-to="origin/$db" "$db" 2>/dev/null || true
-
-    # A bare clone copies every remote branch into refs/heads with no upstream.
-    # Drop those strays (keep the checked-out default); add/new recreate branches
-    # on demand WITH origin tracking, which is what keeps worktrees from drifting.
-    git -C "$name" for-each-ref --format='%(refname:short)' refs/heads/ | while read -r b; do
-        [ "$b" = "$db" ] && continue
-        git -C "$name" branch -D "$b" >/dev/null 2>&1 || true
-    done
-
-    printf '%s\n' "$dest"
+    ignore_worktrees "$name"
+    abspath "$name"
 }
 
 cmd_new() {
@@ -107,20 +100,22 @@ cmd_new() {
         die "no such base branch: $base"
     fi
 
-    dest=$(project_root)/$branch
+    dest=$(worktree_for "$branch")
     [ ! -e "$dest" ] || die "path already exists: $dest"
+    ignore_worktrees .
     git branch --quiet --no-track "$branch" "$start"
     git worktree add --quiet "$dest" "$branch" 1>&2
-    abspath "$dest"
+    printf '%s\n' "$dest"
 }
 
 cmd_add() {
-    [ "$#" -ge 1 ] || die "usage: add <branch> [dir]"
+    [ "$#" -ge 1 ] || die "usage: add <branch>"
     branch=$1
     git fetch --quiet --prune origin 1>&2
 
-    dest=$(project_root)/${2:-$branch}
+    dest=$(worktree_for "$branch")
     [ ! -e "$dest" ] || die "path already exists: $dest"
+    ignore_worktrees .
     if git show-ref --verify --quiet "refs/heads/$branch"; then
         git worktree add --quiet "$dest" "$branch" 1>&2
     elif git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
@@ -128,7 +123,7 @@ cmd_add() {
     else
         die "no such branch (local or origin): $branch (use 'new')"
     fi
-    abspath "$dest"
+    printf '%s\n' "$dest"
 }
 
 cmd_sync() {
@@ -141,12 +136,13 @@ cmd_sync() {
 }
 
 cmd_remove() {
-    root=$(project_root)
+    root=$(main_checkout)
     if [ "$#" -ge 1 ]; then
         target=$(abspath "$1")
     else
         target=$(git rev-parse --show-toplevel)
     fi
+    [ "$target" != "$root" ] || die "that is the main checkout, not a worktree"
     CDPATH='' cd -- "$root" # step out so we can remove the current worktree
     git worktree remove --force "$target" 1>&2 || die "cannot remove worktree: $target"
     printf '%s\n' "$root"
@@ -155,13 +151,13 @@ cmd_remove() {
 cmd_prune_merged() {
     git fetch --quiet --prune origin 1>&2
     base=$(default_branch)
-    root=$(project_root)
+    root=$(main_checkout)
     CDPATH='' cd -- "$root"
     git worktree list --porcelain |
         awk '/^worktree /{w=$2} /^branch /{print w" "$2}' |
         while read -r path ref; do
             branch=${ref#refs/heads/}
-            if [ "$branch" = "$base" ]; then
+            if [ "$branch" = "$base" ] || [ "$path" = "$root" ]; then
                 continue
             fi
             if git merge-base --is-ancestor "$ref" "refs/remotes/origin/$base" 2>/dev/null; then
@@ -172,12 +168,11 @@ cmd_prune_merged() {
         done
 }
 
-# fzf-pick a worktree and print its path. Picks on the branch, not the dir: a
-# slashed branch lands in a dir named for it only if this script made the
-# worktree (feature/x -> feature/x); worktrees made elsewhere flatten it
-# (feature-x), so the dir name is not something to read a branch off. The
-# harness's throwaway agent worktrees under .claude/worktrees/ are hidden;
-# bare entries have no branch line at all, so they drop out for free.
+# fzf-pick a worktree and print its path. Picks on the branch, not the dir: dirs
+# flatten a slashed branch (feature/x -> feature-x), so the dir name is not
+# something to read a branch off. The main checkout is offered like any other —
+# it is a worktree too — while the harness's throwaway agent worktrees under
+# .claude/worktrees/ are hidden.
 cmd_switch() {
     line=$(git worktree list --porcelain | awk '
         /^worktree /  { p = substr($0, 10); skip = (p ~ /\/\.claude\/worktrees\//) }

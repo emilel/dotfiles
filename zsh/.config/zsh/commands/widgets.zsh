@@ -58,8 +58,10 @@ bindkey '^N' redirect_to_stdout
 bindkey -M vicmd '^N' redirect_to_stdout
 
 # Where ^H jumps from $PWD (pure helper, echoes the dir): the repo root, or —
-# standing on it already — the dir holding the repo's common .git, i.e. the bare
-# repo a worktree hangs off. Fails, silently, outside a repo.
+# standing on it already — the dir holding the repo's common .git, i.e. the main
+# checkout a worktree hangs off. Standing on *that*, the dir above the repo:
+# worktrees live inside the checkout now, so the common .git is the checkout's
+# own and the jump would otherwise be a no-op. Fails, silently, outside a repo.
 _repo_jump_target() {
     local root
     if root=$(git rev-parse --show-toplevel 2>/dev/null) && [[ $PWD != $root ]]; then
@@ -67,21 +69,39 @@ _repo_jump_target() {
         return
     fi
     root=$(git rev-parse --git-common-dir 2>/dev/null) || return 1
-    print -r -- "${root:A:h}"
+    root=${root:A:h}
+    [[ $root == $PWD ]] && root=${PWD:h}
+    print -r -- "$root"
+}
+
+# The line a jump runs (pure helper, echoes it). Quoted, because a worktree dir
+# is named after its branch and branches take spaces.
+_cd_command() {
+    print -rn -- "cd -- ${(q)1}"
+}
+
+# Run a jump as a real `cd` line instead of cd'ing inside the widget: pure fills
+# the branch in from precmd, which reset-prompt never re-runs, so an in-widget
+# cd leaves the old branch on screen. accept-line draws a fresh prompt below
+# rather than over the old one; push-input parks the half-typed line for zsh to
+# restore after the cd.
+#
+# push-input goes last, once the destination is known and nothing between it and
+# accept-line can fail. It is the one step here that outlives the widget: park
+# the line first and a widget that dies before accepting — ^C out of a picker
+# signals the whole foreground group — leaves it on the buffer stack, where zsh
+# hands it back later glued onto an unrelated line.
+_jump_to() {
+    zle push-input
+    BUFFER=$(_cd_command "$1")
+    zle accept-line
 }
 
 # Jump to the repo root; at the root already, jump to the dir above the repo.
-# Runs a real `cd` line instead of cd'ing inside the widget: pure fills the
-# branch in from precmd, which reset-prompt does not re-run, so an in-widget cd
-# leaves the old branch on screen. accept-line draws a fresh prompt below rather
-# than over the old one; push-input parks the half-typed line for zsh to restore
-# after the cd.
 go_to_root() {
     local dir
     dir=$(_repo_jump_target) || return
-    zle push-input
-    BUFFER="cd -- ${(q)dir}"
-    zle accept-line
+    _jump_to "$dir"
 }
 zle -N go_to_root
 bindkey '^H' go_to_root
@@ -90,19 +110,13 @@ bindkey -M vicmd '^H' go_to_root
 
 # Jump to another worktree of this repo (same picker as `gw`). Silent outside a
 # repo — git's "not a git repository" would land mid-prompt; fzf draws on the
-# tty, so hiding stderr doesn't hide the picker. Accepts a real `cd` for the
-# reason ^H does — the branch pure shows comes from precmd — and this jump
-# changes branch by definition. A cancelled picker takes the line back instead.
+# tty, so hiding stderr doesn't hide the picker. A cancelled picker has nothing
+# to undo, the line never having been parked; the redraw is only for a picker
+# that failed to give back the screen it took.
 go_to_worktree() {
-    zle push-input
-    local d
-    if d=$(git_worktree.sh switch 2>/dev/null); then
-        BUFFER="cd -- ${(q)d}"
-        zle accept-line
-    else
-        zle get-line
-        zle reset-prompt
-    fi
+    local dir
+    dir=$(git_worktree.sh switch 2>/dev/null) || { zle reset-prompt; return }
+    _jump_to "$dir"
 }
 zle -N go_to_worktree
 bindkey '^T' go_to_worktree
