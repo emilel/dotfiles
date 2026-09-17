@@ -33,6 +33,9 @@ eval $(dircolors -b)
 # dump in the cache dir instead of polluting $ZDOTDIR (and the repo).
 ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 [[ -d "${ZSH_COMPDUMP:h}" ]] || mkdir -p "${ZSH_COMPDUMP:h}"
+# repo-shipped completions (_just, ...). Must precede compinit, and a stale
+# dump won't see a newly added one: rm "$ZSH_COMPDUMP" after adding a file.
+fpath=("${ZDOTDIR:-$HOME/.config/zsh}/completions" $fpath)
 autoload -Uz compinit
 # compinit's security audit stats every $fpath dir: ~130ms on every single
 # shell. Run the full check once a day and take the -C fast path in between.

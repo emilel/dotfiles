@@ -52,3 +52,15 @@ setup() {
     assert_output --partial "delete-char"
     refute_output --partial "list-choices"
 }
+
+@test "the repo's completions dir is on fpath and _just is autoloadable there" {
+    export ZDOTDIR="$BATS_TEST_TMPDIR/zdot"
+    assemble_zdotdir "$ZDOTDIR"
+    run --separate-stderr zsh -c "source '$B'
+        print -r -- \${fpath[(r)*/completions]}
+        (( \$+functions[_just] )) || autoload -Uz _just
+        whence -w _just"
+    assert_success
+    assert_output --partial "$ZDOTDIR/completions"
+    assert_output --partial "_just: function"
+}

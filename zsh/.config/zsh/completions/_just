@@ -1,0 +1,9 @@
+#compdef just
+# Verbatim `just --completions zsh` (just 1.51). A 4-line shim: the real
+# completer is asked from the just binary in the current directory, so recipes,
+# their doc comments and per-recipe args all come from the Justfile you're
+# standing in. Autoloaded, so nothing runs until the first `just <TAB>`.
+source <(JUST_COMPLETE=zsh just)
+if [ "$funcstack[1]" = "_just" ]; then
+  _clap_dynamic_completer_just "$@"
+fi
