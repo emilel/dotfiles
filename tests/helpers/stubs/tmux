@@ -5,7 +5,8 @@
 #   list-*           : prints $TMUX_LIST
 #   new-*/split-*    : prints $TMUX_NEW_PANE (default %1)
 #   show             : prints $TMUX_SHOW
-#   display          : prints $TMUX_DISPLAY
+#   display          : prints $TMUX_PANE_TTY for a pane_tty format, else
+#                      $TMUX_DISPLAY
 [ -n "${TMUX_LOG:-}" ] && printf '%s\n' "$*" >>"$TMUX_LOG"
 case "${1:-}" in
     has-session)
@@ -24,7 +25,12 @@ case "${1:-}" in
         ;;
     list-sessions | list-windows | list-panes) printf '%s' "${TMUX_LIST:-}" ;;
     show) printf '%s' "${TMUX_SHOW:-}" ;;
-    display) printf '%s\n' "${TMUX_DISPLAY:-}" ;;
+    display)
+        case "$*" in
+            *pane_tty*) printf '%s\n' "${TMUX_PANE_TTY:-/dev/null}" ;;
+            *) printf '%s\n' "${TMUX_DISPLAY:-}" ;;
+        esac
+        ;;
     new-session | new-window | split-window) printf '%s\n' "${TMUX_NEW_PANE:-%1}" ;;
     *) exit 0 ;;
 esac

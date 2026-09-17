@@ -30,6 +30,28 @@ setup() {
     assert_output --partial 'done'
 }
 
+@test "the colour and the popup leave on the same call" {
+    export TMUX_PANE_TTY="$BATS_TEST_TMPDIR/pane_tty"
+    : >"$TMUX_PANE_TTY"
+    run sh "$S" green
+    assert_success
+    # the bell is what colours the window, so it has to be rung here and not
+    # waited on -- and the status line repainted rather than left to catch up
+    printf '\a' >"$BATS_TEST_TMPDIR/expected"
+    assert_equal "$(cat "$TMUX_PANE_TTY")" "$(cat "$BATS_TEST_TMPDIR/expected")"
+    run cat "$TMUX_LOG"
+    assert_line "refresh-client -S"
+    [ -s "$NOTIFY_LOG" ]
+}
+
+@test "a pane with no tty of its own is not an error" {
+    export TMUX_PANE_TTY=""
+    run sh "$S" green
+    assert_success
+    run cat "$NOTIFY_LOG"
+    assert_output --partial 'done'
+}
+
 @test "green does not overwrite a window already waiting on permission" {
     export TMUX_SHOW=red
     run sh "$S" green
