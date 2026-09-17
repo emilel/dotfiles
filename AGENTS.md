@@ -93,7 +93,9 @@ After `swaymsg reload`:
   re-check the identifier after any firmware/name change.
 - **waybar**: shows `BT 0` when nothing's connected; bluetooth left-click = fzf
   known devices, right-click = `bluetuith` (pair new); network left-click = wifi
-  fzf, right-click = `nmtui`.
+  fzf, right-click = `nmtui`. `KB US` shows only while the Kinesis is plugged
+  in; a click or `$mod+s` flips it to `KB SE` (pink) at once and back again,
+  and only that board changes.
 - **`TB`**: the tmux window colours from any workspace — `TB sess:2 win`, green
   on a bell, red for a claude on a permission prompt (`@claude`). The window on
   screen is never listed. tmux drops bells for the window an attached client

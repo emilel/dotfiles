@@ -51,6 +51,7 @@ button:hover {
 /* padding and spacing between modules */
 #custom-claude,
 #custom-display,
+#custom-kb,
 #custom-network,
 #bluetooth,
 #backlight,
@@ -64,6 +65,14 @@ button:hover {
 
 #custom-display {
   color: #888888;
+}
+
+#custom-kb {
+  color: #83a598;
+}
+
+#custom-kb.se {
+  color: #d3869b;
 }
 
 #custom-network {

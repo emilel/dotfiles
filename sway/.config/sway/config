@@ -94,8 +94,9 @@ input "5824:10203:MoErgo_Go60_Left_Keyboard" {
     xkb_layout "us"
 }
 
+## the kinesis can also flip to se for swedish: waybar KB (kb_toggle.sh)
 input "10730:258:Kinesis_Advantage2_Keyboard" {
-    xkb_layout "us"
+    xkb_layout "us,se"
 }
 
 input $touchpad {
@@ -103,6 +104,9 @@ input $touchpad {
     tap enabled
     natural_scroll enabled
 }
+
+## flip the kinesis us <-> se, and tell waybar KB right away
+bindsym $mod+s exec "$HOME/.scripts/kb_toggle.sh && pkill -RTMIN+8 waybar"
 
 ## brightness buttons
 bindsym XF86MonBrightnessUp exec sudo brightnessctl set 100%
@@ -236,7 +240,6 @@ bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
 ## go to workspaces
-bindsym $mod+s exec "$HOME/.scripts/sway_goto_workspace.sh slack"
 bindsym $mod+z exec "$HOME/.scripts/sway_goto_workspace.sh azure"
 bindsym $mod+w exec "$HOME/.scripts/sway_goto_workspace.sh web"
 bindsym $mod+c exec "$HOME/.scripts/sway_goto_workspace.sh chatgpt"
