@@ -1,0 +1,17 @@
+#!/bin/sh
+# Fake editor for the `edit`/`clip` filters. Records its argv in $NVIM_LOG,
+# finds the file behind "+Pipe <path>", snapshots what it was handed into
+# $NVIM_SAW, rewrites it to $NVIM_CONTENT ("the user edited the buffer") and
+# exits $NVIM_STATUS (non-zero = :cq).
+[ -n "${NVIM_LOG:-}" ] && printf 'nvim %s\n' "$*" >>"$NVIM_LOG"
+file=
+for arg; do
+    case $arg in
+        "+Pipe "*) file=${arg#+Pipe } ;;
+    esac
+done
+if [ -n "$file" ]; then
+    [ -n "${NVIM_SAW:-}" ] && cat "$file" >"$NVIM_SAW"
+    [ -n "${NVIM_CONTENT:-}" ] && printf '%s\n' "$NVIM_CONTENT" >"$file"
+fi
+exit "${NVIM_STATUS:-0}"

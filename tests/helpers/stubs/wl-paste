@@ -1,0 +1,3 @@
+#!/bin/sh
+# Serve clipboard reads from $CLIP_FILE (empty when unset/missing).
+cat "${CLIP_FILE:-/dev/null}" 2>/dev/null || :

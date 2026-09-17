@@ -24,7 +24,7 @@ setup() {
 
 @test "expected functions are defined after load" {
     run zsh -c "source '$ZRC'
-        for fn in dog edit copy copyc gwa gwn gl toggle_copy go_to_root n; do
+        for fn in dog edit clip copy copyc gwa gwn gl toggle_copy go_to_root n; do
             typeset -f \$fn >/dev/null || { print -u2 \"missing function: \$fn\"; exit 1; }
         done"
     assert_success
@@ -32,7 +32,7 @@ setup() {
 
 @test "expected aliases are defined after load" {
     run zsh -c "source '$ZRC'
-        for al in gs gd gc gb gwl gwp gwr ls view clip reload py t ta tt rnw lock so; do
+        for al in gs gd gc gb gwl gwp gwr ls view paster reload py t ta tt rnw lock so; do
             alias \$al >/dev/null || { print -u2 \"missing alias: \$al\"; exit 1; }
         done"
     assert_success

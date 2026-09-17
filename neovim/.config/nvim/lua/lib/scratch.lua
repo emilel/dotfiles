@@ -1,5 +1,5 @@
--- Throwaway "scratch" buffers. Used by the :Clip / :TempFile / :Pipe commands
--- (and their `clip` / `temp` / `edit` shell helpers) and by <space>b, <space>+
+-- Throwaway "scratch" buffers. Used by the :TempFile / :Pipe commands (and
+-- their `temp` / `edit` / `clip` shell helpers) and by <space>b, <space>+
 -- and python's <space>N. The shared idea: <cr><cr> finishes and closes.
 --
 -- Scratch buffers are kept on disk under a dedicated directory, named by
@@ -24,7 +24,7 @@ local extensions = {
 --   opts.filetype  set the filetype (and pick the file extension)
 --   opts.content   prefill text, e.g. the clipboard or the current buffer
 --   opts.close     ex-command run on exit. Default "bdelete!" (in-editor);
---                  use "quit!" to exit a standalone `nvim +Clip` / `+TempFile`.
+--                  use "quit!" to exit a standalone `nvim +TempFile`.
 function M.scratch(opts)
 	opts = opts or {}
 	vim.fn.mkdir(dir, "p")

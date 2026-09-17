@@ -21,6 +21,12 @@ setup() {
     assert_output --partial "wl-copy"
 }
 
+@test "paster resolves to wl-paste under wayland" {
+    run zsh -c "source '$CLIP'; alias paster"
+    assert_success
+    assert_output --partial "wl-paste"
+}
+
 @test "copyc prints just the output but copies the command header + output block" {
     run zsh -c "source '$CLIP'; copyc echo hi there"
     assert_success

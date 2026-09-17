@@ -10,7 +10,6 @@ setup() { Z="$REPO_ROOT/zsh/.config/zsh"; }
         typeset -A want=(
             ls 'ls --color=auto --group-directories-first'
             view 'nvim -R'
-            clip 'nvim +Clip'
             reload 'source ~/.config/zsh/.zshrc'
             gs 'git status'
             gd 'git diff'

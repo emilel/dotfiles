@@ -1,5 +1,5 @@
 -- Real-keystroke test for the scratch buffer: <cr><cr> copies it to the
--- clipboard register and closes. (The standalone :Clip/:TempFile variants quit
+-- clipboard register and closes. (The standalone :TempFile variant quits
 -- nvim, so only the in-editor path is exercised here.)
 local function feed(keys)
 	local termcodes = vim.api.nvim_replace_termcodes(keys, true, false, true)

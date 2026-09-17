@@ -6,9 +6,6 @@ alias ls='ls --color=auto --group-directories-first'
 # neovim in read only mode
 alias view='nvim -R'
 
-# edit clipboard
-alias clip='nvim +Clip'
-
 # go up a directory
 alias up='cd ..'
 
@@ -50,7 +47,8 @@ temp() {
     nvim +"TempFile $@"
 }
 
+# just work
+alias jw='just work'
+
 # ring the terminal bell (tmux marks the window if you're elsewhere)
 alias bell="printf '\a'"
-
-alias oc='opencode'

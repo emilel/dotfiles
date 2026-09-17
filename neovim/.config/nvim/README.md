@@ -13,7 +13,7 @@ lua/
     options.lua            all vim.opt settings (incl. folding)
     autocmds.lua           autocommands + one-off highlights
     filetypes.lua          filetype detection rules
-    commands.lua           user commands (:Clip, :TempFile, :Pipe)
+    commands.lua           user commands (:TempFile, :Pipe)
   keymaps/               global, non-plugin keymaps, grouped by theme
     files.lua  windows.lua  navigation.lua  editing.lua  search.lua  yank.lua
   lib/                   pure, unit-testable helpers (no side effects on require)
@@ -65,9 +65,9 @@ creation time, so you can reopen their contents later (cleared on reboot):
 
 | command / key   | shell     | what it does                                        |
 | --------------- | --------- | --------------------------------------------------- |
-| `:Clip`         | `clip`    | edit the clipboard; `<cr><cr>` writes it back, quits|
 | `:TempFile [ft]`| `temp`    | scratch buffer; `<cr><cr>` copies to clipboard, quits|
-| `:Pipe <path>`  | `edit`    | edit stdin→stdout; `<cr><cr>` saves and quits       |
+| `:Pipe <path>`  | `edit`    | edit stdin; `<cr><cr>` prints + copies, `:cq` aborts|
+|                 | `clip`    | the clipboard piped through `edit`, written back    |
 | `<space>b`      |           | in-editor scratch; `<cr><cr>` copies and closes     |
 | `<space>+`      |           | edit the clipboard in the current filetype          |
 

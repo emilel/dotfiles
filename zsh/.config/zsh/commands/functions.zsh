@@ -1,12 +1,22 @@
 #!/bin/zsh
 
-# edit stdin/stdout through neovim (filter a pipe)
+# edit stdin in neovim (an empty buffer without a pipe); <cr><cr> saves and
+# quits, then the result is printed *and* lands in the clipboard. :cq throws
+# it away. An argument sets the filetype: `jq . x | edit json`.
 edit() {
+    local tmpfile
     tmpfile=$(mktemp)
     trap 'rm -f "$tmpfile"' EXIT
-    cat - >"$tmpfile"
-    nvim +"Pipe $tmpfile" </dev/tty >/dev/tty
-    cat "$tmpfile"
+    [ -t 0 ] || cat >"$tmpfile"
+    # zsh fills $TTY in whenever the shell has a terminal; without one nvim
+    # couldn't run anyway (and the stubbed tests are glad it's overridable)
+    nvim +"Pipe $tmpfile" ${1:+"+setfiletype $1"} <"${TTY:-/dev/null}" >"${TTY:-/dev/null}" || return
+    copy <"$tmpfile"
+}
+
+# same round trip for the clipboard: paste -> edit -> copy back (and print)
+clip() {
+    paster | edit "$@"
 }
 
 # cat a file inside a fenced code block, tagged with its language (for pasting
