@@ -3,7 +3,11 @@ load ../helpers/load
 
 setup() {
     use_stubs
+    export HOME="$BATS_TEST_TMPDIR/home"
+    mkdir -p "$HOME"
+    ln -s "$REPO_ROOT/scripts/.scripts" "$HOME/.scripts"
     export SWAY_LOG="$BATS_TEST_TMPDIR/log"
+    export TOFI_LOG="$BATS_TEST_TMPDIR/tofi_log"
     GOTO="$REPO_ROOT/scripts/.scripts/sway_goto_workspace.sh"
     RENAME="$REPO_ROOT/scripts/.scripts/sway_rename_workspace.sh"
 }
@@ -36,4 +40,35 @@ setup() {
     assert_success
     run cat "$SWAY_LOG"
     assert_output --partial "rename workspace to 5"
+}
+
+@test "rename -p takes the name from the fullscreen prompt" {
+    export SWAY_PRETTY="Workspace 2 (focused)"
+    export SWAY_WORKSPACES='[{"name":"1:web"},{"name":"2"}]'
+    export TOFI_PICK=mail
+    run sh "$RENAME" -p </dev/null
+    assert_success
+    run cat "$SWAY_LOG"
+    assert_output --partial "rename workspace to 2:mail"
+}
+
+@test "rename -p is a bare prompt: nothing to pick from, just what you type" {
+    export SWAY_PRETTY="Workspace 2 (focused)"
+    export SWAY_WORKSPACES='[{"name":"1:web"},{"name":"9:mail"}]'
+    export TOFI_ITEMS_LOG="$BATS_TEST_TMPDIR/items"
+    export TOFI_PICK=mail
+    run sh "$RENAME" -p </dev/null
+    assert_success
+    [ ! -s "$BATS_TEST_TMPDIR/items" ]
+}
+
+@test "rename -p leaves the workspace alone when escape closes the prompt" {
+    export SWAY_PRETTY="Workspace 2 (focused)"
+    export SWAY_WORKSPACES='[{"name":"2"}]'
+    export TOFI_STATUS=1
+    run sh "$RENAME" -p </dev/null
+    assert_success
+    refute_output --partial rename
+    run cat "$SWAY_LOG"
+    refute_output --partial "rename workspace"
 }

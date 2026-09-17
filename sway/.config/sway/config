@@ -39,10 +39,9 @@ set $white #ffffff
 ## terminal emulator
 set $term foot
 
-## application launcher
-set $menu bemenu-run
-
-## prompt
+## prompt: a fullscreen foot, now only for $mod+t -- fzf needs a terminal.
+## $mod+m and $mod+d use tofi instead (sway_prompt.sh), which is a layer-shell
+## surface: no toplevel, so the for_window rule below never applies to it.
 set $prompt foot \
     --override=locked-title=yes \
     --title prompt \
@@ -142,7 +141,7 @@ bindsym $mod+Shift+Control+l move workspace to output right
 bindsym $mod+Shift+m exec "$HOME/.scripts/sway_arrange.sh"
 
 ## rename workspace
-bindsym $mod+m exec $prompt -e sh -c '"$HOME/.scripts/sway_rename_workspace.sh"; exit'; focus
+bindsym $mod+m exec "$HOME/.scripts/sway_rename_workspace.sh" -p
 
 ## attach tmux session
 bindsym $mod+t exec $prompt -e sh -c "$HOME/.scripts/sway_attach_session.sh"
@@ -186,7 +185,7 @@ bindsym $mod+shift+backspace exec $term
 # bindsym $mod+delete exec $prompt
 
 ## start application launcher
-bindsym $mod+d exec $menu
+bindsym $mod+d exec "$HOME/.scripts/sway_launch.sh"
 
 ## firefox
 bindsym ctrl+$mod+m exec firefox

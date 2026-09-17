@@ -1,0 +1,9 @@
+#!/bin/sh
+# Minimal tofi stub, also linked as tofi-run. Records "<argv0> <args>" in
+# $TOFI_LOG, prints $TOFI_PICK as the selection and exits $TOFI_STATUS
+# (non-zero = escape). Only touches stdin when $TOFI_ITEMS_LOG asks for it,
+# so a test that doesn't care can't hang on a terminal.
+[ -n "${TOFI_LOG:-}" ] && printf '%s %s\n' "$(basename "$0")" "$*" >>"$TOFI_LOG"
+[ -n "${TOFI_ITEMS_LOG:-}" ] && cat >>"$TOFI_ITEMS_LOG"
+[ "${TOFI_STATUS:-0}" = 0 ] || exit "${TOFI_STATUS}"
+printf '%s\n' "${TOFI_PICK:-}"

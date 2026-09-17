@@ -14,8 +14,8 @@ DOTFILES=$(cd "$(dirname "$0")" && pwd)
 BIN="$HOME/.local/bin"
 log() { printf '==> %s\n' "$*"; }
 
-TERMINAL_PKGS="zsh scripts tmux neovim git dprint fzf mason nnn opencode claude"
-GUI_PKGS="sway waybar foot zathura mako"
+TERMINAL_PKGS="zsh scripts tmux neovim git dprint fzf mason nnn claude"
+GUI_PKGS="sway waybar foot zathura mako tofi"
 
 SUDO=sudo
 [ "$(id -u)" = 0 ] && SUDO=
@@ -113,7 +113,7 @@ install_terminal_programs() {
 install_gui_programs() {
     log "gui apt packages"
     $SUDO apt-get update -qq
-    apt_install sway swaylock swayidle foot waybar bemenu mako-notifier \
+    apt_install sway swaylock swayidle foot waybar tofi mako-notifier \
         grim slurp wl-clipboard brightnessctl pavucontrol zathura \
         network-manager bluez fontconfig firefox blueman imv wev xclip
     if [ ! -d "$HOME/.fonts/adobe-fonts/source-code-pro" ]; then

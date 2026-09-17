@@ -1,0 +1,36 @@
+# The fullscreen prompt behind $mod+d and $mod+m. One layer-shell surface over
+# the whole output, dimmed, input in the middle -- no toplevel, so sway's
+# for_window rules never see it and there's no map-then-resize reflow.
+#
+# The font is passed as a *file path* by sway_prompt.sh, not set here: a path
+# skips fontconfig/pango entirely (the big startup win) and this file can't
+# expand ~.
+
+# geometry: cover the output, float the input a third of the way down
+width = 100%
+height = 100%
+anchor = center
+padding-top = 30%
+padding-left = 25%
+padding-right = 25%
+padding-bottom = 0
+outline-width = 0
+border-width = 0
+
+# the dim itself; everything below is drawn on top of it
+background-color = #000000c0
+
+font-size = 40
+text-color = #ffffff
+prompt-color = #ffffff
+selection-color = #ffffff
+text-cursor = true
+
+num-results = 5
+result-spacing = 12
+fuzzy-match = true
+
+# type anything, not just what's in the list -- that's what makes this a
+# prompt rather than a picker (escape quits without printing)
+require-match = false
+hide-cursor = true
