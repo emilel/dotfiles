@@ -34,9 +34,11 @@ local parsers = {
 	"yaml",
 }
 
--- Treesitter indent is worse than the built-in for python (it was disabled on
--- master for the same reason), so those buffers keep `indentexpr` as they find it.
-local plain_indent = { python = true }
+-- Treesitter indent is worse than the built-in here, so these buffers keep
+-- `indentexpr` as they find it. python: disabled on master too. markdown: the
+-- query marks list items @indent.auto, which copies the bullet's own indent, so
+-- a wrapped or <CR>'d list line lost the hang that `fo+=n` gives it for free.
+local plain_indent = { python = true, markdown = true }
 
 return {
 	{
