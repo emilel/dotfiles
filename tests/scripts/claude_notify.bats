@@ -1,6 +1,7 @@
 #!/usr/bin/env bats
 load ../helpers/load
 
+# stdin is the Stop hook's payload; </dev/null is a hook that sent none
 setup() {
     use_stubs
     S="$REPO_ROOT/scripts/.scripts/claude_notify.sh"
@@ -10,30 +11,28 @@ setup() {
     export TMUX_DISPLAY='dots:2 claude'
 }
 
-@test "a permission prompt paints the window red and notifies" {
-    run sh "$S" red
-    assert_success
-    run cat "$TMUX_LOG"
-    assert_line "set -w -t %3 @claude red"
-    run cat "$NOTIFY_LOG"
-    assert_output --partial 'dots:2 claude'
-    assert_output --partial '-u critical'
-}
-
 @test "finishing paints it green and notifies" {
-    run sh "$S" green
+    run sh "$S" </dev/null
     assert_success
     run cat "$TMUX_LOG"
     assert_line "set -w -t %3 @claude green"
     run cat "$NOTIFY_LOG"
+    assert_output --partial 'dots:2 claude'
     assert_output --partial '-u normal'
     assert_output --partial 'done'
+}
+
+@test "a headless claude -p stays quiet: no flag, no popup" {
+    CLAUDE_CODE_ENTRYPOINT=sdk-cli run sh "$S" </dev/null
+    assert_success
+    [ ! -e "$TMUX_LOG" ]
+    [ ! -s "$NOTIFY_LOG" ]
 }
 
 @test "the colour and the popup leave on the same call" {
     export TMUX_PANE_TTY="$BATS_TEST_TMPDIR/pane_tty"
     : >"$TMUX_PANE_TTY"
-    run sh "$S" green
+    run sh "$S" </dev/null
     assert_success
     # the bell is what colours the window, so it has to be rung here and not
     # waited on -- and the status line repainted rather than left to catch up
@@ -46,23 +45,14 @@ setup() {
 
 @test "a pane with no tty of its own is not an error" {
     export TMUX_PANE_TTY=""
-    run sh "$S" green
+    run sh "$S" </dev/null
     assert_success
     run cat "$NOTIFY_LOG"
     assert_output --partial 'done'
 }
 
-@test "green does not overwrite a window already waiting on permission" {
-    export TMUX_SHOW=red
-    run sh "$S" green
-    assert_success
-    run cat "$TMUX_LOG"
-    refute_line --partial "@claude green"
-    [ ! -s "$NOTIFY_LOG" ]
-}
-
 @test "repeat notifications for one window replace each other" {
-    run sh "$S" red
+    run sh "$S" </dev/null
     assert_success
     run cat "$NOTIFY_LOG"
     assert_output --partial 'x-canonical-private-synchronous:claude-dots:2 claude'
@@ -70,7 +60,7 @@ setup() {
 
 @test "outside tmux it still notifies, just without a window name" {
     unset TMUX_PANE
-    run sh "$S" red
+    run sh "$S" </dev/null
     assert_success
     [ ! -e "$TMUX_LOG" ]
     run cat "$NOTIFY_LOG"
@@ -81,6 +71,6 @@ setup() {
     bare="$BATS_TEST_TMPDIR/bin"
     mkdir -p "$bare"
     ln -sf "$STUBS/tmux" "$bare/tmux"
-    run env PATH="$bare" /bin/sh "$S" green
+    run env PATH="$bare" /bin/sh "$S" </dev/null
     assert_success
 }

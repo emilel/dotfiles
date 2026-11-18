@@ -5,7 +5,6 @@ load ../helpers/load
 setup() {
     use_stubs
     S="$REPO_ROOT/scripts/.scripts/tmux_claude_status.sh"
-    RED='<span color="#d75f5f">'
     GREEN='<span color="#5faf5f">'
     export TMUX_LOG="$BATS_TEST_TMPDIR/tmux.log"
     export SWAY_JSON='{}' # nothing focused
@@ -45,36 +44,22 @@ focus_on() {
     assert_output "${GREEN}dots:3 make</span>"
 }
 
-@test "red for one blocked on a permission prompt" {
-    export TMUX_LIST='red|0|dots:2 claude'
-    run sh "$S"
-    assert_success
-    assert_output "${RED}dots:2 claude</span>"
-}
-
-@test "a permission prompt stays red even once it has rung" {
-    export TMUX_LIST='red|1|dots:2 claude'
-    run sh "$S"
-    assert_success
-    assert_output "${RED}dots:2 claude</span>"
-}
-
-@test "lists every waiting window, each in its own colour" {
+@test "lists every waiting window" {
     export TMUX_LIST='green|0|dots:2 claude
 |0|dots:3 zsh
-red|1|rig:1 claude'
+|1|rig:1 make'
     run sh "$S"
     assert_success
-    assert_output "${GREEN}dots:2 claude</span>  ${RED}rig:1 claude</span>"
+    assert_output "${GREEN}dots:2 claude</span>  ${GREEN}rig:1 make</span>"
 }
 
 @test "the window on screen is not listed -- it's right there" {
     export TMUX_LIST='green|0|dots:2 claude
-red|0|rig:1 claude'
+green|0|rig:1 claude'
     focus_on "dots:2 claude"
     run sh "$S"
     assert_success
-    assert_output "${RED}rig:1 claude</span>"
+    assert_output "${GREEN}rig:1 claude</span>"
 }
 
 @test "the window on screen has its flag cleared, so it stays gone" {

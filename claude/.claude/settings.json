@@ -16,43 +16,12 @@
   },
   "model": "opus",
   "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "jq -r '.message // \"\"' | grep -qi permission && \"$HOME/.scripts/claude_notify.sh\" red || true"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "\"$HOME/.scripts/claude_notify.sh\" green || true"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] || exit 0; [ \"$(tmux show -wv -t \"$TMUX_PANE\" @claude 2>/dev/null)\" = red ] && tmux set -w -t \"$TMUX_PANE\" -u @claude 2>/dev/null || true",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "PermissionDenied": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] || exit 0; [ \"$(tmux show -wv -t \"$TMUX_PANE\" @claude 2>/dev/null)\" = red ] && tmux set -w -t \"$TMUX_PANE\" -u @claude 2>/dev/null || true"
+            "command": "\"$HOME/.scripts/claude_notify.sh\" || true"
           }
         ]
       }
@@ -76,7 +45,7 @@
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "auto",
-  "preferredNotifChannel": "terminal_bell",
+  "preferredNotifChannel": "notifications_disabled",
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": false,
