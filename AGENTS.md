@@ -10,6 +10,10 @@ the running config.
 Small changes in the existing terse style: short comments that say _why_, no big
 functions for simple things, no new abstractions for one caller.
 
+**Keep it from growing.** Prefer removing behaviour over adding a workaround,
+and fix the cause rather than layering a fix-up on an earlier fix. Ask before
+adding a new script, or when a small gain needs a lot of logic.
+
 - `*.zsh` is sourced into zsh.
 - `*.sh` is runnable and `#!/bin/sh` POSIX. Use zsh only where POSIX genuinely
   can't do it, and never bash: the runtime is bash-free. bats is the one bash
