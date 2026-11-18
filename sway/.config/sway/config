@@ -39,24 +39,6 @@ set $white #ffffff
 ## terminal emulator
 set $term foot
 
-## prompt: a fullscreen foot, now only for $mod+t -- fzf needs a terminal.
-## $mod+m and $mod+d use tofi instead (sway_prompt.sh), which is a layer-shell
-## surface: no toplevel, so the for_window rule below never applies to it.
-set $prompt foot \
-    --override=locked-title=yes \
-    --title prompt \
-    --override=colors.background=000000 \
-    --override=colors.alpha=0.4  \
-    --override=pad=600x300 \
-    --override=font='Source Code Pro':size=40
-
-for_window [ title="prompt" ] \
-    floating enable, \
-    resize set 100 ppt 100 ppt, \
-    move position center, \
-    border none, \
-    focus
-
 ## android emulator: device window and its side toolbar are two X windows --
 ## float both so they drag freely instead of the toolbar eating a tiling slot
 for_window [ class="Emulator" ] \
@@ -144,7 +126,7 @@ bindsym $mod+Shift+m exec "$HOME/.scripts/sway_arrange.sh"
 bindsym $mod+m exec "$HOME/.scripts/sway_rename_workspace.sh" -p
 
 ## attach tmux session
-bindsym $mod+t exec $prompt -e sh -c "$HOME/.scripts/sway_attach_session.sh"
+bindsym $mod+t exec "$HOME/.scripts/sway_attach_session.sh"
 
 # FONT
 
@@ -180,9 +162,6 @@ bindsym $mod+backspace exec $term ~/.scripts/tmux_new_session.sh
 
 ## terminal
 bindsym $mod+shift+backspace exec $term
-
-## prompt
-# bindsym $mod+delete exec $prompt
 
 ## start application launcher
 bindsym $mod+d exec "$HOME/.scripts/sway_launch.sh"

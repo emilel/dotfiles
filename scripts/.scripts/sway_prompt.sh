@@ -1,5 +1,5 @@
 #!/bin/sh
-# The fullscreen dimmed prompt (tofi). Reads menu items on stdin and prints
+# The fullscreen dimmed prompt (tofi) behind $mod+d, $mod+m and $mod+t. Reads menu items on stdin and prints
 # what was picked -- or, since require-match=false, whatever was typed.
 # Escape quits without printing, and exits non-zero.
 #

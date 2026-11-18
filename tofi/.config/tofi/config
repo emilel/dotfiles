@@ -23,7 +23,12 @@ background-color = #000000c0
 font-size = 40
 text-color = #ffffff
 prompt-color = #ffffff
+# results dim, the selected one bright on a bar -- otherwise Up/Down/Tab
+# move an invisible selection (greys are sway's $light_gray/$dark_gray)
+default-result-color = #aaaaaa
 selection-color = #ffffff
+selection-background = #444444
+selection-background-padding = 4, 12
 text-cursor = true
 
 num-results = 5

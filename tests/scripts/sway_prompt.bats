@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# The fullscreen prompt ($mod+d, $mod+m) and the launcher on top of it.
+# The fullscreen prompt ($mod+d, $mod+m, $mod+t) and what sits on top of it.
 load ../helpers/load
 
 setup() {
@@ -68,6 +68,23 @@ setup() {
 @test "launch does nothing on an empty pick" {
     export TOFI_PICK=""
     run sh "$LAUNCH" </dev/null
+    assert_success
+    [ ! -s "$SWAY_LOG" ]
+}
+
+@test "attach opens the picked tmux session in a new foot" {
+    export TMUX_LIST=$'main\nwork' TOFI_PICK=work
+    run sh "$REPO_ROOT/scripts/.scripts/sway_attach_session.sh"
+    assert_success
+    run cat "$TOFI_LOG"
+    assert_output --partial "--require-match true"
+    run cat "$SWAY_LOG"
+    assert_output "exec foot tmux attach -t work"
+}
+
+@test "attach does nothing when escape closes the prompt" {
+    export TMUX_LIST=main TOFI_STATUS=1
+    run sh "$REPO_ROOT/scripts/.scripts/sway_attach_session.sh"
     assert_success
     [ ! -s "$SWAY_LOG" ]
 }
