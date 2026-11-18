@@ -75,15 +75,21 @@ setup() { W="$REPO_ROOT/zsh/.config/zsh/commands/widgets.zsh"; }
     assert_output "$BATS_TEST_TMPDIR/repo"
 }
 
-@test "^H targets the dir above the repo from the main checkout's own root" {
+@test "^H targets home from the main checkout's own root" {
     mk_git_repo "$BATS_TEST_TMPDIR/repo"
-    run zsh -c "source '$W'; cd '$BATS_TEST_TMPDIR/repo'; _repo_jump_target"
-    assert_output "$BATS_TEST_TMPDIR"
+    run zsh -c "source '$W'; HOME='$BATS_TEST_TMPDIR/home'; cd '$BATS_TEST_TMPDIR/repo'; _repo_jump_target"
+    assert_output "$BATS_TEST_TMPDIR/home"
 }
 
-@test "^H targets nothing, quietly, outside a repo" {
+@test "^H targets home outside a repo" {
     mkdir -p "$BATS_TEST_TMPDIR/plain"
-    run --separate-stderr zsh -c "source '$W'; cd '$BATS_TEST_TMPDIR/plain'; _repo_jump_target"
+    run zsh -c "source '$W'; HOME='$BATS_TEST_TMPDIR/home'; cd '$BATS_TEST_TMPDIR/plain'; _repo_jump_target"
+    assert_output "$BATS_TEST_TMPDIR/home"
+}
+
+@test "^H targets nothing, quietly, at home" {
+    mkdir -p "$BATS_TEST_TMPDIR/home"
+    run --separate-stderr zsh -c "source '$W'; HOME='$BATS_TEST_TMPDIR/home'; cd '$BATS_TEST_TMPDIR/home'; _repo_jump_target"
     assert_failure
     assert_output ''
     assert_equal "$stderr" ''
@@ -96,4 +102,28 @@ setup() { W="$REPO_ROOT/zsh/.config/zsh/commands/widgets.zsh"; }
     assert_line --index 0 --partial 'go_to_root'
     assert_line --index 1 --partial 'go_to_root'
     assert_line --index 2 --partial 'go_to_root'
+}
+
+@test "^K goes up a dir, in every keymap" {
+    run zsh -c "source '$W'
+        bindkey '^K'; bindkey -M viins '^K'; bindkey -M vicmd '^K'"
+    assert_success
+    assert_line --index 0 --partial 'go_up'
+    assert_line --index 1 --partial 'go_up'
+    assert_line --index 2 --partial 'go_up'
+}
+
+@test "_paste_trim drops blank lines around the paste" {
+    run zsh -c "source '$W'; _paste_trim \$'\\n  \\nls -la\\n\\n \\n'"
+    assert_output 'ls -la'
+}
+
+@test "_paste_trim keeps inner lines and first-line indentation" {
+    run zsh -c "source '$W'; _paste_trim \$'  a\\n\\nb\\n'"
+    assert_output "$(printf '  a\n\nb')"
+}
+
+@test "pasting goes through paste_trimmed" {
+    run zsh -c "source '$W'; zle -lL bracketed-paste"
+    assert_output --partial 'paste_trimmed'
 }

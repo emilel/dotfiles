@@ -59,19 +59,20 @@ bindkey -M vicmd '^N' redirect_to_stdout
 
 # Where ^H jumps from $PWD (pure helper, echoes the dir): the repo root, or —
 # standing on it already — the dir holding the repo's common .git, i.e. the main
-# checkout a worktree hangs off. Standing on *that*, the dir above the repo:
-# worktrees live inside the checkout now, so the common .git is the checkout's
-# own and the jump would otherwise be a no-op. Fails, silently, outside a repo.
+# checkout a worktree hangs off. Standing on *that*, or outside a repo, $HOME.
+# Fails, silently, only at $HOME.
 _repo_jump_target() {
     local root
     if root=$(git rev-parse --show-toplevel 2>/dev/null) && [[ $PWD != $root ]]; then
         print -r -- "$root"
         return
     fi
-    root=$(git rev-parse --git-common-dir 2>/dev/null) || return 1
-    root=${root:A:h}
-    [[ $root == $PWD ]] && root=${PWD:h}
-    print -r -- "$root"
+    if root=$(git rev-parse --git-common-dir 2>/dev/null) && [[ ${root:A:h} != $PWD ]]; then
+        print -r -- "${root:A:h}"
+        return
+    fi
+    [[ $PWD != $HOME ]] || return 1
+    print -r -- "$HOME"
 }
 
 # The line a jump runs (pure helper, echoes it). Quoted, because a worktree dir
@@ -97,7 +98,7 @@ _jump_to() {
     zle accept-line
 }
 
-# Jump to the repo root; at the root already, jump to the dir above the repo.
+# Jump to the repo root; at the root already, jump home.
 go_to_root() {
     local dir
     dir=$(_repo_jump_target) || return
@@ -122,6 +123,33 @@ zle -N go_to_worktree
 bindkey '^T' go_to_worktree
 bindkey -M viins '^T' go_to_worktree
 bindkey -M vicmd '^T' go_to_worktree
+
+# Jump up a dir; nothing to do at /.
+go_up() {
+    [[ $PWD != / ]] || return
+    _jump_to ..
+}
+zle -N go_up
+bindkey '^K' go_up
+bindkey -M viins '^K' go_up
+bindkey -M vicmd '^K' go_up
+
+# Pasted text minus blank lines before and after it (pure helper, echoes the
+# result): copying a command usually grabs its newline too, which leaves the
+# pasted line sitting above an empty one. Indentation on the first line stays —
+# a leading space keeps a command out of history.
+_paste_trim() {
+    emulate -L zsh -o extendedglob
+    local text=${1##([[:blank:]]#$'\n')#}
+    print -rn -- "${text%%($'\n'[[:blank:]]#)#}"
+}
+
+paste_trimmed() {
+    local text
+    zle .bracketed-paste text
+    LBUFFER+=$(_paste_trim "$text")
+}
+zle -N bracketed-paste paste_trimmed
 
 # make ctrl-w delete the previous word
 bindkey -M viins '^W' backward-kill-word
