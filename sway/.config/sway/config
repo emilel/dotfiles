@@ -44,8 +44,9 @@ set $term foot
 for_window [ class="Emulator" ] \
     floating enable
 
-## waybar popup menus (wifi/bluetooth pickers, nmtui, bluetuith)
-for_window [ title="waybar-menu" ] \
+## waybar popup menus (wifi/bluetooth pickers, nmtui, bluetuith). Anchored:
+## criteria are regexes re-checked on every title change.
+for_window [ title="^waybar-menu$" ] \
     floating enable, \
     resize set 60 ppt 55 ppt, \
     move position center, \
@@ -103,6 +104,10 @@ bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_SINK@ toggle
 
 ## hide cursor
 seat seat0 hide_cursor 3000
+
+## cursor theme: unset, sway falls back to DMZ-White, which lacks CSS names
+## (pointer, zoom-in, grab, ...) that browsers ask for -- the cursor vanished
+seat seat0 xcursor_theme Adwaita 24
 
 ## turn off screen with key binding
 bindsym $mod+u exec "$HOME/.scripts/sway_screen_off.sh"
@@ -169,6 +174,9 @@ bindsym $mod+d exec "$HOME/.scripts/sway_launch.sh"
 
 ## firefox
 bindsym ctrl+$mod+m exec firefox
+
+## file manager, e for explorer
+bindsym ctrl+$mod+e exec nautilus
 
 ## take screenshot of selection
 bindsym ctrl+$mod+p exec grim -g "$(slurp)" - | wl-copy
