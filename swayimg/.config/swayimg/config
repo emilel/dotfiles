@@ -1,0 +1,17 @@
+# Only what differs from /usr/share/swayimg/swayimgrc; the rest stays default.
+# vim keys: hjkl pan, J/K next/previous image, H/L zoom out/in.
+[list]
+# Show only the files named; `open *.png` when the whole folder is wanted.
+all = no
+
+[keys]
+h = step_left 10
+j = step_down 10
+k = step_up 10
+l = step_right 10
+Shift+j = next_file
+Shift+k = prev_file
+Shift+h = zoom -10
+Shift+l = zoom +10
+
+# vim: filetype=dosini

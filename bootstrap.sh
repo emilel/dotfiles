@@ -15,7 +15,7 @@ BIN="$HOME/.local/bin"
 log() { printf '==> %s\n' "$*"; }
 
 TERMINAL_PKGS="zsh scripts tmux neovim git dprint fzf mason nnn claude"
-GUI_PKGS="sway waybar foot zathura mako tofi"
+GUI_PKGS="sway waybar foot zathura swayimg mako tofi"
 
 SUDO=sudo
 [ "$(id -u)" = 0 ] && SUDO=
@@ -115,13 +115,21 @@ install_gui_programs() {
     $SUDO apt-get update -qq
     apt_install sway swaylock swayidle foot waybar tofi mako-notifier \
         grim slurp wl-clipboard brightnessctl pavucontrol zathura \
-        network-manager bluez fontconfig firefox blueman imv wev xclip
+        network-manager bluez fontconfig firefox blueman swayimg mpv wev xclip
     if [ ! -d "$HOME/.fonts/adobe-fonts/source-code-pro" ]; then
         log "source code pro font"
         git clone -q --depth 1 https://github.com/adobe-fonts/source-code-pro \
             "$HOME/.fonts/adobe-fonts/source-code-pro"
         fc-cache -f "$HOME/.fonts/adobe-fonts/source-code-pro" >/dev/null
     fi
+    # what xdg-open (and so nvim's :e on an image) launches. Listed one by one:
+    # sway has no desktop environment to resolve image/* wildcards.
+    for t in png jpeg gif webp bmp tiff avif heic jxl; do
+        xdg-mime default swayimg.desktop "image/$t"
+    done
+    for t in mp4 x-matroska webm quicktime x-msvideo mpeg ogg; do
+        xdg-mime default mpv.desktop "video/$t"
+    done
 }
 
 # zsh plugins, cloned before stowing: the git package rewrites github https

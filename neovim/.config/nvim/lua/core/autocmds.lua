@@ -64,3 +64,34 @@ vim.api.nvim_create_autocmd({ "FocusLost" }, {
 		vim.opt.cursorline = false
 	end,
 })
+
+-- images and videos go to the desktop viewer (mimeapps: swayimg, mpv) instead
+-- of a buffer full of binary. BufReadCmd catches every way in: nnn's <cr>,
+-- telescope, :e. svg is left alone, it's text worth editing.
+local media = { "png", "jpg", "jpeg", "gif", "webp", "bmp", "tif", "tiff", "avif", "heic", "jxl" }
+vim.list_extend(media, { "mp4", "m4v", "mkv", "webm", "mov", "avi", "mpg", "mpeg", "ogv" })
+local media_patterns = {}
+for _, ext in ipairs(media) do
+	-- cameras shout: IMG_0001.JPG
+	vim.list_extend(media_patterns, { "*." .. ext, "*." .. ext:upper() })
+end
+vim.api.nvim_create_autocmd("BufReadCmd", {
+	group = vim.api.nvim_create_augroup("open_media_externally", { clear = true }),
+	pattern = media_patterns,
+	callback = function(args)
+		local _, err = vim.ui.open(args.match)
+		if err then
+			vim.notify(err, vim.log.levels.ERROR)
+		end
+		-- deleting the buffer mid-:edit upsets nvim, so do it once it's done
+		vim.schedule(function()
+			local alt = vim.fn.bufnr("#")
+			if vim.api.nvim_get_current_buf() == args.buf and alt > 0 and alt ~= args.buf then
+				vim.api.nvim_win_set_buf(0, alt)
+			end
+			if vim.api.nvim_buf_is_valid(args.buf) then
+				vim.api.nvim_buf_delete(args.buf, { force = true })
+			end
+		end)
+	end,
+})
