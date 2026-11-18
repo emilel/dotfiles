@@ -57,12 +57,9 @@ else
 fi
 right=$laptop
 
-for ws in 1 2 3 7 8 9; do swaymsg workspace "$ws" output "$left" >/dev/null; done
-for ws in 4 5 6 10; do swaymsg workspace "$ws" output "$right" >/dev/null; done
-
-# `workspace N output X` only binds workspaces that don't exist yet. The ones sway
-# auto-created at login (1 on whichever output came up first, 2 on the other) stay
-# put -- that's how 2 ends up left of 1. Move the strays to where they belong.
+# No `workspace N output X` assignments: they bind the bare name "1", so once 1
+# is renamed "1:web" a replugged monitor gets a second, empty "1". Instead move
+# whatever exists to where its number belongs.
 wss=$(swaymsg -t get_workspaces)
 focused=$(printf '%s' "$wss" | jq -r 'first(.[]|select(.focused)|.name) // empty')
 printf '%s' "$wss" | jq -r '.[]|"\(.num) \(.output) \(.name)"' | while read -r num out name; do

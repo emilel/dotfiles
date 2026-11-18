@@ -20,7 +20,7 @@ two_outputs() {
     assert_success
     run cat "$SWAY_LOG"
     assert_line "output eDP-1 mode 1920x1080 scale 1 pos 0 0"
-    assert_line "workspace 5 output eDP-1"
+    refute_line --regexp '^workspace [0-9]+ output' # bare names duplicate renamed ones on replug
 }
 
 @test "smooth (default): 4K external drops to the 1440p 60Hz mode, scale 1, laptop right" {
@@ -30,8 +30,6 @@ two_outputs() {
     run cat "$SWAY_LOG"
     assert_line "output HDMI-A-1 mode 2560x1440 scale 1 pos 0 0"
     assert_line "output eDP-1 mode 1920x1080 scale 1 pos 2560 0"
-    assert_line "workspace 1 output HDMI-A-1"
-    assert_line "workspace 4 output eDP-1"
 }
 
 @test "crisp: 4K external runs native 3840x2160 30Hz + scale 1.5 (sharp, lower refresh)" {
