@@ -4,3 +4,7 @@ ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 # read, dumping into $ZDOTDIR and costing ~45ms per shell. settings/behavior.zsh
 # runs compinit after it and wins anyway, so skip the duplicate.
 skip_global_compinit=1
+
+# Machine-specific env, for non-interactive shells too: ~/.setup/*.zsh only
+# reaches interactive ones. Kept out of the repo.
+[ -f ~/.setup/env ] && . ~/.setup/env

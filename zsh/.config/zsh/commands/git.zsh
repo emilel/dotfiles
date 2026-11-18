@@ -1,11 +1,11 @@
 #!/bin/zsh
 
 # --- git worktrees -----------------------------------------------------------
-# A normal clone with its extra branches in .worktrees/<branch-with-dashes>,
-# same layout ~/arbuscular uses. The heavy lifting (fetch-first,
-# fast-forward-only, paths off the main checkout) lives in git_worktree.sh,
-# which prints the worktree path; these wrappers just cd into it. Agents can
-# call git_worktree.sh directly and capture the path.
+# A normal clone with its extra branches in .worktrees/<branch-with-dashes>.
+# The heavy lifting (fetch-first, fast-forward-only, paths off the main
+# checkout) lives in git_worktree.sh, which prints the worktree path; these
+# wrappers just cd into it. Agents can call git_worktree.sh directly and
+# capture the path.
 
 gct() { local d; d=$(git_worktree.sh clone "$@") && cd "$d"; } # clone a repo
 gwn() { local d; d=$(git_worktree.sh new "$@") && cd "$d"; }   # new branch off origin default

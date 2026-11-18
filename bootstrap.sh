@@ -14,7 +14,7 @@ DOTFILES=$(cd "$(dirname "$0")" && pwd)
 BIN="$HOME/.local/bin"
 log() { printf '==> %s\n' "$*"; }
 
-TERMINAL_PKGS="zsh scripts tmux neovim git dprint fzf mason nnn claude"
+TERMINAL_PKGS="zsh scripts tmux neovim git dprint fzf mason nnn"
 GUI_PKGS="sway waybar foot zathura swayimg mako tofi"
 
 SUDO=sudo
@@ -168,9 +168,11 @@ stow_dotfiles() { # packages...
         mv "$HOME/.gitconfig" "$HOME/.setup/gitconfig.pre-stow"
     fi
 
-    # Must exist before stowing claude/, or stow folds all of ~/.claude
-    # (runtime state, credentials) into the repo.
+    # Claude Code settings are per machine -- they name its projects, and
+    # Claude Code writes to them -- so claude/ is only the starting copy.
     mkdir -p "$HOME/.claude"
+    [ -e "$HOME/.claude/settings.json" ] ||
+        cp "$DOTFILES/claude/.claude/settings.json" "$HOME/.claude/settings.json"
 
     clone_zsh_plugins
 

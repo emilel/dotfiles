@@ -39,13 +39,15 @@ adding a new script, or when a small gain needs a lot of logic.
 | sway option / binding         | `sway/.config/sway/config`                                    |
 | waybar module                 | `waybar/.config/waybar/{config,style.css}` + a script         |
 | launcher / rename prompt      | `tofi/.config/tofi/config`, `scripts/.scripts/sway_prompt.sh` |
-| Claude Code settings + hooks  | `claude/.claude/settings.json`                                |
+| Claude Code settings + hooks  | `~/.claude/settings.json`, per machine; `claude/` is the seed |
 | neovim                        | `neovim/.config/nvim` — has its own `AGENTS.md` and tests     |
-| machine-specific zsh          | `~/.setup/*.zsh` — outside the repo, never commit it          |
+| machine-specific zsh          | `~/.setup/*.zsh`, `~/.setup/env` (every zsh) — never commit   |
 
 `.zshrc` sources `programs/ settings/ commands/`, then `~/.setup`, then
-`plugins.zsh`. `bootstrap.sh` installs programs and runs `stow -R`; a new
-top-level package must be added to its package lists.
+`plugins.zsh`. `.zshenv` sources `~/.setup/env`, for non-interactive shells too.
+Anything that names a private project or host belongs there, not here: the repo
+is public. `bootstrap.sh` installs programs and runs `stow -R`; a new top-level
+package must be added to its package lists.
 
 ## Tests
 
