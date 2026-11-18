@@ -75,9 +75,10 @@ input "5824:10203:MoErgo_Go60_Left_Keyboard" {
     xkb_layout "us"
 }
 
-## the kinesis can also flip to se for swedish: waybar KB (kb_toggle.sh)
+## the kinesis can also flip to us_se (us + åäö, ~/.config/xkb) for swedish:
+## waybar KB (kb_toggle.sh)
 input "10730:258:Kinesis_Advantage2_Keyboard" {
-    xkb_layout "us,se"
+    xkb_layout "us,us_se"
 }
 
 input $touchpad {
@@ -86,7 +87,7 @@ input $touchpad {
     natural_scroll enabled
 }
 
-## flip the kinesis us <-> se, and tell waybar KB right away
+## flip the kinesis us <-> us_se, and tell waybar KB right away
 bindsym $mod+s exec "$HOME/.scripts/kb_toggle.sh && pkill -RTMIN+8 waybar"
 
 ## brightness buttons

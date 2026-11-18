@@ -25,11 +25,11 @@ kinesis() { # the pointer twin shares the identifier, so it comes first
     assert_output '{"text":"US","class":"us"}'
 }
 
-@test "status: SE on the second layout" {
+@test "status: ÅÄÖ on the second layout" {
     export SWAY_JSON="$(kinesis 1)"
     run sh "$K" status
     assert_success
-    assert_output '{"text":"SE","class":"se"}'
+    assert_output '{"text":"ÅÄÖ","class":"se"}'
 }
 
 @test "toggle: switches only the kinesis to its next layout" {
@@ -39,12 +39,22 @@ kinesis() { # the pointer twin shares the identifier, so it comes first
     assert_output "input 10730:258:Kinesis_Advantage2_Keyboard xkb_switch_layout next"
 }
 
-@test "sway gives the kinesis us,se, us first" {
+@test "sway gives the kinesis us,us_se, us first" {
     run grep -A1 '^input "10730:258:Kinesis_Advantage2_Keyboard"' "$REPO_ROOT/sway/.config/sway/config"
-    assert_line '    xkb_layout "us,se"'
+    assert_line '    xkb_layout "us,us_se"'
 }
 
 @test "sway binds \$mod+s to the toggle, and nothing else to it" {
     run grep 'bindsym \$mod+s ' "$REPO_ROOT/sway/.config/sway/config"
     assert_output 'bindsym $mod+s exec "$HOME/.scripts/kb_toggle.sh && pkill -RTMIN+8 waybar"'
+}
+
+@test "us_se puts åäö on the swedish keys and keeps us there on AltGr" {
+    f="$REPO_ROOT/sway/.config/xkb/symbols/us_se"
+    run grep -E '^ +key <(AD11|AC10|AC11)>' "$f"
+    assert_line '    key <AD11> {[ aring,      Aring,      bracketleft, braceleft ]};'
+    assert_line '    key <AC10> {[ odiaeresis, Odiaeresis, semicolon,   colon     ]};'
+    assert_line '    key <AC11> {[ adiaeresis, Adiaeresis, apostrophe,  quotedbl  ]};'
+    run grep -c 'include "us(basic)"\|include "level3(ralt_switch)"' "$f"
+    assert_output 2
 }
