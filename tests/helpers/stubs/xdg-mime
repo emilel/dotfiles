@@ -1,0 +1,19 @@
+#!/bin/sh
+# Fake xdg-mime, `query filetype` and `query default` only. Type comes from
+# the extension; defaults: image/* -> imv.desktop, application/pdf ->
+# zathura.desktop, anything else has no app.
+case "$2" in
+    filetype)
+        case "$3" in
+            *.png | *.jpg) echo image/png ;;
+            *.pdf) echo application/pdf ;;
+            *) echo application/octet-stream ;;
+        esac
+        ;;
+    default)
+        case "$3" in
+            image/*) echo imv.desktop ;;
+            application/pdf) echo zathura.desktop ;;
+        esac
+        ;;
+esac

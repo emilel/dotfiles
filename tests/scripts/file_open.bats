@@ -49,3 +49,30 @@ setup() {
     assert_output ""
     assert [ $((SECONDS - start)) -lt 4 ]
 }
+
+@test "files that share an app open in one launch of it" {
+    export GTK_LAUNCH_LOG="$BATS_TEST_TMPDIR/gtk.log"
+    : >"$BATS_TEST_TMPDIR/a.png"
+    : >"$BATS_TEST_TMPDIR/b.png"
+    run sh "$S" "$BATS_TEST_TMPDIR/a.png" "$BATS_TEST_TMPDIR/b.png" "$F"
+    assert_success
+    run cat "$GTK_LAUNCH_LOG"
+    assert_output "imv.desktop $BATS_TEST_TMPDIR/a.png $BATS_TEST_TMPDIR/b.png"
+    # the lone pdf and anything without an app go through xdg-open, one each
+    run cat "$XDG_OPEN_LOG"
+    assert_output "$F"
+}
+
+@test "several urls are opened one by one" {
+    run sh "$S" https://a.example https://b.example
+    assert_success
+    run sort "$XDG_OPEN_LOG"
+    assert_output "https://a.example
+https://b.example"
+}
+
+@test "one failing launch among several shows its message and status" {
+    XDG_OPEN_MODE=fail run sh "$S" https://a.example "$F"
+    assert_failure 3
+    assert_output --partial "no method available"
+}

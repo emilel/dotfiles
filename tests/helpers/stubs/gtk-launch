@@ -1,0 +1,4 @@
+#!/bin/sh
+# Fake gtk-launch. Records its args (app first) in $GTK_LAUNCH_LOG.
+[ -n "${GTK_LAUNCH_LOG:-}" ] && printf '%s\n' "$*" >>"$GTK_LAUNCH_LOG"
+exit 0
