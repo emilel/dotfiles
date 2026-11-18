@@ -13,6 +13,7 @@
     "bluetooth",
     "backlight",
     "wireplumber",
+    "cpu",
     "memory",
     "battery",
     "clock",
@@ -36,6 +37,18 @@
   "backlight": {
     "device": "intel_backlight",
     "format": "SCR {percent} %",
+    "tooltip": false
+  },
+  "cpu": {
+    "format": "CPU {usage} %",
+    "interval": 2,
+    "states": {
+      "busy": 40,
+      "high": 60,
+      "warning": 75,
+      "critical": 90
+    },
+    "on-click": "foot --override=locked-title=yes --title waybar-menu -e top -o %CPU",
     "tooltip": false
   },
   "memory": {

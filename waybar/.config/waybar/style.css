@@ -57,6 +57,7 @@ button:hover {
 #backlight,
 #wireplumber,
 #battery,
+#cpu,
 #memory,
 #clock {
   padding: 0 15px;
@@ -91,12 +92,29 @@ button:hover {
   color: #a8959a;
 }
 
+#cpu {
+  color: #9fa0c0;
+}
+
+/* cpu escalates by text colour only: it spikes too often to blink */
+#cpu.busy { color: #d79921; }
+#cpu.high { color: #fabd2f; }
+#cpu.warning { color: #fe8019; }
+#cpu.critical { color: #f2643f; }
+
 #memory {
   color: #a7856b
 }
 
 #battery {
   color: #8ec07c;
+}
+
+@keyframes blink {
+  to {
+    background-color: #ffffff;
+    color: #000000;
+  }
 }
 
 /* animation when critical battery or memory */
