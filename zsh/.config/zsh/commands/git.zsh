@@ -23,8 +23,8 @@ alias gwr='git worktree remove --force'
 # one-line log; gl [n] (default 10)
 gl() {
     local n="${1:-10}"
-    git log --pretty=format:"%C(yellow)%h%Creset %Cgreen%ad%Creset %Cblue%an%Creset: %s" \
-        --date=short -"${n}"
+    git log --pretty=format:"%C(yellow)%h%Creset %Cgreen%as%Creset %C(magenta)%ad%Creset %Cblue%an%Creset: %s" \
+        --date=format:%H:%M -"${n}"
 }
 
 # rename the current tmux session/window after the branch's last path segment
@@ -37,4 +37,5 @@ alias gs='git status'
 alias gd='git diff'
 alias gb='git branch'
 alias gp='git pull'
+alias gpk='git push'
 alias gm='git merge'
