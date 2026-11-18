@@ -6,7 +6,11 @@ export LC_COLLATE='C'
 # A - don't auto enter on unique filter search
 # R - no rollover
 # U - show user and group in status bar
-export NNN_OPTS='ARU'
+# c - opener runs in the terminal, so it can start an editor
+# e - text in $EDITOR; the rest goes to the opener
+export NNN_OPTS='ARUce'
+# json to $EDITOR, the rest to xdg-open (swayimg, mpv)
+export NNN_OPENER="$HOME/.scripts/nnn_open.sh"
 
 # plugins
 # x: toggle executable bit
