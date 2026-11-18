@@ -71,3 +71,15 @@ dog() {
         print
     done
 }
+
+# print a path relative to $2 (default: cwd) or absolute, for `path x | copy`.
+# Symlinks are followed, so a stowed file gives its real place in the repo and
+# `cp` of the result copies the file, not the link. Functions don't clash with
+# zsh's $path/$fpath arrays.
+path() {
+    realpath -m --relative-to="${2:-$PWD}" -- "${1:-.}"
+}
+
+fpath() {
+    realpath -m -- "${1:-.}"
+}
