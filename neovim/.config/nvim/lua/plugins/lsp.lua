@@ -59,6 +59,8 @@ return {
 				end
 				map("K", vim.lsp.buf.hover, "Hover documentation")
 				map("gd", vim.lsp.buf.definition, "Go to definition")
+				map("grr", require("lib.references").references, "Usages (no imports, __all__)")
+				map("grR", vim.lsp.buf.references, "All references")
 				map("<space>H", vim.diagnostic.open_float, "Open diagnostic")
 				map("\\r", "<cmd>LspRestart<cr>", "Restart LSP server")
 				map("\\x", "<cmd>LspStop<cr>", "Stop LSP server")
